@@ -1421,7 +1421,8 @@ Class ts_model extends CI_Model{
 		
 		
 		function jobReport_EmpwiseTotal($job_num){
-					return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name, COUNT( DISTINCT a.ts_date) AS days,c.Department,
+					return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name,
+																		 COUNT( DISTINCT a.ts_date) AS days,c.Department,
 										                                 CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 										                                  SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'avg' 
 										                              FROM time_sheet_jobs a
@@ -1432,9 +1433,22 @@ Class ts_model extends CI_Model{
 								
 		}
 		
-	
-				function jobReport_DeptwiseTotal($job_num){
-						return  $this->db->query("SELECT  code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+		
+		
+		function jobReport_ActivitywiseTotal($job_num){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,a.code,a.desc, a.code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
+																				WHERE job_no='$job_num'
+																				GROUP BY a.code 
+																				ORDER BY a. code_for,a.code ")->result_array();	
+		
+			
+		}
+
+		
+		
+		function jobReport_DeptwiseTotal($job_num){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days, a.code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
 																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
 																				WHERE job_no='$job_num'
 																				GROUP BY a.code_for
@@ -1443,17 +1457,6 @@ Class ts_model extends CI_Model{
 			
 		}
 
-				function jobReport_ActivitywiseTotal($job_num){
-						return  $this->db->query("SELECT a.code,a.desc, code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
-																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
-																				WHERE job_no='$job_num'
-																				GROUP BY a.code 
-																				ORDER BY code_for,code ")->result_array();	
-		
-			
-		}
-
-		
 		
 		function jobReport_TotalHrs($job_num){
 						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,
