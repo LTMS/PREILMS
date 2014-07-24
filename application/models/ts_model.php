@@ -1414,41 +1414,57 @@ Class ts_model extends CI_Model{
 												     						FROM time_sheet_jobs c 
 												     											INNER JOIN jobs a ON (a.job_no=c.job_no AND a.name=ts_name) 
 												     														INNER JOIN activity_code b ON b.code=activity
-												     						WHERE c.job_no='$job_num'
+												     						WHERE c.job_no='$job_num' AND b.code_for IN ('Engineering','Workshop') AND b.Relative!='Packing'
 												     						ORDER BY ts_name,ts_date ")->result_array();			
 					
 		}
 		
 		
 		function jobReport_EmpwiseTotal($job_num){
-					return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name, COUNT( DISTINCT a.ts_date) AS days,c.Department,
+					return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name, COUNT( DISTINCT a.ts_date) AS days,
+																		 IF(c.code_for='Workshop','Technician',c.code_for) as Department,c.relative,c.code_for,
 										                                 CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 										                                  SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'avg' 
 										                              FROM time_sheet_jobs a
 										                              				 INNER JOIN jobs b ON (a.job_no=b.job_no AND b.name=a.ts_name) 
-										                              				 				INNER JOIN team c ON c.EmployeeName=a.ts_name
-																	 WHERE a.job_no='$job_num'
-																	 GROUP BY a.ts_name   ORDER BY c.Department,a.ts_name,total ")->result_array();			
+										                              				 				INNER JOIN activity_code c ON c.code=a.activity
+																	 WHERE a.job_no='$job_num'  AND c.code_for IN ('Engineering','Workshop') AND c.Relative!='Packing'
+																	 GROUP BY a.ts_name
+																	 ORDER BY c.code_for,a.ts_name,total ")->result_array();			
 								
 		}
 		
-	
-				function jobReport_DeptwiseTotal($job_num){
-						return  $this->db->query("SELECT  code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+		
+		
+		function jobReport_ActivitywiseTotal($job_num){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,a.code,a.desc, a.code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
 																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
-																				WHERE job_no='$job_num'
+																				WHERE job_no='$job_num'  AND a.code_for IN ('Engineering','Workshop') AND a.Relative!='Packing'
+																				GROUP BY a.code 
+																				ORDER BY a. code_for,a.code ")->result_array();	
+		
+			
+		}
+
+		
+		
+		function jobReport_DeptwiseTotal($job_num){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days, a.code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
+																				WHERE job_no='$job_num' AND a.code_for IN ('Engineering','Workshop') AND a.Relative!='Packing'
 																				GROUP BY a.code_for
 																				ORDER BY a.code_for ")->result_array();	
 		
 			
 		}
 
-				function jobReport_ActivitywiseTotal($job_num){
-						return  $this->db->query("SELECT a.code,a.desc, code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+		
+		function jobReport_RelativewiseTotal($job_num){
+						return  $this->db->query("SELECT a.code_for,Relative, SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total,COUNT( DISTINCT ts_date) as days
 																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
-																				WHERE job_no='$job_num'
-																				GROUP BY a.code 
-																				ORDER BY code_for,code ")->result_array();	
+																				WHERE job_no='$job_num'  AND a.code_for IN ('Engineering','Workshop') AND a.Relative!='Packing'
+																				GROUP BY a.code_for,a.Relative
+																				ORDER BY a. code_for,a.Relative ")->result_array();	
 		
 			
 		}
@@ -1461,7 +1477,7 @@ Class ts_model extends CI_Model{
 																			FROM 
 																				(SELECT  DISTINCT ts_date , SEC_TO_TIME(SUM(TIME_TO_SEC(job_time))) as job_time
 																				FROM time_sheet_jobs
-																				WHERE job_no='$job_num'
+																				WHERE job_no='$job_num'  
 																				GROUP BY ts_date )   a")->result_array();	
 		
 			
