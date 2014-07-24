@@ -191,12 +191,12 @@ class General extends CI_Controller
 
 		$to1='gnana.jeyam@deastech.com';
 		$to2='sakthi.kanesh@deastech.com';
-		$to3='sureshsivam@deastech.com';
+		//$to3='sureshsivam@deastech.com';
 		//$filepath='Errors\\'.$file;
 
 		$mail->addAddress($to1);
 		$mail->addAddress($to2);
-		$mail->addAddress($to3);
+		//$mail->addAddress($to3);
 		if($file!="" || $file!=null){
 			$mail->AddAttachment("Errors/".$file);
 		}
@@ -219,7 +219,19 @@ class General extends CI_Controller
 		echo 'Message has been sent';
 
 	}
-
+	function jobstatus()
+		{
+			$data['menu']="misc";
+			$data['submenu']="jobstatus";
+			$query=$this->general_model->fetch_job_details();
+			$data['row_count']=$query->num_rows();
+			$data['job_details']=$query->result_array();
+		
+			$this->template->write_view("sideLinks","general/menu",$data);
+			$this->template->write_view("bodyContent","general/jobstatus",$data);
+			$this->template->render();
+			//$this->load->view("general/jobstatus",$data);
+		}
 
 
 
