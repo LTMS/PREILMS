@@ -1,15 +1,23 @@
 		<?php
-	
+				if(!empty($Empwise_Total)){
+							foreach($Total_Hrs as $row) {
+								$total_days = $row["days"];
+								$tot_hrs = $row["total"];
+							}
+				}
+		
 		print("<div style='background-color:white'>");
 				
 	if($Job_Activty){
+		
+		
 		print("<table width='100%' border='1' align='center' cellpadding='1' cellspacing='1'   style='border-collapse:collapse;'>");
 
-				print("<tr style='color:red;font-size:15px;font-weight:bolder; '>
+				print("<tr style='color:red;font-size:16px;font-weight:bolder; '>
 								<td colspan='13' align='center'>Employees Daily Report for  $Job_Number - $Job_Desc</td></tr>");
 		
 				
-				print("<tr bgcolor='#518C9C' id='hdr_row' style='font-size:12px;font-weight:bold;background-color:white;color:black;border-right:1px solid  black; '>");
+				print("<tr bgcolor='#518C9C' id='hdr_row' style='font-size:14px;font-weight:bold;background-color:white;color:black;border-right:1px solid  black; '>");
 					print("<td  width='3%' align='center'>S.No</td>");
 					print("<td width='14%' align='center'>Employee</td>");
 					print("<td width='9%' align='center'>Date</td>");
@@ -39,14 +47,15 @@
 				}
 		print("</table><br>");
 	}
+		print("<hr>");
 	
 	
 	if($Empwise_Total){			
 		print("<br><table width='100%' border='1' align='left' cellpadding='1' cellspacing='1'   style='border-collapse:collapse;'>");
-						print("<tr  style='background:white;color:red;font-size:15px;font-weight:bolder; '>
+						print("<tr  style='background:white;color:red;font-size:16px;font-weight:bolder; '>
 								<td colspan='13' align='center'>Employees Job Summary for $Job_Number - $Job_Desc</td></tr>");
 		
-						print("<tr bgcolor='#518C9C' id='hdr_row' style='font-size:15px;font-weight:bold;background-color:white;color:black;border-right:1px solid  black; '>");
+						print("<tr bgcolor='#518C9C' id='hdr_row' style='font-size:14px;font-weight:bold;background-color:white;color:black;border-right:1px solid  black; '>");
 						print("<td width='5%' align='center'>S.No</td>");
 						print("<td width='20%' align='center'>Employee Name</td>");
 						print("<td width='20%' align='center'>Department</td>");
@@ -71,7 +80,7 @@
 							print("<td width='20%' align='left'>".$emp_dept."</td>");
 							print("<td width='10%' align='left'>".$emp_total." Hours</td>");
 							print("<td width='10%' align='left'>".$openrow1["avg"]."</td>");
-							print("<td width='10%' align='left'>".$emp_days." Days</td>");
+							print("<td width='10%' align='left'>".$emp_days." </td>");
 					print("</tr>");
 
 					$emp_total_hrs=$emp_total_hrs+$emp_total;
@@ -82,28 +91,21 @@
 											if($dept=='Engineering'){ $engg_total=$engg_total+$total;}
 											if($dept=='Technician'){ $tech_total=$tech_total+$total;}
 																	
-						
-						*/
-				
-															if(!empty($Empwise_Total)){
-																	foreach($Total_Hrs as $row) {
-																		$total_days = $row["days"];
-																		$tot_hrs = $row["total"];
-																	}
-															}
-				
+					
 										print("<tr style='color:black;font-size:16px;font-weight:bolder; '>");
 										print("<td colspan='3'  align='right'> Total Hours Spent </td>");
 										print("<td colspan='3' align='left'>".$emp_total_hrs." Hours in $total_days Days</td>");
 										print("</tr>");
+						*/
 				
-		print("</table><br>");
+		print("</table>");
+		print("<hr><br>");
 		
 		print("<br><table width='100%' border='1' align='left' cellpadding='1' cellspacing='1'   style='border-collapse:collapse;'>");
-						print("<tr  style='background:white;color:red;font-size:15px;font-weight:bolder; '>
+						print("<tr  style='background:white;color:red;font-size:16px;font-weight:bolder; '>
 								<td colspan='13' align='center'>Activity wise Summary for $Job_Number - $Job_Desc  </td></tr>");
 		
-						print("<tr bgcolor='#518C9C' id='hdr_row' style='font-size:15px;font-weight:bold;background-color:white;color:black;border-right:1px solid  black; '>");
+						print("<tr bgcolor='#518C9C' id='hdr_row' style='font-size:14px;font-weight:bold;background-color:white;color:black;border-right:1px solid  black; '>");
 						print("<td width='5%' align='center'>S.No</td>");
 						print("<td width='10%' align='center'>Activity Code</td>");
 						print("<td width='20%' align='center'>Description</td>");
@@ -133,20 +135,23 @@
 						print("</tr>");
 						$act_total_hrs=$act_total_hrs+$act_total;
 					}	
+					
+					/*
 										print("<tr style='color:black;font-size:16px;font-weight:bolder; '>");
 										print("<td colspan='3'  align='right'> Total Hours Spent </td>");
 										print("<td colspan='3' align='left'>".$act_total_hrs." Hours in $total_days Days</td>");
 										print("</tr>");
-					
-		print("</table><br>");
-	
+					*/
+		print("</table>");
+		print("<hr><br>");
+		
 		
 		
 		print("<br><table width='100%' border='1' align='left' cellpadding='1' cellspacing='1'   style='border-collapse:collapse;'>");
-						print("<tr  style='background:white;color:red;font-size:15px;font-weight:bolder; '>
+						print("<tr  style='background:white;color:red;font-size:16px;font-weight:bolder; '>
 								<td colspan='13' align='center'>Department Job Summary for $Job_Number - $Job_Desc</td></tr>");
 		
-						print("<tr bgcolor='#518C9C' id='hdr_row' style='font-size:15px;font-weight:bold;background-color:white;color:black;border-right:1px solid  black; '>");
+						print("<tr bgcolor='#518C9C' id='hdr_row' style='font-size:14px;font-weight:bold;background-color:white;color:black;border-right:1px solid  black; '>");
 						print("<td width='5%' align='center'>S.No</td>");
 						print("<td width='20%' align='center'>Department</td>");
 						print("<td width='10%' align='center'>Total Worked Hours</td>");
@@ -175,14 +180,17 @@
 										print("<td colspan='3' align='left'>".$dept_total_hrs." Hours in $total_days Days</td>");
 										print("</tr>");
 					
-		print("</table><br>");
+		print("</table>");
+		print("<br><br>");
 	
 		
 		
-		print("<hr>");
-		print("<br><br><br><font size='2px' ><b><u> Important Notes</u></b></font> <br><br>");
-		print("*  In Employees Job Summary  'Total Worked Hours' is rounded off. <br>");
-		print("*  Accuracy of Total Hours Spent is +/- 1 Hour.<br>");
+		print("<hr><br><br><div style='float:left'>");
+		print("<table>");
+		print("<tr><td style='font-weight:bolder;font-size:10pt;'> <u>Important Notes </u></td><td>");
+		print("<tr><td style='font-weight:bolder;font-size:8pt;'> *  In Employees Job Summary  'Total Worked Hours' is rounded off. When Minutes >=30 Hour will be rounded for 1 Hour.   </td><td>");
+		print("<tr><td style='font-weight:bolder;font-size:5pt;'> * </td><td>");
+		print("</table></div>");
 		
 		}
 		print("</div>");
