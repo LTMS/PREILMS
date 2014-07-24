@@ -714,6 +714,7 @@ class timesheet extends CI_Controller
 			$data['Empwise_Total']=$this->ts_model->jobReport_EmpwiseTotal($job_num);
 			$data['Activitywise_Total']=$this->ts_model->jobReport_ActivitywiseTotal($job_num);
 			$data['Deptwise_Total']=$this->ts_model->jobReport_DeptwiseTotal($job_num);
+			$data['Relativewise_Total']=$this->ts_model->jobReport_RelativewiseTotal($job_num);
 			$data['Total_Hrs']=$this->ts_model->jobReport_TotalHrs($job_num);
 			$data['Job_Number']=$job_num;
 			$data['Job_Desc']=$this->ts_model->get_JobDesc($job_num);
