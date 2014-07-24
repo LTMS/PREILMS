@@ -64,7 +64,17 @@ Class General_model extends CI_Model
 	function getFileName($file){
 		return	$this->db->query("SELECT '$file' as filename FROM team ")->result_array();
 	}
-
+	function fetch_job_details()
+	{
+		
+		$query=$this->db->query("SELECT *
+											FROM jobs j
+											GROUP BY job_no
+											ORDER BY job_no;");
+	
+		return $query;
+	}	
+		
 
 
 }
