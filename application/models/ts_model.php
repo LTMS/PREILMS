@@ -1497,7 +1497,6 @@ Class ts_model extends CI_Model{
 				
 				
 	}
-		
-		
+	
 }
 ?>

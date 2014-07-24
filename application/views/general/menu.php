@@ -229,6 +229,8 @@
 		<li><a href="<?php echo site_url("timesheet/addjobs"); ?>"
 		<?php if ($submenu=='addjobs'){?> class="current" <?php }?>>Manage
 				Jobs</a></li>
+				<li><a href="<?php echo site_url("general/jobstatus"); ?>"
+		<?php if ($submenu=='jobstatus'){?> class="current" <?php }?>>Jobs Details</a></li>
 		<li><a href="<?php echo site_url("lms/add_dept"); ?>"
 		<?php if ($submenu=='add_dept'){?> class="current" <?php }?>>Manage
 				Departments</a></li>
