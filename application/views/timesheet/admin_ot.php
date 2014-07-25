@@ -76,8 +76,5 @@
 </div>
 
 <script
-	type="text/javascript"
-	src="<?php echo base_url(); ?>js/custom/timesheet.js"></script>
-<script
-	type="text/javascript"
-	src="<?php echo base_url(); ?>js/custom/print.js"></script>
+	type="text/javascript"	src="<?php echo base_url(); ?>js/custom/timesheet.js"></script>
+<script	type="text/javascript"	src="<?php echo base_url(); ?>js/custom/print.js"></script>

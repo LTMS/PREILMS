@@ -87,6 +87,20 @@ class timesheet extends CI_Controller
 		$this->template->render();
 	}
 	
+	function timesheet_jobwise_week()
+	{
+		$data["menu"]='e_reports';
+		$data["submenu"]='timesheet_jobwise_week';
+		$data["deptlist"]=$this->ts_model->get_dept();
+		$data["members"]=$this->ts_model->get_all_members();
+		$data["Year"]=$this->ts_model->get_All_Years();
+		$data["Jobs_Num"]=$this->ts_model->get_All_JobsNum();
+		$this->template->write('titleText', "Time Sheet Reports for MIS");
+		$this->template->write_view('sideLinks', 'general/menu',$data);
+		$this->template->write_view('bodyContent', 'timesheet/timesheet_for_MIS',$data);
+		$this->template->render();
+	}
+	
 	function teamsheet_dept()
 	{
 		$data["menu"]='e_reports';
@@ -726,25 +740,26 @@ class timesheet extends CI_Controller
 	
 		function timesheet_jobReport_Week(){
 			$form_data=$this->input->post();
-			$job_num=$form_data["job_num"];
+			//	$job_num=$form_data["job_num"];
 			$from=date('Y-m-d', strtotime($form_data["from"]));
 			$to=date('Y-m-d', strtotime($form_data["to"]));
-			$data['Job_Activty']=$this->ts_model->jobReport_JobActivity_Week($from,$to,$job_num);
-			$data['Empwise_Total']=$this->ts_model->jobReport_EmpwiseTotal_Week($from,$to,$job_num);
-			$data['Activitywise_Total']=$this->ts_model->jobReport_ActivitywiseTotal_Week($from,$to,$job_num);
-			$data['Deptwise_Total']=$this->ts_model->jobReport_DeptwiseTotal_Week($from,$to,$job_num);
-			$data['Relativewise_Total']=$this->ts_model->jobReport_RelativewiseTotal_Week($from,$to,$job_num);
-			$data['Total_Hrs']=$this->ts_model->jobReport_TotalHrs_Week($from,$to,$job_num);
-			$data['Job_Number']=$job_num;
-			$data['Job_Desc']=$this->ts_model->get_JobDesc($job_num);
+			//$data['Job_Activty']=$this->ts_model->jobReport_JobActivity_Week($from,$to,$job_num);
+			$data['Empwise_Total']=$this->ts_model->jobReport_EmpwiseTotal_Week($from,$to);
+			$data['Activitywise_Total']=$this->ts_model->jobReport_ActivitywiseTotal_Week($from,$to);
+			$data['Deptwise_Total']=$this->ts_model->jobReport_DeptwiseTotal_Week($from,$to);
+			$data['Relativewise_Total']=$this->ts_model->jobReport_RelativewiseTotal_Week($from,$to);
+			$data['Total_Hrs']=$this->ts_model->jobReport_TotalHrs_Week($from,$to);
+			$data['From_Date']=$from;
+			$data['To_Date']=$to;
+		//	$data['Job_Desc']=$this->ts_model->get_JobDesc($job_num);
 			
-			$this->load->view("timesheet/timesheet_jobwise_content",$data);
+			$this->load->view("timesheet/timesheet_for_MIS_content",$data);
 			
 		}
 	
 		
 	
 	
-}
+	}
 
 ?>

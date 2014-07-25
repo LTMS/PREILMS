@@ -1194,9 +1194,8 @@ function get_INOUT(date){
 					function timesheet_jobReport_Week(){
 						var from1=document.getElementById('date_from').value;
 						var to1=document.getElementById('date_to').value;
-						var job_num1=document.getElementById('getjob').value;
-							if( from1!="" && to1 !="" && job_num1!=""){
-								$.post(site_url+"/timesheet/timesheet_jobReport",{from:from1,to:to1,job_num:job_num1},function(data){
+							if( from1!="" && to1 !=""){
+								$.post(site_url+"/timesheet/timesheet_jobReport_Week",{from:from1,to:to1},function(data){
 											//alert(data);
 											$('#contentData').html("");
 											$('#contentData').append(data);

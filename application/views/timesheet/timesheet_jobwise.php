@@ -25,15 +25,11 @@
 		style="height: 40px;">
 		<tr class="tab_header_bg">
 	 	<td align="center">
-			Leave Date From : 
-			<input	type="text" id="date_from" style="width: 80px;height:23px;font-size:14px;font-weight:bolder"	onchange="javascript:timesheet_jobReport_Week();" />&nbsp;&nbsp;
-			 To:
-			  <input 	type="text" id="date_to" style="width: 80px;height:23px;font-size:14px;font-weight:bolder" onchange="javascript:timesheet_jobReport_Week();" />&nbsp;&nbsp;
-		 	 <input	type='text' value='' id='getjob' placeholder="Job Number" style="height: 22px; width: 90px; color: RED; font-weight: bolder; font-size: 15px;" />&nbsp; 
-			&nbsp;&nbsp; 
-			<input type='button' value='Job Report'	onclick="javascript:timesheet_jobReport_Week();" style="height: 25px;width: 100px; color: #006600; font-weight: bold; font-size: 15px;" />
+	 	 <input	type='text' value='' id='getjob' placeholder="Job Number"style="height: 22px; width: 90px; color: RED; font-weight: bolder; font-size: 15px;" />&nbsp; 
+		&nbsp;&nbsp; 
+		<input type='button' value='Job Report'	onclick="javascript:timesheet_jobReport();" style="height: 25px;width: 100px; color: #006600; font-weight: bold; font-size: 15px;" />
 				&nbsp;&nbsp;
-			 <img align="bottom"	src="<?php echo base_url(); ?>/images/print2.png" onclick="javascript:printJobReport();"
+		 <img align="bottom"	src="<?php echo base_url(); ?>/images/print2.png" 	onclick="javascript:printJobReport();"
 				style="width: 50px; height: 30px; color: green" />
 			</td>
 		</tr>
