@@ -283,7 +283,7 @@ class timesheet extends CI_Controller
 		$result= $this->input->post();
 		$data["history"]=$this->ts_model->get_timesheet_jobwise($result["year"],$result["month"],$result["num"]);
 		$data["tothrs"]=$this->ts_model->get_timesheet_jobwise_hrs($result["year"],$result["month"],$result["num"]);
-		$this->load->view('timesheet/teamsheet_jobwise',$data);
+		$this->load->view('timesheet/teamsheet_jobwise_div',$data);
 	}
 
 	function get_timesheet_userwise(){
@@ -350,7 +350,7 @@ class timesheet extends CI_Controller
 		$result= $this->input->post();
 		$data["history"]=$this->ts_model->team_timesheet_jobwise($result["year"],$result["month"],$result["num"]);
 		$data["tothrs"]=$this->ts_model->team_timesheet_jobwise_hrs($result["year"],$result["month"],$result["num"]);
-		$this->load->view('timesheet/teamsheet_jobwise',$data);
+		$this->load->view('timesheet/teamsheet_jobwise_div',$data);
 	}
 
 	function team_timesheet_ot(){
@@ -724,6 +724,25 @@ class timesheet extends CI_Controller
 		}
 	
 	
+		function timesheet_jobReport_Week(){
+			$form_data=$this->input->post();
+			$job_num=$form_data["job_num"];
+			$from=date('Y-m-d', strtotime($form_data["from"]));
+			$to=date('Y-m-d', strtotime($form_data["to"]));
+			$data['Job_Activty']=$this->ts_model->jobReport_JobActivity_Week($from,$to,$job_num);
+			$data['Empwise_Total']=$this->ts_model->jobReport_EmpwiseTotal_Week($from,$to,$job_num);
+			$data['Activitywise_Total']=$this->ts_model->jobReport_ActivitywiseTotal_Week($from,$to,$job_num);
+			$data['Deptwise_Total']=$this->ts_model->jobReport_DeptwiseTotal_Week($from,$to,$job_num);
+			$data['Relativewise_Total']=$this->ts_model->jobReport_RelativewiseTotal_Week($from,$to,$job_num);
+			$data['Total_Hrs']=$this->ts_model->jobReport_TotalHrs_Week($from,$to,$job_num);
+			$data['Job_Number']=$job_num;
+			$data['Job_Desc']=$this->ts_model->get_JobDesc($job_num);
+			
+			$this->load->view("timesheet/timesheet_jobwise_content",$data);
+			
+		}
+	
+		
 	
 	
 }

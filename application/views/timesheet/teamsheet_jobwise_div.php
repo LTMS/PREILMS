@@ -16,7 +16,7 @@
 		foreach($history as $openrow) {
 			$counter++;
 			$rowid="row".$counter;
-			$days=$openrow["Days"];
+			$days=$openrow["days"];
 					if($days==1){		$days=$days." Day";	}
 					else{$days=$days." Days";}
 			
@@ -26,7 +26,7 @@
 			print("<td width='40%' align='left'>".$openrow["num"]." - ".$openrow["desc"]."</td>");
 			print("<td width='10%' align='left'>".$openrow["total"]." Hours</td>");
 			print("<td width='10%' align='left'>".$openrow["avg"]."</td>");
-			print("<td width='10%' align='left'>".$openrow["days"]." Days</td>");
+			print("<td width='10%' align='left'>".$days."</td>");
 			print("</tr>");
 		}
 		
