@@ -87,10 +87,10 @@ class timesheet extends CI_Controller
 		$this->template->render();
 	}
 	
-	function timesheet_jobwise_week()
+	function timesheet_jobwise_MIS()
 	{
 		$data["menu"]='e_reports';
-		$data["submenu"]='timesheet_jobwise_week';
+		$data["submenu"]='timesheet_jobwise_MIS';
 		$data["deptlist"]=$this->ts_model->get_dept();
 		$data["members"]=$this->ts_model->get_all_members();
 		$data["Year"]=$this->ts_model->get_All_Years();
@@ -738,20 +738,20 @@ class timesheet extends CI_Controller
 		}
 	
 	
-		function timesheet_jobReport_Week(){
+		function timesheet_jobReport_MIS(){
 			$form_data=$this->input->post();
 			//	$job_num=$form_data["job_num"];
 			$from=date('Y-m-d', strtotime($form_data["from"]));
 			$to=date('Y-m-d', strtotime($form_data["to"]));
-			//$data['Job_Activty']=$this->ts_model->jobReport_JobActivity_Week($from,$to,$job_num);
-			$data['Empwise_Total']=$this->ts_model->jobReport_EmpwiseTotal_Week($from,$to);
-			$data['Activitywise_Total']=$this->ts_model->jobReport_ActivitywiseTotal_Week($from,$to);
-			$data['Deptwise_Total']=$this->ts_model->jobReport_DeptwiseTotal_Week($from,$to);
-			$data['Relativewise_Total']=$this->ts_model->jobReport_RelativewiseTotal_Week($from,$to);
-			$data['Total_Hrs']=$this->ts_model->jobReport_TotalHrs_Week($from,$to);
+			$data['Relativewise_Total']=$this->ts_model->jobReport_RelativewiseTotal_MIS($from,$to);
+			$data['MIS_TotalHours']=$this->ts_model->jobReport_MIS_TotalHours($from,$to);
+			//$data['Empwise_Total']=$this->ts_model->jobReport_EmpwiseTotal_MIS($from,$to);
+			//$data['Activitywise_Total']=$this->ts_model->jobReport_ActivitywiseTotal_MIS($from,$to);
+			//$data['Deptwise_Total']=$this->ts_model->jobReport_DeptwiseTotal_MIS($from,$to);
+			//	$data['Job_Desc']=$this->ts_model->get_JobDesc($job_num);
+			$data['Total_Hrs']=$this->ts_model->jobReport_TotalHrs_MIS($from,$to);
 			$data['From_Date']=$from;
 			$data['To_Date']=$to;
-		//	$data['Job_Desc']=$this->ts_model->get_JobDesc($job_num);
 			
 			$this->load->view("timesheet/timesheet_for_MIS_content",$data);
 			

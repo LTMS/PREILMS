@@ -1191,11 +1191,11 @@ function get_INOUT(date){
 					
 // July 25, 2014		
 					
-					function timesheet_jobReport_Week(){
+					function timesheet_jobReport_MIS(){
 						var from1=document.getElementById('date_from').value;
 						var to1=document.getElementById('date_to').value;
 							if( from1!="" && to1 !=""){
-								$.post(site_url+"/timesheet/timesheet_jobReport_Week",{from:from1,to:to1},function(data){
+								$.post(site_url+"/timesheet/timesheet_jobReport_MIS",{from:from1,to:to1},function(data){
 											//alert(data);
 											$('#contentData').html("");
 											$('#contentData').append(data);

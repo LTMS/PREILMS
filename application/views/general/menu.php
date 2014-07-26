@@ -37,8 +37,8 @@
 		<?php if ($submenu=='teamsheet_dept'){?> class="current" <?php }?>>Extensive	Time Sheet Report</a></li>
 		<li><a href="<?php echo site_url("timesheet/timesheet_jobwise"); ?>"
 		<?php if ($submenu=='timesheet_jobwise'){?> class="current" <?php }?>>Jobwise 	Time Sheet</a></li>
-		<li><a href="<?php echo site_url("timesheet/timesheet_jobwise_week"); ?>"
-		<?php if ($submenu=='timesheet_jobwise_week'){?> class="current" <?php }?>>MIS - Time Sheet</a></li>
+		<li><a href="<?php echo site_url("timesheet/timesheet_jobwise_MIS"); ?>"
+		<?php if ($submenu=='timesheet_jobwise_MIS'){?> class="current" <?php }?>>MIS - Time Sheet</a></li>
 		<li><a href="<?php echo site_url("timesheet/admin_ot"); ?>"
 		<?php if ($submenu=='admin_ot'){?> class="current" <?php }?>>Employees	O-T Details</a></li>
 		<li><a href="<?php echo site_url("timesheet/admin_otsummary"); ?>"
@@ -161,8 +161,8 @@
 		<?php if ($submenu=='teamsheet_dept'){?> class="current" <?php }?>>Extensive	Time Sheet Report</a></li>
 		<li><a href="<?php echo site_url("timesheet/timesheet_jobwise"); ?>"
 		<?php if ($submenu=='timesheet_jobwise'){?> class="current" <?php }?>>Jobwise 	Time Sheet</a></li>
-		<li><a href="<?php echo site_url("timesheet/timesheet_jobwise_week"); ?>"
-		<?php if ($submenu=='timesheet_jobwise_week'){?> class="current" <?php }?>>MIS - Time Sheet</a></li>
+		<li><a href="<?php echo site_url("timesheet/timesheet_jobwise_MIS"); ?>"
+		<?php if ($submenu=='timesheet_jobwise_MIS'){?> class="current" <?php }?>>MIS - Time Sheet</a></li>
 		<li><a href="<?php echo site_url("timesheet/admin_ot"); ?>"
 		<?php if ($submenu=='admin_ot'){?> class="current" <?php }?>>Employees	O-T Details</a></li>
 		<li><a href="<?php echo site_url("timesheet/admin_otsummary"); ?>"
