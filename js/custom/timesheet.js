@@ -1,37 +1,38 @@
-
-$(document).ready(function(){
-		//alert("Hi..!");
-		$('#getjob').autocomplete({
-				source: jobs_array
+		
+		$(document).ready(function(){
+				//alert("Hi..!");
+				$('#getjob').autocomplete({
+						source: jobs_array
+				});
+				
 		});
 		
-});
+		
+		$("#date").datepicker({
+			changeMonth:true,
+			changeYear:true,
+			dateFormat: 'dd-mm-yy',onClose:function(selectedDate){}
+			
+		});
+		
+		$("#date_from").datepicker({ 
+			dateFormat: 'dd-mm-yy',
+			changeMonth:true,
+			changeYear:true,
+			onClose:function(selectedDate){
+						$("#date_to").datepicker("option","minDate",selectedDate);
+						},	
+			defaultDate: new Date()	
+		}) ; 
 
+		$("#date_to").datepicker({
+				changeMonth:true,
+				changeYear:true,
+				dateFormat: 'dd-mm-yy',
+				defaultDate: new Date()	
+		}) ; 
 
-$("#date").datepicker({
-	dateFormat: 'dd-mm-yy',onClose:function(selectedDate){}
-	
-});
-
-
-function MyFunction()
-{
-	var month=	document.getElementById('month').value;
-	var year=	document.getElementById('year').value;
-	alert(month + year);
-	$("#date_from").datepicker({ 
-	onClose:function(selectedDate){}	,
-	defaultDate: new Date(year,month,03)		
-});
-}
-
-$("#date_to").datepicker({
-	dateFormat: 'dd',onClose:function(selectedDate){},	
-	defaultDate: new Date()		
-});
-
-
-
+		
 function checkDate(date){
 	document.getElementById('button').style.display="";
 	document.getElementById('outdate').style.display="none";
@@ -1180,6 +1181,21 @@ function get_INOUT(date){
 						var job_num1=document.getElementById('getjob').value;
 						if(job_num1!="" || job_num1==null){
 								$.post(site_url+"/timesheet/timesheet_jobReport",{job_num:job_num1},function(data){
+											//alert(data);
+											$('#contentData').html("");
+											$('#contentData').append(data);
+								});
+						}
+						
+					}
+					
+// July 25, 2014		
+					
+					function timesheet_jobReport_Week(){
+						var from1=document.getElementById('date_from').value;
+						var to1=document.getElementById('date_to').value;
+							if( from1!="" && to1 !=""){
+								$.post(site_url+"/timesheet/timesheet_jobReport_Week",{from:from1,to:to1},function(data){
 											//alert(data);
 											$('#contentData').html("");
 											$('#contentData').append(data);

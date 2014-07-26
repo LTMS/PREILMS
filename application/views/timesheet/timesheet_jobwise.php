@@ -25,42 +25,6 @@
 		style="height: 40px;">
 		<tr class="tab_header_bg">
 	 	<td align="center">
-	<!--				<select id="year"	style="height: 25px; width: 80px; color: Brown; font-weight: bold; font-size: 15px;"			onchange="">
-			<?php
-			foreach($Year as $row){
-				$y=$row["Year"];
-				?>
-			<option value="<?php echo $y;?>">
-			<?php echo $y;?>
-			</option>
-			<option value="2013">2013</option>
-			<?php
-			}
-			?>
-		</select>&nbsp;&nbsp;&nbsp;&nbsp; 
-		<select id="month"	style="height: 25px; width: 100px; color: blue; font-weight: bold; font-size: 15px;"	onchange="javascript:MyFunction();">
-			<option value="0">January</option>
-			<option value="1">February</option>
-			<option value="2">March</option>
-			<option value="3">April</option>
-			<option value="4">May</option>
-			<option value="5">June</option>
-			<option value="6">July</option>
-			<option value="7">August</option>
-			<option value="8">September</option>
-			<option value="9">October</option>
-			<option value="10">November</option>
-			<option value="11">December</option>
-		</select>
-		&nbsp; &nbsp;&nbsp; 
-		<b>
-		From:
-		 <input	type='text' value='' id='date_from' style="height: 22px; width: 30px; color: RED; font-weight: bolder; font-size: 15px;" />&nbsp; 
-		To:</b>
-		 <input	type='text' value='' id='date_to' style="height: 22px; width: 30px; color: RED; font-weight: bolder; font-size: 15px;" />&nbsp; 
-		&nbsp;&nbsp; 
-	
-	 -->		
 	 	 <input	type='text' value='' id='getjob' placeholder="Job Number"style="height: 22px; width: 90px; color: RED; font-weight: bolder; font-size: 15px;" />&nbsp; 
 		&nbsp;&nbsp; 
 		<input type='button' value='Job Report'	onclick="javascript:timesheet_jobReport();" style="height: 25px;width: 100px; color: #006600; font-weight: bold; font-size: 15px;" />
