@@ -28,11 +28,15 @@ $("#p_date").datepicker({
 
 
 $("#date_from").datepicker({
+	changeMonth:true,
+	changeYear:true,
 	dateFormat: 'dd-mm-yy',
 	defaultDate: new Date()	
 });
 
 $("#date_to").datepicker({
+	changeMonth:true,
+	changeYear:true,
 	dateFormat: 'dd-mm-yy',	
 	defaultDate: new Date()		
 });

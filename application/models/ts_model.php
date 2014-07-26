@@ -547,7 +547,7 @@ Class ts_model extends CI_Model{
 		function timesheet_activity_user_hrs($year,$month){
 			$user=$this->session->userdata('fullname');
 			if($year!='' && $month != ''){
-				return  $this->db->query("SELECT  COUNT(ts_date) AS days,
+				return  $this->db->query("SELECT  COUNT( DISTINCT ts_date) AS days,
 					     													SUM(HOUR(ts_lunch))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_lunch)*60))) AS lunch ,
 																			SUM(HOUR(ts_duty))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_duty)*60))) AS duty ,
 																			SUM(HOUR(ts_ot))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_ot)*60))) AS ot ,
@@ -557,7 +557,7 @@ Class ts_model extends CI_Model{
 					
 			}
 			else {
-				return  $this->db->query("SELECT  COUNT(ts_date) AS days,
+				return  $this->db->query("SELECT  COUNT(DISTINCT ts_date) AS days,
 					     													SUM(HOUR(ts_lunch))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_lunch)*60))) AS lunch ,
 																			SUM(HOUR(ts_duty))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_duty)*60))) AS duty ,
 																			SUM(HOUR(ts_ot))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_ot)*60))) AS ot ,
@@ -593,7 +593,7 @@ Class ts_model extends CI_Model{
 		function team_timesheet_overall($year,$month){
 			$user=$this->session->userdata('fullname');
 			if( $month!=""){
-				return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', COUNT(a.ts_date) AS days,
+				return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', COUNT(DISTINCT a.ts_date) AS days,
 																		CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 																		SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'AVG'							 
 																		 FROM time_sheet_jobs a INNER JOIN jobs b  ON (a.job_no=b.job_no AND b.name=a.ts_name)  JOIN team c ON c.EmployeeName=a.ts_name
@@ -601,7 +601,7 @@ Class ts_model extends CI_Model{
 																		 GROUP BY a.job_no   ORDER BY a.ts_name,total ")->result_array();			
 			}
 			else {
-				return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', COUNT(a.ts_date) AS days,
+				return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', COUNT( DISTINCT a.ts_date) AS days,
 																		CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 																		SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'AVG'
 																		 FROM time_sheet_jobs a INNER JOIN jobs b  ON (a.job_no=b.job_no AND b.name=a.ts_name)  JOIN team c ON c.EmployeeName=a.ts_name
@@ -619,7 +619,7 @@ Class ts_model extends CI_Model{
 
 			if( $month!=""){
 				return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name,
-																								 COUNT(a.ts_date) AS days,
+																								 COUNT( DISTINCT a.ts_date) AS days,
 																								  CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 																								  SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'avg' 
 																								FROM time_sheet_jobs a INNER JOIN jobs b ON (a.job_no=b.job_no AND b.name=a.ts_name)   JOIN team c ON c.EmployeeName=a.ts_name
@@ -629,7 +629,7 @@ Class ts_model extends CI_Model{
 			else {
 				return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name,
 																		 COUNT(a.ts_date) AS days,
-										                                 CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
+										                                 CAST(DISTINCT CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 										                                 SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'avg' 
 										                              FROM time_sheet_jobs a INNER JOIN jobs b ON (a.job_no=b.job_no AND b.name=a.ts_name)  JOIN team c ON c.EmployeeName=a.ts_name
 																	 WHERE  YEAR(a.ts_date)='$year' AND a.job_no='$num' AND c.LeaveApprover_L1='$user'
@@ -643,7 +643,7 @@ Class ts_model extends CI_Model{
 			$user=$this->session->userdata('fullname');
 
 			if( $month!=""){
-				return  $this->db->query("SELECT (SELECT COUNT(ts_date) FROM time_sheet WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'   ) AS days,
+				return  $this->db->query("SELECT (SELECT DISTINCT COUNT( ts_date) FROM time_sheet WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'   ) AS days,
 							                                            				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) AS total ,
 																						ROUND(AVG(HOUR(job_time))+HOUR(SEC_TO_TIME(AVG(MINUTE(job_time)*60)))) AS avg 
 																				FROM time_sheet_jobs JOIN team b ON b.EmployeeName=ts_name
@@ -651,7 +651,7 @@ Class ts_model extends CI_Model{
 					
 			}
 			else {
-				return  $this->db->query("SELECT (SELECT COUNT(ts_date) FROM time_sheet  ) AS days,
+				return  $this->db->query("SELECT (SELECT DISTINCT COUNT(ts_date) FROM time_sheet  ) AS days,
 							                                            				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) AS total ,
 																						ROUND(AVG(HOUR(job_time))+HOUR(SEC_TO_TIME(AVG(MINUTE(job_time)*60)))) AS avg 
 																	         FROM time_sheet_jobs JOIN team b ON b.EmployeeName=ts_name
@@ -663,7 +663,7 @@ Class ts_model extends CI_Model{
 		function team_timesheet_ot_hrs($year,$month){
 			$user=$this->session->userdata('fullname');
 			if($d1 != '' && $d2 != ''){
-				return  $this->db->query("SELECT  COUNT(ts_date) AS days,
+				return  $this->db->query("SELECT  COUNT( DISTINCT ts_date) AS days,
 																		 SUM(HOUR(ts_late))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_late)*60))) AS late ,
 																	SUM(HOUR(ts_duty))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_duty)*60))) AS duty ,
 																	 ROUND(AVG(HOUR(ts_duty))+HOUR(SEC_TO_TIME(AVG(MINUTE(ts_duty)*60)))) AS avgduty ,
@@ -675,7 +675,7 @@ Class ts_model extends CI_Model{
 																	 WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'   AND b.LeaveApprover_L1='$user' ")->result_array();			
 			}
 			else{
-				return  $this->db->query("SELECT  COUNT(ts_date) AS days,
+				return  $this->db->query("SELECT  COUNT( DISTINCT ts_date) AS days,
 																	 SUM(HOUR(ts_late))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_late)*60))) AS late ,
 																	SUM(HOUR(ts_duty))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_duty)*60))) AS duty ,
 																	 ROUND(AVG(HOUR(ts_duty))+HOUR(SEC_TO_TIME(AVG(MINUTE(ts_duty)*60)))) AS avgduty ,
@@ -691,7 +691,7 @@ Class ts_model extends CI_Model{
 		function team_timesheet_ot($year,$month){
 			$user=$this->session->userdata('fullname');
 			if($d1!='' && $d2!=''){
-				return  $this->db->query("SELECT  ts_name AS name,COUNT(ts_date) AS days,
+				return  $this->db->query("SELECT  ts_name AS name,COUNT( DISTINCT ts_date) AS days,
 																	 SEC_TO_TIME(SUM(TIME_TO_SEC(ts_late))) AS late ,
 																	 SEC_TO_TIME(SUM(TIME_TO_SEC(ts_duty))) AS duty ,
 																	 SEC_TO_TIME(AVG(TIME_TO_SEC(ts_duty))) AS avgduty ,
@@ -703,7 +703,7 @@ Class ts_model extends CI_Model{
 																	 WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'   AND b.LeaveApprover_L1='$user' GROUP BY ts_name")->result_array();			
 			}
 			else {
-				return  $this->db->query("SELECT  ts_name AS name,COUNT(ts_date) AS days,
+				return  $this->db->query("SELECT  ts_name AS name,COUNT(DISTINCT ts_date) AS days,
 																	 SEC_TO_TIME(SUM(TIME_TO_SEC(ts_late))) AS late ,
 																	 SEC_TO_TIME(SUM(TIME_TO_SEC(ts_duty))) AS duty ,
 																	 SEC_TO_TIME(AVG(TIME_TO_SEC(ts_duty))) AS avgduty ,
@@ -741,7 +741,7 @@ Class ts_model extends CI_Model{
 
 		function checkDate($d1){
 			$user=$this->session->userdata('fullname');
-			$data= $this->db->query("SELECT COUNT(ts_date) as date FROM time_sheet WHERE ts_date=STR_TO_DATE(STR_TO_DATE('$d1','%d-%m-%Y'),'%Y-%m-%d') AND ts_name='$user'")->result_array();
+			$data= $this->db->query("SELECT DISTINCT COUNT(ts_date) as date FROM time_sheet WHERE ts_date=STR_TO_DATE(STR_TO_DATE('$d1','%d-%m-%Y'),'%Y-%m-%d') AND ts_name='$user'")->result_array();
 			 $row1=0;
 			if(!empty($data)){
 					foreach($data as $row){
@@ -754,7 +754,7 @@ Class ts_model extends CI_Model{
 
 		function checkLeave($d1){
 			$user=$this->session->userdata('fullname');
-			$data= $this->db->query("SELECT COUNT(FromDate) AS 'Count'
+			$data= $this->db->query("SELECT COUNT(DISTINCT FromDate) AS 'Count'
 																				FROM leavehistory
 																				WHERE STR_TO_DATE(STR_TO_DATE('$d1','%d-%m-%Y'),'%Y-%m-%d') BETWEEN FromDate AND ToDate 
 																				AND LeaveStatus IN ('2','4') AND User='$user'")->result_array();				
@@ -766,7 +766,7 @@ Class ts_model extends CI_Model{
 
 		function checkLocked($d1){
 			$user=$this->session->userdata('fullname');
-			$data= $this->db->query("SELECT COUNT(lock_date) AS 'Count'
+			$data= $this->db->query("SELECT COUNT(DISTINCT lock_date) AS 'Count'
 																				FROM ts_locked_users
 																				WHERE lock_date=STR_TO_DATE(STR_TO_DATE('$d1','%d-%m-%Y'),'%Y-%m-%d')  AND lock_name='$user' AND lock_status='0' ")->result_array();				
 			foreach($data as $row){
@@ -835,7 +835,7 @@ Class ts_model extends CI_Model{
 		function get_timesheet_Dept($year,$month,$dept){
 			if( $month!=""){
 				return  $this->db->query("SELECT a.ts_name,a.job_no AS num, b.job_desc AS 'desc',
-																		COUNT(a.ts_date) AS Days,
+																		COUNT(DISTINCT a.ts_date) AS Days,
 																		 CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 																		SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'AVG'
 																		FROM time_sheet_jobs a INNER JOIN jobs b ON (a.job_no=b.job_no AND b.name=a.ts_name) INNER JOIN team c ON c.EmployeeName=a.ts_name
@@ -845,7 +845,7 @@ Class ts_model extends CI_Model{
 			}
 			else {
 				return  $this->db->query("SELECT a.ts_name,a.job_no AS num, b.job_desc AS 'desc',
-																			COUNT(a.ts_date) AS Days, 
+																			COUNT(DISTINCT a.ts_date) AS Days, 
 																			CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 																			SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'AVG'
 																		FROM time_sheet_jobs a INNER JOIN jobs b ON (a.job_no=b.job_no AND b.name=a.ts_name) INNER JOIN team c ON c.EmployeeName=a.ts_name
@@ -856,7 +856,7 @@ Class ts_model extends CI_Model{
 			
 		function get_timesheet_Dept_hrs($year,$month,$dept){
 			if( $month!=""){
-				return  $this->db->query("SELECT (SELECT COUNT(ts_date) FROM time_sheet WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'  ) AS days,
+				return  $this->db->query("SELECT (SELECT DISTINCT COUNT(ts_date) FROM time_sheet WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'  ) AS days,
 							                                            				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) AS total ,
 																						ROUND(AVG(HOUR(job_time))+HOUR(SEC_TO_TIME(AVG(MINUTE(job_time)*60)))) AS avg 
 																				  FROM time_sheet_jobs  INNER JOIN team c ON c.EmployeeName=ts_name
@@ -864,7 +864,7 @@ Class ts_model extends CI_Model{
 																		 				AND  c.Department='$dept'")->result_array();		
 			}
 			else {
-				return  $this->db->query("SELECT (SELECT COUNT(ts_date) FROM time_sheet WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'  ) AS days,
+				return  $this->db->query("SELECT (SELECT DISTINCT COUNT(ts_date) FROM time_sheet WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'  ) AS days,
 							                                            				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) AS total ,
 																						ROUND(AVG(HOUR(job_time))+HOUR(SEC_TO_TIME(AVG(MINUTE(job_time)*60)))) AS avg 
 													                       FROM time_sheet_jobs INNER JOIN team c ON c.EmployeeName=ts_name
@@ -874,7 +874,7 @@ Class ts_model extends CI_Model{
 
 		function get_timesheet_Team($year,$month,$team){
 			if( $month!=""){
-				return  $this->db->query("SELECT a.ts_name,a.job_no AS num, b.job_desc AS 'desc', COUNT(a.ts_date) AS days, 
+				return  $this->db->query("SELECT a.ts_name,a.job_no AS num, b.job_desc AS 'desc', COUNT(DISTINCT a.ts_date) AS days, 
 																			CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 																			SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'AVG', COUNT(ts_date) AS Days
 																FROM time_sheet_jobs a INNER JOIN jobs b ON (a.job_no=b.job_no AND b.name=a.ts_name) INNER JOIN team c ON c.EmployeeName=a.ts_name
@@ -883,7 +883,7 @@ Class ts_model extends CI_Model{
 																GROUP BY a.ts_name,a.job_no   ORDER BY a.ts_name,total ")->result_array();			
 			}
 			else {
-				return  $this->db->query("SELECT a.ts_name ,a.job_no AS num, b.job_desc AS 'desc', COUNT(a.ts_date) AS days,
+				return  $this->db->query("SELECT a.ts_name ,a.job_no AS num, b.job_desc AS 'desc', COUNT( DISTINCT a.ts_date) AS days,
 																					 CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 																					 SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'AVG', COUNT(ts_date) AS Days
 																FROM time_sheet_jobs a INNER JOIN jobs b ON (a.job_no=b.job_no AND b.name=a.ts_name) INNER JOIN team c ON c.EmployeeName=a.ts_name
@@ -894,7 +894,7 @@ Class ts_model extends CI_Model{
 			
 		function get_timesheet_Team_hrs($year,$month,$team){
 			if( $month!=""){
-				return  $this->db->query("SELECT (SELECT COUNT(ts_date) FROM time_sheet WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'  ) AS days,
+				return  $this->db->query("SELECT (SELECT  COUNT(DISTINCT ts_date) FROM time_sheet WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'  ) AS days,
 							                                            				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) AS total ,
 																						ROUND(AVG(HOUR(job_time))+HOUR(SEC_TO_TIME(AVG(MINUTE(job_time)*60)))) AS avg 
 													                               FROM time_sheet_jobs  INNER JOIN team c ON c.EmployeeName=ts_name
@@ -902,7 +902,7 @@ Class ts_model extends CI_Model{
 																			 				AND   (c.LeaveApprover_L1='$team' OR c.EmployeeName='$team') ")->result_array();		
 			}
 			else {
-				return  $this->db->query("SELECT (SELECT COUNT(ts_date) FROM time_sheet) AS days,
+				return  $this->db->query("SELECT (SELECT  COUNT(DISTINCT ts_date) FROM time_sheet) AS days,
 							                                            				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) AS total ,
 																						ROUND(AVG(HOUR(job_time))+HOUR(SEC_TO_TIME(AVG(MINUTE(job_time)*60)))) AS avg 
 											                                    FROM time_sheet_jobs INNER JOIN team c ON c.EmployeeName=ts_name
@@ -914,7 +914,7 @@ Class ts_model extends CI_Model{
 		function timesheet_team_job($year,$month,$num,$team){
 				
 			if( $month!=""){
-				return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name, COUNT(a.ts_date) AS days, 
+				return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name, COUNT(DISTINCT a.ts_date) AS days, 
 																						CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 																						SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'avg'
 																	FROM time_sheet_jobs a INNER JOIN jobs b ON (a.job_no=b.job_no AND b.name=a.ts_name) JOIN team c ON c.EmployeeName=a.ts_name
@@ -924,7 +924,7 @@ Class ts_model extends CI_Model{
 					
 			}
 			else {
-				return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name, COUNT(a.ts_date) AS days,
+				return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name, COUNT(DISTINCT a.ts_date) AS days,
 										                                 CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
 										                                  SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'avg' 
 										                              FROM time_sheet_jobs a INNER JOIN jobs b ON (a.job_no=b.job_no AND b.name=a.ts_name)  JOIN team c ON c.EmployeeName=a.ts_name
@@ -938,7 +938,7 @@ Class ts_model extends CI_Model{
 		function timesheet_team_job_hrs($year,$month,$num,$team){
 
 			if( $month!=""){
-				return  $this->db->query("SELECT (SELECT COUNT(ts_date) FROM time_sheet WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'  ) AS days,
+				return  $this->db->query("SELECT (SELECT  COUNT( DISTINCT ts_date) FROM time_sheet WHERE YEAR(ts_date)='$year' AND MONTHNAME(ts_date)='$month'  ) AS days,
 							                                            				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) AS total ,
 																						ROUND(AVG(HOUR(job_time))+HOUR(SEC_TO_TIME(AVG(MINUTE(job_time)*60)))) AS avg 
 															           FROM time_sheet_jobs JOIN team b ON b.EmployeeName=ts_name
@@ -947,7 +947,7 @@ Class ts_model extends CI_Model{
 					
 			}
 			else {
-				return  $this->db->query("SELECT (SELECT COUNT(ts_date) FROM time_sheet  ) AS days,
+				return  $this->db->query("SELECT (SELECT  COUNT(DISTINCT ts_date) FROM time_sheet  ) AS days,
 							                                            				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) AS total ,
 																						ROUND(AVG(HOUR(job_time))+HOUR(SEC_TO_TIME(AVG(MINUTE(job_time)*60)))) AS avg 
 												                                  FROM time_sheet_jobs JOIN team b ON b.EmployeeName=ts_name
@@ -1031,7 +1031,7 @@ Class ts_model extends CI_Model{
 
 		function timesheet_job_activity_emp_hrs($year,$month,$user){
 			if( $month != ''){
-				return  $this->db->query("SELECT COUNT(ts_date) as days,	SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) as  total
+				return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,	SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) as  total
 																	FROM 
 																			(SELECT  DISTINCT ts_date , SEC_TO_TIME(SUM(TIME_TO_SEC(job_time))) as job_time
 																			FROM time_sheet_jobs
@@ -1040,7 +1040,7 @@ Class ts_model extends CI_Model{
 																			GROUP BY ts_date )   a")->result_array();	
 			}
 			else {
-				return  $this->db->query("SELECT COUNT(ts_date) as days,	SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) as  total
+				return  $this->db->query("SELECT COUNT(DISTINCT ts_date) as days,	SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) as  total
 																	FROM 
 																			(SELECT  DISTINCT ts_date , SEC_TO_TIME(SUM(TIME_TO_SEC(job_time))) as job_time
 																			FROM time_sheet_jobs
@@ -1070,7 +1070,7 @@ Class ts_model extends CI_Model{
 		function timesheet_job_activity_user_hrs($year,$month){
 			$user=$this->session->userdata('fullname');
 			if( $month != ''){
-				return  $this->db->query("SELECT COUNT(ts_date) as days,	SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) as  total
+				return  $this->db->query("SELECT COUNT(DISTINCT ts_date) as days,	SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) as  total
 																	FROM 
 																			(SELECT  DISTINCT ts_date , SEC_TO_TIME(SUM(TIME_TO_SEC(job_time))) as job_time
 																			FROM time_sheet_jobs
@@ -1079,7 +1079,7 @@ Class ts_model extends CI_Model{
 																			GROUP BY ts_date )   a")->result_array();	
 			}
 		else {
-				return  $this->db->query("SELECT COUNT(ts_date) as days,	SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) as  total
+				return  $this->db->query("SELECT COUNT(DISTINCT ts_date) as days,	SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60))) as  total
 																	FROM 
 																			(SELECT  DISTINCT ts_date , SEC_TO_TIME(SUM(TIME_TO_SEC(job_time))) as job_time
 																			FROM time_sheet_jobs
@@ -1497,6 +1497,115 @@ Class ts_model extends CI_Model{
 				
 				
 	}
+	
+	
+// July 25, 2014 Weekly Report
+	
+	
+			
+		function jobReport_JobActivity_Week($from,$to){
+						return  $this->db->query("SELECT *,a.job_desc,b.desc,DATE_FORMAT(c.ts_date,'%d-%m-%Y') as date1
+												     						FROM time_sheet_jobs c 
+												     											INNER JOIN jobs a ON (a.job_no=c.job_no AND a.name=ts_name) 
+												     						WHERE  c.ts_date BETWEEN '$from' AND '$to'	
+												     						GROUP BY c.ts_name,c.job_no										     												
+												     						ORDER BY c.ts_name,c.job_no ")->result_array();			
+		}
+		
+		
+		function jobReport_EmpwiseTotal_Week($from,$to){
+					return  $this->db->query("SELECT a.ts_name , a.job_no ,
+																		COUNT( DISTINCT a.ts_date) AS days,c.Department,
+										                                 CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total 
+										                              FROM time_sheet_jobs a
+										                              				 				INNER JOIN team c ON c.EmployeeName=a.ts_name
+																	 WHERE  a.ts_date BETWEEN '$from' AND '$to'
+																	 GROUP BY a.ts_name
+																	 ORDER BY c.Department,a.ts_name,total ")->result_array();			
+		}
+		
+		
+		
+		function jobReport_ActivitywiseTotal_Week($from,$to){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,a.code,a.desc, a.code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
+																				WHERE  ts_date BETWEEN '$from' AND '$to'
+																				GROUP BY a.code 
+																				ORDER BY a. code_for,a.code ")->result_array();	
+		
+		}
+
+		
+		
+		function jobReport_DeptwiseTotal_Week($from,$to){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days, a.code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
+																				WHERE  ts_date BETWEEN '$from' AND '$to'
+																				GROUP BY a.code_for
+																				ORDER BY a.code_for ")->result_array();	
+		
+		}
+
+		
+		function jobReport_RelativewiseTotal_Week($from,$to){
+						return  $this->db->query("SELECT a.code_for,Relative, SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total,COUNT( DISTINCT ts_date) as days
+																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
+																				WHERE  ts_date BETWEEN '$from' AND '$to'
+																				GROUP BY a.code_for,a.Relative
+																				ORDER BY a. code_for,a.Relative ")->result_array();	
+		
+		}
+
+		
+		
+		function jobReport_TotalHrs_Week($from,$to){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+																			FROM 
+																				(SELECT  DISTINCT ts_date , SEC_TO_TIME(SUM(TIME_TO_SEC(job_time))) as job_time
+																				FROM time_sheet_jobs
+																				WHERE  ts_date BETWEEN '$from' AND '$to'
+																				GROUP BY ts_date )   a")->result_array();	
+		
+		}
+		
+		function jobReport_Holidays($from,$to){
+				return $this->db->query("SELECT (DATEDIFF('$to','$from')+1) as totaldays,COUNT(DATE_ADD('$from', INTERVAL ROW DAY)) as Sundays
+																		  	 FROM
+																			(SELECT @row := @row + 1 as row FROM 	(select 0 union all select 1 union all select 3 	union all select 4 union all select 5 union all select 6) t1,
+																						(select 0 union all select 1 union all select 3 union all select 4 union all select 5 union all select 6) t2,
+																				   (select 0 union all select 1 union all select 3 union all select 4 union all select 5 union all select 6) t4,
+																				   (select 0 union all select 1 union all select 3 union all select 4 union all select 5 union all select 6) t5,
+																					(SELECT @row:=-1) t3 limit 366
+																				) b
+																		WHERE		DATE_ADD('$from', INTERVAL ROW DAY)
+																		BETWEEN '$from' and '$to' AND DAYOFWEEK(DATE_ADD('$from', INTERVAL ROW DAY))=1")->result_array();
+		}
+	
+		
+		function jobReport_LeaveDays($from,$to,$name){
+				return $this->db->query("SELECT SUM(TotalDays) as Leave_Approved
+																FROM levehistory
+																WHERE User='$name' AND LeaveStatus IN (2,4)
+																			AND From_Date BETWEEN '$from' AND '$to'	")->result_array();
+		}
+	
+	
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
 ?>
