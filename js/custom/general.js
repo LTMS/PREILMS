@@ -301,4 +301,27 @@ $("#date1").datepicker({
 			});
 			
 			
+		function change_job_details(counter)
+		{
+		document.getElementById("all_jobs").style.display='none';
+		document.getElementById("all_jobs_head").style.display='none';
+		document.getElementById("job_edit").style.display='';
+		document.getElementById("job_edit_head").style.display='';
+		//alert(counter);
+		
+		var Emp_Name=document.getElementById("name"+counter).innerHTML;
+		var Job_No=document.getElementById("job_no"+counter).innerHTML;
+		var Job_Desc=document.getElementById("job_desc"+counter).innerHTML;
+		//alert(Emp_Name+Job_No+Job_Desc);
+		document.getElementById("job_no_span").innerHTML=Job_No;
+		document.getElementById("job_desc_span").innerHTML=Job_Desc;
+		document.getElementById("job_emp_span").innerHTML=Emp_Name;
+		}
+		function back_to_all_jobs()
+		{
+			document.getElementById("all_jobs").style.display='';
+			document.getElementById("all_jobs_head").style.display='';
+			document.getElementById("job_edit").style.display='none';	
+			document.getElementById("job_edit_head").style.display='none';
 			
+		}
