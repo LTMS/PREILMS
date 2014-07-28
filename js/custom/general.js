@@ -1,4 +1,4 @@
-
+var count=0;
 $("#date1").datepicker({
 	dateFormat: 'dd-mm-yy',
 	defaultDate: new Date()	
@@ -305,15 +305,37 @@ $("#date1").datepicker({
 		{
 		document.getElementById("all_jobs").style.display='none';
 		document.getElementById("all_jobs_head").style.display='none';
+		document.getElementById("search_box").style.display='none';
 		document.getElementById("job_edit").style.display='';
 		document.getElementById("job_edit_head").style.display='';
 		//alert(counter);
 		
 		var Emp_Name=document.getElementById("name"+counter).innerHTML;
 		var Job_No=document.getElementById("job_no"+counter).innerHTML;
+		var Target_Hours=document.getElementById("target_hours"+counter).innerHTML;
 		var Job_Desc=document.getElementById("job_desc"+counter).innerHTML;
+		var Added_Time=document.getElementById("added_time"+counter).innerHTML;
 		//alert(Emp_Name+Job_No+Job_Desc);
+		$.post(site_url+"/general/fetch_job_emp",{job_no:Job_No},function(data)
+		{
+			//alert(data);
+			var Employee=["","",""];
+			var Emp=data.split("!");
+			for(i=1;i<Emp.length;i++)
+				{
+				alert(Emp[i]);
+				}
+			
+		}		
+		);
 		document.getElementById("job_no_span").innerHTML=Job_No;
+		
+		if(Target_Hours !=0)
+			{
+			document.getElementById("target_hours").value=Target_Hours;
+			document.getElementById("target_hours").disabled=true;
+			}
+		document.getElementById("job_time_span").innerHTML=Added_Time;
 		document.getElementById("job_desc_span").innerHTML=Job_Desc;
 		document.getElementById("job_emp_span").innerHTML=Emp_Name;
 		}
@@ -321,7 +343,129 @@ $("#date1").datepicker({
 		{
 			document.getElementById("all_jobs").style.display='';
 			document.getElementById("all_jobs_head").style.display='';
+			document.getElementById("search_box").style.display='';
 			document.getElementById("job_edit").style.display='none';	
 			document.getElementById("job_edit_head").style.display='none';
+			window.location.reload();
 			
 		}
+		function Update_job()
+		{
+			
+			var Hours=document.getElementById("target_hours").value;
+			var hours_stat=document.getElementById("target_hours").disabled;
+	if(hours_stat !=true)
+		{
+			if(Hours != "")
+				{
+					if(  isNaN(Hours))
+						{
+						document.getElementById("error").innerHTML="Please Enter Valid Hours";
+						
+						}
+					else
+						{
+						document.getElementById("error").innerHTML="";
+						var Job_no=document.getElementById("job_no_span").innerHTML;
+						$.post(site_url+"/general/Update_job",{job_no:Job_no,hours:Hours},function(data)
+								{
+								if (data ='ok')
+									{
+									document.getElementById("error").style.color='#41a317';
+									document.getElementById("error").innerHTML="Target hours is updated";
+									}
+							});
+					
+						}
+				}
+			else
+				{
+				document.getElementById("error").innerHTML="Please Enter  Hours";
+				}
+		}else
+			{
+			document.getElementById("error").innerHTML="Hours already Updated";
+			}
+		}
+		String.prototype.trim = function()
+		{return ((this.replace(/^[\s\xA0]+/, "")).replace(/[\s\xA0]+$/, ""));};
+
+		String.prototype.startsWith = function(str)
+		{return (this.match(str)==str);};
+
+		String.prototype.endsWith = function(str)
+		{return (this.match(str+"$")==str);};
+		
+		String.prototype.endsWithroman = function(str)
+		{return (this.match(str+"")==str);};
+		function searchbyjobno()
+		{
+			window.count=0;
+			//alert(window.count);
+			document.getElementById('search_desc').value="";
+			var jobno=document.getElementById('search_job_no').value;
+			filterTableByjobno(jobno);
+			
+		}
+		function filterTableByjobno(str){
+			
+			str.trim();
+			 var rowid, colid, rowc,vbid;
+			  rcount=document.getElementById("hrowcount");
+			  rowc=rcount.value;
+			  
+			  for(var i=1;i<=rowc;i++){
+			    rowid="row"+i;
+			    colid="job_no"+i;
+			    var lstr=(str.toString()).toLowerCase();
+			    
+			    //alert(document.getElementById(colid).value);
+			    displayRowEndsWith(rowid,colid,lstr,rowc,i);
+			  }
+			}
+		function searchbyjobdesc()
+		{
+			document.getElementById('search_job_no').value="";
+			window.count=0;
+			var jobdesc=document.getElementById('search_desc').value;
+			filterTableByjobdesc(jobdesc);
+			
+		}
+		function filterTableByjobdesc(str){
+			
+			str.trim();
+			 var rowid, colid, rowc,vbid;
+			  rcount=document.getElementById("hrowcount");
+			  rowc=rcount.value;
+			  
+			  for(var i=1;i<=rowc;i++){
+			    rowid="row"+i;
+			    colid="job_desc"+i;
+			    var lstr=(str.toString()).toLowerCase();
+			    
+			    //alert(document.getElementById(colid).value);
+			    displayRowEndsWith(rowid,colid,lstr,rowc,i);
+			  }
+			}
+		function displayRowEndsWith(rowid,colid,str,rowc,i){
+			var row = document.getElementById(rowid);
+		      var searchcol= document.getElementById(colid);
+		     var colstr=searchcol.innerHTML;
+		   // alert(colstr);
+		    var lcolstr=(colstr.toString()).toLowerCase();
+		    
+		      if (lcolstr.startsWith(str))
+		    	  {
+		    	  window.count=window.count+1;
+					//alert(window.count);
+		    	  document.getElementById("results").innerHTML=window.count+"  results returned...!";
+		          row.style.display = '';
+		    	  }
+		      else
+		    	  {
+		    	  document.getElementById("results").innerHTML=window.count+"  results returned...!";
+		    	row.style.display = 'none';
+		    	  }
+		      
+		}
+		

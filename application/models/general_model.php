@@ -74,8 +74,34 @@ Class General_model extends CI_Model
 	
 		return $query;
 	}	
-		
-
+	function Update_job($job_no,$hours)
+	{
+		$Target_Hours=$hours;
+		$Job_No=$job_no;
+		$Emp_Name=$this->session->userdata("fullname");
+		$updated_Date=date("Y-m-d H:i:s");
+		$this->db->query("Update jobs
+											SET target_hours ='$Target_Hours',
+											    updated_time ='$updated_Date',
+											    updated_by='$Emp_Name'
+											where job_no ='$Job_No' ");
+		$row_count=$this->db->affected_rows();
+		if($row_count != 0)
+		{
+			return "ok";
+		}
+	}
+	function fetch_job_emp($job_no)
+	{
+		$Emp_Name="";
+		$result=$this->db->query("SELECT name FROM jobs j
+															where job_no ='$job_no' ;")->result_array();
+		foreach($result as $row)
+		{
+			$Emp_Name=$Emp_Name."!".$row['name'];
+		}
+		return $Emp_Name;
+	}
 
 }
 ?>
