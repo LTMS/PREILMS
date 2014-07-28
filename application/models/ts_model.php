@@ -1503,7 +1503,7 @@ Class ts_model extends CI_Model{
 	
 	
 			
-		function jobReport_JobActivity_Week($from,$to){
+		function jobReport_JobActivity_MIS($from,$to){
 						return  $this->db->query("SELECT *,a.job_desc,b.desc,DATE_FORMAT(c.ts_date,'%d-%m-%Y') as date1
 												     						FROM time_sheet_jobs c 
 												     											INNER JOIN jobs a ON (a.job_no=c.job_no AND a.name=ts_name) 
@@ -1513,7 +1513,7 @@ Class ts_model extends CI_Model{
 		}
 		
 		
-		function jobReport_EmpwiseTotal_Week($from,$to){
+		function jobReport_EmpwiseTotal_MIS($from,$to){
 					return  $this->db->query("SELECT a.ts_name , a.job_no ,
 																		COUNT( DISTINCT a.ts_date) AS days,c.Department,
 										                                 CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total 
@@ -1526,7 +1526,7 @@ Class ts_model extends CI_Model{
 		
 		
 		
-		function jobReport_ActivitywiseTotal_Week($from,$to){
+		function jobReport_ActivitywiseTotal_MIS($from,$to){
 						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,a.code,a.desc, a.code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
 																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
 																				WHERE  ts_date BETWEEN '$from' AND '$to'
@@ -1537,7 +1537,7 @@ Class ts_model extends CI_Model{
 
 		
 		
-		function jobReport_DeptwiseTotal_Week($from,$to){
+		function jobReport_DeptwiseTotal_MIS($from,$to){
 						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days, a.code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
 																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
 																				WHERE  ts_date BETWEEN '$from' AND '$to'
@@ -1547,18 +1547,29 @@ Class ts_model extends CI_Model{
 		}
 
 		
-		function jobReport_RelativewiseTotal_Week($from,$to){
-						return  $this->db->query("SELECT a.code_for,Relative, SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total,COUNT( DISTINCT ts_date) as days
-																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
-																				WHERE  ts_date BETWEEN '$from' AND '$to'
-																				GROUP BY a.code_for,a.Relative
-																				ORDER BY a. code_for,a.Relative ")->result_array();	
+		function jobReport_RelativewiseTotal_MIS($from,$to){
+						return  $this->db->query("SELECT CONCAT(c.job_no,' - ',b.job_desc) as job_no,a.code_for,a.relative,COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(c.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))>29,1,0) as  total
+																			FROM time_sheet_jobs c
+																						INNER JOIN activity_code a ON a.code=c.activity
+																							INNER JOIN jobs b ON b.job_no=c.job_no
+																			WHERE ts_date BETWEEN '$from' AND '$to'
+																			GROUP BY c.job_no,a.code_for,a.relative
+																			ORDER BY CAST(c.job_no as UNSIGNED),a.code_for")->result_array();	
+		
+		}
+
+		function jobReport_MIS_TotalHours($from,$to){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(c.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))>29,1,0) as  total
+																			FROM time_sheet_jobs c
+																			WHERE ts_date BETWEEN '$from' AND '$to' LIMIT 1	")->result_array();	
 		
 		}
 
 		
 		
-		function jobReport_TotalHrs_Week($from,$to){
+		function jobReport_TotalHrs_MIS($from,$to){
 						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,
 																				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
 																			FROM 
