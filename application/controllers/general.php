@@ -233,7 +233,16 @@ class General extends CI_Controller
 			//$this->load->view("general/jobstatus",$data);
 		}
 
-
-
+	function Update_job()
+	{
+		$result=$this->input->post();
+		//echo $result['job_no'].$result['hours'];
+		echo $this->general_model->Update_job($result['job_no'],$result['hours']);
+	}
+	function fetch_job_emp()
+	{
+		$result=$this->input->post();
+		echo $this->general_model->fetch_job_emp($result['job_no']);
+	}
 }
 ?>

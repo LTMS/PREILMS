@@ -26,7 +26,7 @@
 					  border-bottom-style:none;">
 			<div id='all_jobs_head'  style='border:0px solid;'> 
 			<p style='margin:0px 0px 0px 300px;color:#625d5d;font-weight:bold;
-								  font-family:Lucida Console;font-size:20px;'>Jobs added by All Employess
+								  font-family:Verdana;font-size:20px;'>Jobs added by All Employees
 			<span style='margin:30px 0px 0px 100px;color:#6c2dc7;font-weight:bold;
 								  font-family:Lucida Console;font-size:15px;border:0px solid;
 								  '><?php  echo $row_count; ?> jobs added so far...! </span> </p>
@@ -41,8 +41,44 @@
 										style='height:35px;width:35px;vertical-align:bottom'> </a>
 							
 						</div>
+				
 						</div>
+						
 </div>
+			<div id='search_box' style='height:40px;background:#DDDDDD;
+																 margin:0px 0px 0px 10px;
+					  											 border:1px solid black;
+					  											 border-top-style:solid;
+					  											 border-bottom-style:none; '>
+					<p style='margin:10px 0px 0px 80px;color:#2b1b17;font-weight:bold;
+								  font-family:Verdana;font-size:15px;display:inline;'> Search By</p>
+					
+							<input type='text'  id ='search_job_no' value='' placeholder='Job Number' style='height:20px;width:100px;
+																									  padding-left:8px;
+																									  background-color:#fefcff;
+																									  border-radius:5px;
+																									 box-shadow:inset 1px 1px 1px  #ccc;
+																									  font-size:15px;
+																									  color:#2c3539;
+																									  outline:none;
+																									  font-weight:bold;
+																									  margin:10px 0px 0px 0px;'  onkeyup='javascript:searchbyjobno()'>
+						<p style='margin:10px 0px 0px 40px;color:#2b1b17;font-weight:bold;
+								  font-family:Verdana;font-size:15px;display:inline;'> Search By</p>
+				 <input type='text' id ='search_desc'  value='' placeholder='Job Description' style='height:20px;width:130px;
+																									  padding-left:8px;
+																									  background-color:#fefcff;
+																									  border-radius:5px;
+																									 box-shadow:inset 1px 1px 1px  #ccc;
+																									  font-size:15px;
+																									  color:#2c3539;
+																									  outline:none;
+																									  font-weight:bold;
+																									  margin:10px 0px 0px 0px;' onkeyup='javascript:searchbyjobdesc()'>
+					<p  id='results'style='margin:10px 0px 0px 40px;color:#c35817;font-weight:bold;
+								  font-family:Verdana;font-size:15px;display:inline;'>  </p>																			  
+					
+			</div>
 	<div id='contentData' 
 			style='height:750px;
 						background:#DBEADC;
@@ -64,7 +100,8 @@
 						<td width='10%'>S No</td>
 						<td width='30%'>Employee Name</td>
 						<td width='10%'>Job Number</td>
-						<td width='45%'>Job Description</td>
+						<td width='10%'>Target(Hrs)</td>
+						<td width='35%'>Job Description</td>
 						<td width='5%'>Edit</td>
 					</tr>
 			<?php  
@@ -72,18 +109,28 @@
 				$counter=1;
 				Foreach($job_details as $row)
 					{
-						print("<tr>");
+						$rowid="row".$counter;
+						print("<tr id='$rowid'>");
 						print("<td align='center' style='color:#307d7e;font-size:13px;font-weight:bold;'>".$counter."</td>");
 						print("<td id='name".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>".$row["name"]."</td>");
 						print("<td  id='job_no".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>".$row["job_no"]."</td>");
+						if ($row['target_hours'] != "")
+						{
+						print("<td align='center' id='target_hours".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>".$row["target_hours"]."</td>");
+						}
+						else 
+						{
+						print("<td  align='center' id='target_hours".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>0</td>");	
+						}
 						print("<td  id='job_desc".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>".$row["job_desc"]."</td>");
+						print("<td  id='added_time".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;display:none;'>".$row["addedtime"]."</td>");
 						print("<td align='center'><a href='javascript:change_job_details(".$counter.")'><img src='".base_url()."images/pencil.png' alt=' ' style=' width:20px;height:15px;'/></a></td>");
 						print("</tr>");
 						$counter++;
 					}
 					$row_count=$counter;
 			
-				
+				print("<input  type='hidden' value=".$counter." id='hrowcount'>");
 			 ?>
 			</table>
 				</div>
@@ -107,16 +154,25 @@
 							<div  style='border-bottom-style:groove;'>
 							<img src='<?php echo base_url();?>images/pin.png' 
 									  style='height:40px;width:40px;margin:10px 0px 0px 5px;
-									  				vertical-align:middle;' alt='' />
-							<p style='margin:0px 0px 0px 250px;color:#6c2dc7;font-weight:bold;
-								  font-family:Lucida Console;font-size:20px;display:inline;'>Edit Job Details</p>
+									  				vertical-align:middle;display:inline;' alt='' />
+							<p style='margin:0px 0px 0px 260px;color:#6c2dc7;font-weight:bold;
+								  font-family:Lucida Console;font-size:20px;display:inline;border:0px solid;
+								  width:600px;'>Edit Job Details</p>
 							<img src='<?php echo base_url();?>images/pin.png' 
-									   style='height:40px;width:40px;margin:10px 0px 0px 355px;vertical-align:middle;' alt='' />
+									   style='height:40px;width:40px;margin:10px 0px 0px 355px;vertical-align:middle;
+									   				display:inline;' alt='' />
 							</div>
-							<table border='1'  width='80%' style='font-size:20px;font-weight:bold;
+							<table border='0'  width='80%' style='font-size:20px;font-weight:bold;
 												font-family:Lucida Console;color:#646d7e;
 												margin-top:90px;align:left;
 												border:0px solid;'> 
+								<tr style='height:40px;'>
+									<td colspan='2' align='center'>
+										<p  id='error'style='margin:0px 0px 0px 0px;color:#F7031A;;
+										  font-family:Lucida Console;font-size:18px;display:inline;border:0px solid;
+										  '></p>
+									</td>
+								</tr>
 								<tr>
 									<td  align='center' style='height:30px;'>
 									Job Number 
@@ -144,13 +200,15 @@
 								Set Target hours
 									</td>
 									<td id='job_hours_span' style='color:#1f45fc'>
-									<input type='text' value='....in  Hrs'  style='height:20px;width:200px;
+									<input id='target_hours' type='text' value='' placeholder='....in  Hrs'  style='height:20px;width:200px;
 																									  padding-left:8px;
 																									  background-color:#f0f8ff;
 																									  border-radius:5px;
-																									  box-shadow:inset 1px 2px 1px  #ccc;
+																									  box-shadow:inset 1px 1px 1px  #ccc;
 																									  font-size:15px;
-																									  color:#1f45fc'/>
+																									  color:#1f45fc;
+																									  outline:none;
+																									  '/>
 								
 									</td>
 							</tr>
@@ -168,8 +226,12 @@
 									
 									</td>
 									<td>
-										<img src='<?php echo base_url();?>images/Correct.png' alt='' style='height:30px;width:30px;' />
-										<img src='<?php echo base_url();?>images/Closer.png' alt='' style='margin-left:30px;height:30px;width:50px;' />
+										<a href='javascript:Update_job()'>
+										<img src='<?php echo base_url();?>images/Correct.png' alt='' style='height:30px;width:30px;margin-left:20px;' />
+										</a>
+										<a href='javascript:back_to_all_jobs()'>
+										<img src='<?php echo base_url();?>images/Closer.png' alt='' style='margin-left:30px;height:35px;width:45px;' />
+										</a>
 									</td>
 							</tr>
 							</table>
