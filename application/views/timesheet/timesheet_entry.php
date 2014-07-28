@@ -128,8 +128,8 @@
 					?>
 			</select>
 			</td>
-			<td><input placeholder='Do not use quotes' style="width: 260px"
-				type="text" class="font_align" id="desc1" name="desc1"></td>
+			<td><textarea placeholder='Do not use quotes' style="width: 300px;font-size:12px;" onblur='remove_Specials("desc1",this.value)'
+				 id="desc1" name="desc1"></textarea></td>
 		</tr>
 		<tr>
 			<td align="center" class="font_align"><select name="job_2" id="job_2"
@@ -171,8 +171,8 @@
 					?>
 			</select>
 			</td>
-			<td><input placeholder='Do not use quotes' style="width: 260px"
-				type="text" class="font_align" id="desc2" name="desc2"></td>
+			<td><textarea placeholder='Do not use quotes' style="width: 300px;font-size:12px;" onblur='remove_Specials("desc2",this.value)'
+				  id="desc2" name="desc2" ></textarea></td>	
 		</tr>
 		<tr>
 			<td align="center" class="font_align"><select name="job_3" id="job_3"
@@ -214,8 +214,8 @@
 					?>
 			</select>
 			</td>
-			<td><input placeholder='Do not use quotes' style="width: 260px"
-				type="text" class="font_align" id="desc3" name="desc3"></td>
+			<td><textarea placeholder='Do not use quotes' style="width: 300px;font-size:12px;" onblur='remove_Specials("desc3",this.value)'
+				 id="desc3" name="desc3"></textarea></td>
 		</tr>
 		<tr>
 			<td align="center" class="font_align"><select name="job_4" id="job_4"
@@ -258,8 +258,8 @@
 					?>
 			</select>
 			</td>
-			<td><input placeholder='Do not use quotes' style="width: 260px"
-				type="text" class="font_align" id="desc4" name="desc4"></td>
+			<td><textarea placeholder='Do not use quotes' style="width: 300px;font-size:12px;" onblur='remove_Specials("desc4",this.value)'
+				id="desc4" name="desc4"></textarea></td>
 		</tr>
 		<tr>
 			<td align="center" class="font_align"><select name="job_5" id="job_5"
@@ -301,8 +301,8 @@
 					?>
 			</select>
 			</td>
-			<td><input placeholder='Do not use quotes' style="width: 260px"
-				type="text" class="font_align" id="desc5" name="desc5"></td>
+			<td><textarea placeholder='Do not use quotes' style="width: 300px;font-size:12px;" onblur='remove_Specials("desc5",this.value)'
+				  id="desc5" name="desc5"></textarea></td>
 		</tr>
 		<tr>
 			<td align="center" class="font_align"><select name="job_6" id="job_6"
@@ -344,8 +344,8 @@
 					?>
 			</select>
 			</td>
-			<td><input placeholder='Do not use quotes' style="width: 260px"
-				type="text" class="font_align" id="desc6" name="desc6"></td>
+			<td><textarea placeholder='Do not use quotes' style="width: 300px;font-size:12px;" onblur='remove_Specials("desc6",this.value)'
+				  id="desc6" name="desc6"></textarea></td>
 		</tr>
 		<tr>
 			<td align="center" class="font_align"><select name="job_7" id="job_7"
@@ -387,8 +387,8 @@
 					?>
 			</select>
 			</td>
-			<td><input placeholder='Do not use quotes' style="width: 260px"
-				type="text" class="font_align" id="desc7" name="desc7"></td>
+			<td><textarea placeholder='Do not use quotes' style="width: 300px;font-size:12px;" onblur='remove_Specials("desc7",this.value)'
+				 id="desc7" name="desc7"></textarea></td>
 		</tr>
 
 		<tr>

@@ -41,11 +41,11 @@
 					</td>
 					<td><input name="u_name" id="u_name" class="input" type="text"
 						style="width: 160px; height: 18px;" value=""
-						onblur="javascript:check_name()"></td>
-					<td><img id='incorrectname' height=16px width=15px
-						style='display: none'
-						src='<?php echo  base_url();?>images/delete.png' /> <img
-						id='correctname' height=16px width=15px style='display: none'
+						onchange="remove_Name_Specials('u_name',this.value)"></td>
+					<td>
+						<img id='incorrectname' height=16px width="15px"	style='display: none'
+						src='<?php echo  base_url();?>images/delete.png' />
+						 <img			id='correctname' height="16px" width=15px style='display: none'
 						src='<?php echo  base_url();?>images/accept.png' /></td>
 				</tr>
 				<tr style="height: 0%;">
@@ -53,7 +53,7 @@
 						color='red'> *</font></td>
 					<td><input name="username" id="username" class="input" type="text"
 						style="width: 160px; height: 18px;" value=""
-						onblur="javascript:check_name()"></td>
+						onchange="remove_UserName_Specials('username',this.value)"></td>
 
 					<td><img id='incorrect' height=16px width=15px
 						style='display: none'

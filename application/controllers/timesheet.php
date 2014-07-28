@@ -87,6 +87,18 @@ class timesheet extends CI_Controller
 		$this->template->render();
 	}
 	
+	function timesheet_empwise()
+	{
+		$data["menu"]='e_reports';
+		$data["submenu"]='timesheet_jobwise';
+		$data["members"]=$this->ts_model->get_all_members();
+		$this->template->write('titleText', "Jobwise Time Sheet Reports");
+		$data["Jobs_Num"]=$this->ts_model->get_All_JobsNum();
+		$this->template->write_view('sideLinks', 'general/menu',$data);
+		$this->template->write_view('bodyContent', 'timesheet/timesheet_empwise',$data);
+		$this->template->render();
+	}
+	
 	function timesheet_jobwise_MIS()
 	{
 		$data["menu"]='e_reports';
@@ -745,11 +757,10 @@ class timesheet extends CI_Controller
 			$to=date('Y-m-d', strtotime($form_data["to"]));
 			$data['Relativewise_Total']=$this->ts_model->jobReport_RelativewiseTotal_MIS($from,$to);
 			$data['MIS_TotalHours']=$this->ts_model->jobReport_MIS_TotalHours($from,$to);
-			//$data['Empwise_Total']=$this->ts_model->jobReport_EmpwiseTotal_MIS($from,$to);
+			$data['Empwise_Total']=$this->ts_model->jobReport_EmpwiseTotal_MIS($from,$to);
 			//$data['Activitywise_Total']=$this->ts_model->jobReport_ActivitywiseTotal_MIS($from,$to);
 			//$data['Deptwise_Total']=$this->ts_model->jobReport_DeptwiseTotal_MIS($from,$to);
 			//	$data['Job_Desc']=$this->ts_model->get_JobDesc($job_num);
-			$data['Total_Hrs']=$this->ts_model->jobReport_TotalHrs_MIS($from,$to);
 			$data['From_Date']=$from;
 			$data['To_Date']=$to;
 			
@@ -758,7 +769,38 @@ class timesheet extends CI_Controller
 		}
 	
 		
+		
+		
+//		July 29     Employee Timesheet Report
+
+		function get_empJobsList(){
+			$form_data=$this->input->post();
+			$Job_List=$this->ts_model->get_empJobsList($form_data["name"]);
+			$job_no="";
+			foreach($Job_List as $row){
+				$job=$row["job_no"];
+				$job_no=$job_no.'::'.$job;
+			}
+			
+			echo $job_no;
+			
+		}
+		
+		
+		function timesheet_empReport(){
+			$form_data=$this->input->post();
+			$job_num=$form_data["job_num"];
+			$job_num=$form_data["name"];
+			$data['Empwise_Total']=$this->ts_model->empReport_TotalHours($name,$job_no);
+			$data['TotalHours']=$this->ts_model->empReport_timesheet($name,$job_no);
+			
+			$this->load->view("timesheet/timesheet_for_MIS_content",$data);
+			
+		}
 	
+		
+		
+		
 	
 	}
 

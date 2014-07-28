@@ -1277,3 +1277,23 @@ $("#date_to").datepicker({
 				style_logo();
 			}, 4000);
 			*/
+			
+			
+			
+			
+			
+			
+			
+			/* * * 						General 					* * */
+
+		function remove_Specials(id,string){
+				var string=document.getElementById(id).value;
+				var new_string=string.replace(/([~!@#$%^&*()_+=`{}\[\]\|\\:;'<>,\/? ])+/g, '  ').replace(/^(-)+|(-)+$/g,'');
+				document.getElementById(id).value=new_string;
+		}
+
+		
+			
+			
+			
+			

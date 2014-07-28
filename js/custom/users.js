@@ -1,9 +1,13 @@
 $("#doj").datepicker({
+	changeMonth:true,
+	changeYear:true,
 	dateFormat: 'dd-mm-yy',		
 	defaultDate: new Date()		
 });
 
 $("#dob").datepicker({
+	changeMonth:true,
+	changeYear:true,
 	dateFormat: 'dd-mm-yy',		
 	defaultDate: new Date()		
 });
@@ -89,8 +93,7 @@ function user_form(){
 
 
 
-function check_name(){
-	var username=document.getElementById("u_name").value;
+function check_name(name){
 	//alert(username.replace(/\s/g, '').length);
 	if(username.replace(/\s/g, '').length!=0){
 		$.get(site_url + "/users/check_name/"+username,function(data) {
@@ -112,8 +115,7 @@ function check_name(){
 	
 }
 
-function check_username(){
-	var username=document.getElementById("username").value;
+function check_username(username){
 	if(username.replace(/\s/g, '').length!=0){
 		$.get(site_url + "/users/check_username/"+username,function(data) {
 
@@ -527,5 +529,35 @@ function displayRowStartsWith(rowid,colid,str){
 						}
 					}
 					
+
 					
 					
+//July 28					
+					/* * * 						General 					* * */
+
+				function remove_Specials(id,string){
+						var string=document.getElementById(id).value;
+						var new_string=string.replace(/([~!@#$%^&*()_+=`{}\[\]\|\\.:;'<>,\/? ])+/g, '  ').replace(/^(-)+|(-)+$/g,'');
+						document.getElementById(id).value=new_string;
+						if(new_string!=string){
+							alert("This field does not allow Special Characters..!");
+						}
+				}
+
+				function remove_Name_Specials(id,string){
+					var new_string=string.replace(/([~!#$%^&*()_+=`{}\[\]\|\\.:;'<>,\/? ])+/g, ' ').replace(/^(-)+|(-)+$/g,'');
+					document.getElementById(id).value=new_string;
+					if(new_string!=string){
+						alert("This field does not allow Special Characters..!");
+					}
+					check_name(new_string);
+				}
+
+				function remove_UserName_Specials(id,string){
+					var new_string=string.replace(/([~!#$%^&*()_+=`{}\[\]\|\\.:;'<>,\/? ])+/g, '').replace(/^(-)+|(-)+$/g,'');
+					document.getElementById(id).value=new_string;
+					if(new_string!=string){
+						alert("This field does not allow Special Characters..!");
+					}
+					check_username(new_string);
+				}

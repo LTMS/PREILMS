@@ -29,14 +29,19 @@
 				print("</tr>");
 				
 				$counter1=0;
+				$title_name="";
 				foreach($Job_Activty as $openrow) {
 					$counter1++;
 					$date=$openrow["date1"];
 					$d2=$date.',  '.date('D', strtotime($date));
+					$name=$openrow["ts_name"];
+					if($title_name!=$name){
+									print("<tr style='color:black;font-size:14px;font-weight:bolder; '><td colspan='10'>$name</td></tr>");
+					}
 				
 					print("<tr   class='small'>");
 						print("<td  width='3%' align='center'> ".$counter1."</td>");
-						print("<td  width='14%' align='left'>".$openrow["ts_name"]."</td>");
+						print("<td  width='14%' align='left'>".$name."</td>");
 						print("<td  width='9%' align='center'>$date</td>");
 						//print("<td  align='left'>".$openrow["job_no"]."-".$openrow["job_desc"]." </td>");
 						print("<td  width='7%' align='left'>".$openrow["job_time"]."</td>");
@@ -44,6 +49,7 @@
 						print("<td  width='10%' align='left'>".$openrow["activity"]."</td>");
 						print("<td  align='left'>".$openrow["task_desc"]."</td>");
 					print("</tr>");
+					$title_name=$name;
 				}
 		print("</table><br>");
 	}
@@ -156,13 +162,14 @@
 		
 						print("<tr bgcolor='#518C9C' id='hdr_row' style='font-size:14px;font-weight:bold;background-color:white;color:black;border-right:1px solid  black; '>");
 						print("<td width='5%' align='center'>S.No</td>");
-						print("<td width='20%' align='center'>Source of Activity</td>");
+						print("<td width='20%' align='center'>Field of Activity</td>");
 						print("<td width='20%' align='center'>Group of Activity</td>");
 						print("<td width='10%' align='center'>Total Worked Hours</td>");
 						print("<td width='10%' align='center'>No of Days</td>");
 						print("</tr>");
 							$counter4=0;
 							$rel_total_hrs=0;
+							$title_field="";
 						foreach($Relativewise_Total as $row4){
 									$counter4++;
 									$rel_code_for=$row4["code_for"];
@@ -171,7 +178,10 @@
 									$rel_days=$row4["days"];
 									if($rel_days==1){		$rel_days=$rel_days." Day";	}
 									else{$rel_days=$rel_days." Days";}
-							
+									if($title_field!=$rel_code_for){
+													print("<tr style='color:black;font-size:14px;font-weight:bolder; '><td colspan='10'>$rel_code_for</td></tr>");
+									}
+									
 								print("<tr   class='small'>");
 								print("<td width='5%' align='center'> ".$counter4."</td>");
 								print("<td width='10%' align='left'>".$rel_code_for."</td>");
@@ -179,6 +189,7 @@
 								print("<td width='10%' align='left'>".$rel_total." Hours</td>");
 								print("<td width='10%' align='left'>".$rel_days."</td>");
 						print("</tr>");
+						$title_field=$rel_code_for;
 					}	
 						/*
 						 				$rel_total_hrs=$rel_total_hrs+$rel_total;				
