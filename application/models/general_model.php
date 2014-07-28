@@ -83,7 +83,8 @@ Class General_model extends CI_Model
 		$this->db->query("Update jobs
 											SET target_hours ='$Target_Hours',
 											    updated_time ='$updated_Date',
-											    updated_by='$Emp_Name'
+											    updated_by='$Emp_Name',
+											    hours_updated=hours_updated+1
 											where job_no ='$Job_No' ");
 		$row_count=$this->db->affected_rows();
 		if($row_count != 0)
@@ -102,6 +103,27 @@ Class General_model extends CI_Model
 		}
 		return $Emp_Name;
 	}
-
+	function fetch_actual_hours($job_no)
+	{
+		$actual=$this->db->query("SELECT SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+ 											 FROM time_sheet_jobs t WHERE job_no='$job_no';")->result_array();
+		return $actual;
+	}
+	function fetch_prev_targets($job_no)
+	{
+		$result=$this->db->query("SELECT target_hours FROM lms.target_hours t where job_no ='$job_no' LIMIT 2;")->result_array();
+		$target_hours="";
+		foreach($result as $row)
+		{
+		if($target_hours== "")
+		{
+		$target_hours=$row['target_hours'];
+		}else 
+		{
+		$target_hours=$target_hours.",".$row['target_hours'];
+		}
+		}
+		return $target_hours;
+	}
 }
 ?>

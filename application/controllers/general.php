@@ -12,7 +12,7 @@ class General extends CI_Controller
 		$this->load->model('general_model');
 		$this->load->helper('url');
 		$this->load->library('My_PHPMailer');
-
+		$this->load->library('AllJobs_dwnld');
 		if(!$this->session->userdata('admin_logged_in'))
 		{
 			redirect("logincheck");
@@ -243,6 +243,19 @@ class General extends CI_Controller
 	{
 		$result=$this->input->post();
 		echo $this->general_model->fetch_job_emp($result['job_no']);
+	}
+	function Alljobs_dwnld(){
+		
+			$query=$this->general_model->fetch_job_details();
+			$data=$query->result_array();
+			$exporter= new AllJobs_dwnld();
+			$exporter->Export($data);
+		}
+	function fetch_prev_targets()
+	{
+		$result=$this->input->post();
+		$Job_No=$result['job_no'];
+		echo $this->general_model->fetch_prev_targets($Job_No);
 	}
 }
 ?>
