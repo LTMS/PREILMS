@@ -59,17 +59,45 @@ class timesheet extends CI_Controller
 		$this->template->render();
 	}
 
-	function teamsheet()
+	function time_activity()
 	{
 		$data["menu"]='e_reports';
-		$data["submenu"]='teamsheet';
+		$data["submenu"]='time_activity';
+		$data["deptlist"]=$this->ts_model->get_dept();
+		$data["members"]=$this->ts_model->get_all_members();
+		$data["Year"]=$this->ts_model->get_All_Years();
+		$data["Jobs_Num"]=$this->ts_model->get_All_JobsNum();
+		$this->template->write('titleText', " Time & Job  Activity");
+		$this->template->write_view('sideLinks', 'general/menu',$data);
+		$this->template->write_view('bodyContent', 'timesheet/time_activity',$data);
+		$this->template->render();
+	}
+	
+	function job_activity()
+	{
+		$data["menu"]='e_reports';
+		$data["submenu"]='job_activity';
+		$data["members"]=$this->ts_model->get_all_members();
+		$data["Year"]=$this->ts_model->get_All_Years();
+		$data["Jobs_Num"]=$this->ts_model->get_All_JobsNum();
+		$this->template->write('titleText', "Employees Job Activity");
+		$this->template->write_view('sideLinks', 'general/menu',$data);
+		$this->template->write_view('bodyContent', 'timesheet/job_activity',$data);
+		$this->template->render();
+	}
+	
+	
+	function monthly_reports()
+	{
+		$data["menu"]='e_reports';
+		$data["submenu"]='monthly_reports';
 		$data["deptlist"]=$this->ts_model->get_dept();
 		$data["members"]=$this->ts_model->get_all_members();
 		$data["Year"]=$this->ts_model->get_All_Years();
 		$data["Jobs_Num"]=$this->ts_model->get_All_JobsNum();
 		$this->template->write('titleText', "Employees Time Sheet Reports");
 		$this->template->write_view('sideLinks', 'general/menu',$data);
-		$this->template->write_view('bodyContent', 'timesheet/teamsheet',$data);
+		$this->template->write_view('bodyContent', 'timesheet/monthly_report',$data);
 		$this->template->render();
 	}
 	
@@ -81,7 +109,7 @@ class timesheet extends CI_Controller
 		$data["members"]=$this->ts_model->get_all_members();
 		$data["Year"]=$this->ts_model->get_All_Years();
 		$data["Jobs_Num"]=$this->ts_model->get_All_JobsNum();
-		$this->template->write('titleText', "Jobwise Time Sheet Reports");
+		$this->template->write('titleText', "Timesheet - Job Reports");
 		$this->template->write_view('sideLinks', 'general/menu',$data);
 		$this->template->write_view('bodyContent', 'timesheet/timesheet_jobwise',$data);
 		$this->template->render();
@@ -90,7 +118,7 @@ class timesheet extends CI_Controller
 	function timesheet_empwise()
 	{
 		$data["menu"]='e_reports';
-		$data["submenu"]='timesheet_jobwise';
+		$data["submenu"]='timesheet_empwise';
 		$data["members"]=$this->ts_model->get_all_members();
 		$this->template->write('titleText', "Jobwise Time Sheet Reports");
 		$data["Jobs_Num"]=$this->ts_model->get_All_JobsNum();
@@ -790,14 +818,65 @@ class timesheet extends CI_Controller
 		function timesheet_empReport(){
 			$form_data=$this->input->post();
 			$job_num=$form_data["job_num"];
-			$job_num=$form_data["name"];
-			$data['Empwise_Total']=$this->ts_model->empReport_TotalHours($name,$job_no);
-			$data['TotalHours']=$this->ts_model->empReport_timesheet($name,$job_no);
+			$name=$form_data["name"];
+			$data['Empwise_Total']=$this->ts_model->empReport_TotalHours($name,$job_num);
+			$data['Empwise_Report']=$this->ts_model->empReport_timesheet($name,$job_num);
+			$data['Empwise_Activity']=$this->ts_model->empReport_Activitywise($name,$job_num);
+			$data['Empwise_Relative']=$this->ts_model->empReport_Relativewise($name,$job_num);
+			$data['Job_Number']=$job_num;
+			$data['Name']=$name;
+			$data['Job_Desc']=$this->ts_model->get_JobDesc($job_num);
 			
-			$this->load->view("timesheet/timesheet_for_MIS_content",$data);
+			$this->load->view("timesheet/timesheet_empwise_content",$data);
 			
 		}
 	
+
+		
+		
+// July 29 Time Activity
+
+			function get_time_activity(){
+				$form=$this->input->post();
+				$from=date('Y-m-d',strtotime($form["from"]));
+				$to=date('Y-m-d',strtotime($form["to"]));
+				$emp=$form["emp"];
+				$data["title"]="Time Activity Report of ".$emp." from ".$form["from"]." to ".$form["to"];
+				if($emp=="All Employees"){
+						$data["Time_Activity"]=$this->ts_model->get_time_activity_all($from,$to);
+						$data["Time_Activity_Total"]=$this->ts_model->get_time_activity_all_total($from,$to);
+						$this->load->view("timesheet/time_activity_content_all",$data);
+				}
+				else{
+						$data["Time_Activity"]=$this->ts_model->get_time_activity($from,$to,$emp);
+						$data["Time_Activity_Total"]=$this->ts_model->get_time_activity_total($from,$to,$emp);
+						$this->load->view("timesheet/time_activity_content",$data);
+				}
+			}
+		
+			
+			function get_job_activity(){
+				$form=$this->input->post();
+				$from=date('Y-m-d',strtotime($form["from"]));
+				$to=date('Y-m-d',strtotime($form["to"]));
+				$emp=$form["emp"];
+				$data["title"]="Job Activity Report of ".$emp." from ".$form["from"]." to ".$form["to"];
+				if($emp=="All Employees"){
+						$data["Job_Activity"]=$this->ts_model->get_job_activity_all($from,$to);
+						$data["Job_Activity_Total"]=$this->ts_model->get_job_activity_all_total($from,$to);
+						$this->load->view("timesheet/job_activity_content_all",$data);
+				}
+				else{
+						$data["Job_Activity"]=$this->ts_model->get_job_activity($from,$to,$emp);
+						$data["Job_Activity_Total"]=$this->ts_model->get_job_activity_total($from,$to,$emp);
+						$this->load->view("timesheet/job_activity_content",$data);
+				}
+			}
+		
+			
+			
+		
+		
 		
 		
 		

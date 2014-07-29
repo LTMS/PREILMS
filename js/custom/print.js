@@ -71,6 +71,31 @@ function printJobReport(){
 
 
 
+function printReport_Timesheet(){
+
+			var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,";
+			disp_setting+="scrollbars=yes,width=700, height=500, left=10, top=25";
+			//var text = document.getElementById('report_option').value;
+			//alert(text);
+			var content_value = document.getElementById("contentData").innerHTML;
+			var docprint=window.open("","",disp_setting);
+			docprint.document.open();
+			docprint.document.write('<html><head>');
+			docprint.document.write('</head><body onLoad="self.print()"><center>');
+			
+			docprint.document.write("<table align='center' width='100%'><tr style='font-size:20px;color:black;font-weight:bolder'><td align='center'>PREIPOLAR ENGINEERING PRIVATE LIMITED</td></td></tr></table>");
+			docprint.document.write("<table align='center' width='100%'><tr style='font-size:16px;color:black;font-weight:bolder;background:white'><td align='center'>M-17, SIPCOT, Hi-Tech, SEZ, Sriperumbudur, Sunguvarchathiram, Kanchipuram 602105 - India</td></tr></table>");
+			docprint.document.write("<p align='center' style='font-size:16px;color: black;font-weight:bold;'> </p>");
+			docprint.document.write("");
+			docprint.document.write(content_value);
+			
+			docprint.document.write('</center></body></html>');
+			docprint.document.close();
+			docprint.focus();
+			
+	}
+
+
 
 function printReport(){
 //	alert("Welcome to Print Page..!");

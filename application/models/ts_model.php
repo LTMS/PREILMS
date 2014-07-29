@@ -1550,7 +1550,8 @@ Class ts_model extends CI_Model{
 		
 		
 		function empReport_timesheet($name,$job_no){
-						return  $this->db->query("SELECT a.ts_name,a.job_no,a.ts_date,b.job_desc,a.job_time
+						return  $this->db->query("SELECT DISTINCT a.ts_name,a.job_no,a.ts_date,b.job_desc,a.job_time,
+																							a.job_np,a.activity,a.task_desc
 																			FROM time_sheet_jobs a
 																				INNER JOIN jobs b ON b.job_no=a.job_no
 																			WHERE a.job_no='$job_no' AND a.ts_name='$name'
@@ -1558,8 +1559,35 @@ Class ts_model extends CI_Model{
 		
 		}
 
+		function empReport_Activitywise($name,$job_no){
+						return  $this->db->query("SELECT c.activity,b.desc,b.code_for,COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(c.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))>29,1,0) as  total
+																			FROM time_sheet_jobs c	
+																						INNER JOIN activity_code b ON b.code=c.activity
+																			WHERE ts_name='$name' AND c.job_no='$job_no'
+																			GROUP BY c.activity
+																			ORDER BY b.code_for,c.activity")->result_array();	
+		
+		}
+
+		function empReport_Relativewise($name,$job_no){
+						return  $this->db->query("SELECT CONCAT(c.job_no,' - ',b.job_desc) as job_no,a.code_for,a.relative,COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(c.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))>29,1,0) as  total
+																			FROM time_sheet_jobs c
+																						INNER JOIN activity_code a ON a.code=c.activity
+																							INNER JOIN jobs b ON b.job_no=c.job_no
+																			WHERE ts_name='$name' AND c.job_no='$job_no'
+																			GROUP BY a.code_for,a.relative
+																			ORDER BY CAST(c.job_no as UNSIGNED),a.code_for")->result_array();	
+		
+		}
+
+		
+	
+	
 		function empReport_TotalHours($name,$job_no){
-						return  $this->db->query("SELECT SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+						return  $this->db->query("SELECT COUNT(DISTINCT ts_date) as days,
+																					SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
 																			FROM time_sheet_jobs 
 																			WHERE job_no='$job_no' AND ts_name='$name'	")->result_array();	
 		
@@ -1567,14 +1595,89 @@ Class ts_model extends CI_Model{
 
 		
 	
+// July 29 Time Activity Report	
+		
+		function get_time_activity_all($from,$to){
+					return $this->db->query("SELECT DISTINCT ts_date,ts_name,ts_intime,ts_outtime,ts_late,ts_lunch,
+																						ts_duty,ts_ot,ts_tot_hrs,recorded_time
+																		FROM time_sheet
+																		WHERE ts_date BETWEEN '$from' AND '$to'
+																		ORDER BY ts_name,ts_date  ")->result_array();
+		}
+		
+	
+		function get_time_activity_all_total($from,$to){
+					return $this->db->query("SELECT COUNT(ts_date) as days,
+																				SUM(HOUR(ts_tot_hrs))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_tot_hrs)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(ts_tot_hrs)*60)))>29,1,0) as total,
+																				SUM(HOUR(ts_duty))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_duty)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(ts_duty)*60)))>29,1,0) as duty,
+																				SUM(HOUR(ts_ot))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_ot)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(ts_ot)*60)))>29,1,0) as ot
+																		FROM
+																					(SELECT DISTINCT ts_date,ts_name,ts_tot_hrs,ts_duty,ts_ot
+																						FROM time_sheet
+																						WHERE ts_date BETWEEN '$from' AND '$to') a  ")->result_array();
+		}
+		
+	
+		function get_time_activity($from,$to,$emp){
+					return $this->db->query("SELECT DISTINCT ts_date,ts_name,ts_intime,ts_outtime,ts_late,ts_lunch,
+																						ts_duty,ts_ot,ts_tot_hrs,recorded_time
+																		FROM time_sheet
+																		WHERE ts_date BETWEEN '$from' AND '$to'  AND ts_name='$emp' 
+																		ORDER BY ts_date ")->result_array();
+		}
+	
+		function get_time_activity_total($from,$to,$emp){
+					return $this->db->query("SELECT COUNT(ts_date) as days,
+																				SUM(HOUR(ts_tot_hrs))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_tot_hrs)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(ts_tot_hrs)*60)))>29,1,0) as total,
+																				SUM(HOUR(ts_duty))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_duty)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(ts_duty)*60)))>29,1,0) as duty,
+																				SUM(HOUR(ts_ot))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_ot)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(ts_ot)*60)))>29,1,0) as ot
+																							FROM
+																					(SELECT DISTINCT ts_date,ts_tot_hrs,ts_duty,ts_ot
+																						FROM time_sheet
+																						WHERE ts_date BETWEEN '$from' AND '$to' AND ts_name='$emp' ) a  ")->result_array();
+		}
+		
+		
+	// Job Activity Report
+	
+		function get_job_activity_all($from,$to){
+					return $this->db->query("SELECT DISTINCT ts_date,ts_name,job_no,job_time,activity,job_np,task_desc
+																		FROM time_sheet_jobs
+																		WHERE ts_date BETWEEN '$from' AND '$to'
+																		ORDER BY ts_name,ts_date  ")->result_array();
+		}
+		
+	
+		function get_job_activity_all_total($from,$to){
+					return $this->db->query("SELECT COUNT(ts_date) as days,
+																				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as total
+																		FROM
+																					(SELECT DISTINCT ts_date,ts_name,job_no,job_time,activity
+																						FROM time_sheet_jobs
+																						WHERE ts_date BETWEEN '$from' AND '$to') a  ")->result_array();
+		}
+		
+	
+		function get_job_activity($from,$to,$emp){
+					return $this->db->query("SELECT DISTINCT ts_date,ts_name,job_no,job_time,activity,job_np,task_desc
+																		FROM time_sheet_jobs
+																		WHERE ts_date BETWEEN '$from' AND '$to'  AND ts_name='$emp' 
+																		ORDER BY ts_date ")->result_array();
+		}
+	
+		function get_job_activity_total($from,$to,$emp){
+					return $this->db->query("SELECT COUNT(ts_date) as days,
+																					SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as total
+																	 FROM
+																					(SELECT DISTINCT ts_date,ts_name,job_no,job_time,activity
+																						FROM time_sheet_jobs
+																						WHERE ts_date BETWEEN '$from' AND '$to' AND ts_name='$emp' ) a  ")->result_array();
+		}
+		
+		
 	
 	
-	
-	
-	
-	
-	
-	
+		
 	
 	
 	
