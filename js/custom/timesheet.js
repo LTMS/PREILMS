@@ -1205,6 +1205,52 @@ function get_INOUT(date){
 					}
 					
 					
+//July 28					
 					
+					/* * * 						General 					* * */
+
+				function remove_Specials(id,string){
+						var string=document.getElementById(id).value;
+						var new_string=string.replace(/([~!@#$%^&*()_+=`{}\[\]\|\\:;'<>,\/? ])+/g, '  ').replace(/^(-)+|(-)+$/g,'');
+						document.getElementById(id).value=new_string;
+				}
+
+	
+				
+// July 29 Employee wise Timesheet Report
+				
+				
+				function get_empJobsList(name1){
+					if(name1!=""){
+								$.post(site_url+"/timesheet/get_empJobsList",{name:name1},function(data){
+									var list=data.split('::');
+											for(i=1;i<list.length;i++)
+											{
+														var opt = document.createElement("option");
+																if(document.getElementById("JobNumber")){
+																			document.getElementById("JobNumber").options.add(opt);
+																			opt.text =list[i];
+																		    opt.value = list[i+1];
+																}
+												}
+								});
+						}
 					
+				}
+				
+				
+				function timesheet_empReport(){
+					var name1=document.getElementById('Name').value;
+					var job_num1=document.getElementById('JobNumber').value;
+						if( from1!="" && to1 !=""){
+							$.post(site_url+"/timesheet/timesheet_empReport",{name:name1,job_num:job_num1},function(data){
+										//alert(data);
+										$('#contentData').html("");
+										$('#contentData').append(data);
+							});
+					}
+					
+				}
+				
+
 				
