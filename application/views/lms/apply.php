@@ -22,131 +22,153 @@
 
 
 // Parameters
-foreach($Param as $openrow) {
-	$sick_tot=$openrow["sick_total"];
-	$paid_tot=$openrow["paid_total"];
-	$casual_tot=$openrow["casual_total"];
-	$casual_month=$openrow["casual_month"];
-	$paid_exp=$openrow["paid_exp"];
-	$sick_limit=$openrow["sick_limit"];
-	$comp_off_reduc=$openrow["comp_off_reduct"];
-	$permis=$openrow["permission_hrs"];
-	$paid_min=$openrow["paid_min"];
-	$paid_prior=$openrow["paid_prior"];
-	$comp_hrs=$openrow["hour"];
-	$comp_min=$openrow["min"];
-	$carry=$openrow["carry_forward"];
-	$comp_minutes=$openrow["comp_minutes"];
-}
-print("<input type='hidden' id='reduction' value=".$comp_off_reduc." />");
-print("<input type='hidden' id='sick_limit' value=".$sick_limit." />");
-print("<input type='hidden' id='casual_limit' value=".$casual_month." />");
-print("<input type='hidden' id='paid_min' value=".$paid_min." />");
-print("<input type='hidden' id='paid_prior' value=".$paid_prior." />");
-print("<input type='hidden' id='comp_minutes' value=".$comp_minutes." />");
+		foreach($Param as $openrow) {
+			$sick_tot=$openrow["sick_total"];
+			$paid_tot=$openrow["paid_total"];
+			$casual_tot=$openrow["casual_total"];
+			$casual_month=$openrow["casual_month"];
+			$paid_exp=$openrow["paid_exp"];
+			$sick_limit=$openrow["sick_limit"];
+			$comp_off_reduc=$openrow["comp_off_reduct"];
+			$permis=$openrow["permission_hrs"];
+			$paid_min=$openrow["paid_min"];
+			$paid_prior=$openrow["paid_prior"];
+			$comp_hrs=$openrow["hour"];
+			$comp_min=$openrow["min"];
+			$carry=$openrow["carry_forward"];
+			$comp_minutes=$openrow["comp_minutes"];
+		}
+		print("<input type='hidden' id='reduction' value=".$comp_off_reduc." />");
+		print("<input type='hidden' id='sick_limit' value=".$sick_limit." />");
+		print("<input type='hidden' id='casual_limit' value=".$casual_month." />");
+		print("<input type='hidden' id='paid_min' value=".$paid_min." />");
+		print("<input type='hidden' id='paid_prior' value=".$paid_prior." />");
+		print("<input type='hidden' id='comp_minutes' value=".$comp_minutes." />");
+		
+		
+		$casual=$paid=$sick=$comp=$casual_y=$paid_y=$sick_y=$comp_y=$casual_p=$paid_p=$sick_p=$comp_p=0;
+		
+		if(!empty($summary)){
+			foreach($summary as $openrow1) {
+				if($openrow1["LeaveType"]=='Casual Leave'){
+					$casual=$openrow1["TotalDays"];
+				}
+				if($openrow1["LeaveType"]=='Paid Leave'){
+					$paid=$openrow1["TotalDays"];
+				}
+				if($openrow1["LeaveType"]=='Sick Leave'){
+					$sick=$openrow1["TotalDays"];
+				}
+				if($openrow1["LeaveType"]=='Comp-Off'){
+					$comp=$openrow1["TotalDays"];
+				}
+			}
+		}
+		
+		if(!empty($summary_year)){
+			foreach($summary_year as $openrow2) {
+				if($openrow2["LeaveType"]=='Casual Leave'){
+					$casual_y=$openrow2["TotalDays"];
+				}
+				if($openrow2["LeaveType"]=='Paid Leave'){
+					$paid_y=$openrow2["TotalDays"];
+				}
+				if($openrow2["LeaveType"]=='Sick Leave'){
+					$sick_y=$openrow2["TotalDays"];
+				}
+				if($openrow2["LeaveType"]=='Comp-Off'){
+					$comp_y=$openrow2["TotalDays"];
+				}
+			}
+		}
+		if(!empty($summary_pend)){
+			foreach($summary_pend as $openrow3) {
+				if($openrow3["LeaveType"]=='Casual Leave'){
+					$casual_p=$openrow3["TotalDays"];
+				}
+				if($openrow3["LeaveType"]=='Paid Leave'){
+					$paid_p=$openrow3["TotalDays"];
+				}
+				if($openrow3["LeaveType"]=='Sick Leave'){
+					$sick_p=$openrow3["TotalDays"];
+				}
+				if($openrow3["LeaveType"]=='Comp-Off'){
+					$comp_p=$openrow3["TotalDays"];
+				}
+			}
+		}
+			
+		// Permission
+		$per_y=$per_m=$per_p=0;
+		
+		if(!empty($perm)){
+			foreach($perm as $openrow4) {
+				$per_m=$openrow4["month"];
+				$per_y=$openrow4["year"];
+				$per_p=$openrow4["pending"];
+			}
+		}
+			
+			
+		// Approval Officer
+		if(!empty($approv)){
+			foreach($approv as $openrow6) {
+				$App_Off=$openrow6["LeaveApprover_L1"];
+			}
+		}
+		else{
+			$App_Off="Managing Director";
+		}
+			
+		// Date of joining
+		if(!empty($doj)){
+			foreach($doj as $openrow7) {
+				$DOJ=$openrow7["JoiningDate"];
+				$experience=$openrow7["Experience"];
+			}
+		}
+		else{
+			$DOJ="2013-08-01";
+			$experience=6;
+		}
+			
+		
+		$casual_r=0;
+		$paid_r=$paid_tot-$paid_y;
+		$sick_r=$sick_tot-$sick_y;
+		$per_r=12-$per_y;
+		
+		if($carry=='YES'){
+			$casual_r=$casual_tot-$casual_y-$casual_p;
+		}
+		if($carry=='NO'){
+			foreach($carry_forward as $row){
+				$casual_r=$row["casual_remain"];
+			}
+		}
+			
 
 
-$casual=$paid=$sick=$comp=$casual_y=$paid_y=$sick_y=$comp_y=$casual_p=$paid_p=$sick_p=$comp_p=0;
 
-if(!empty($summary)){
-	foreach($summary as $openrow1) {
-		if($openrow1["LeaveType"]=='Casual Leave'){
-			$casual=$openrow1["TotalDays"];
-		}
-		if($openrow1["LeaveType"]=='Paid Leave'){
-			$paid=$openrow1["TotalDays"];
-		}
-		if($openrow1["LeaveType"]=='Sick Leave'){
-			$sick=$openrow1["TotalDays"];
-		}
-		if($openrow1["LeaveType"]=='Comp-Off'){
-			$comp=$openrow1["TotalDays"];
-		}
-	}
-}
 
-if(!empty($summary_year)){
-	foreach($summary_year as $openrow2) {
-		if($openrow2["LeaveType"]=='Casual Leave'){
-			$casual_y=$openrow2["TotalDays"];
-		}
-		if($openrow2["LeaveType"]=='Paid Leave'){
-			$paid_y=$openrow2["TotalDays"];
-		}
-		if($openrow2["LeaveType"]=='Sick Leave'){
-			$sick_y=$openrow2["TotalDays"];
-		}
-		if($openrow2["LeaveType"]=='Comp-Off'){
-			$comp_y=$openrow2["TotalDays"];
-		}
-	}
-}
-if(!empty($summary_pend)){
-	foreach($summary_pend as $openrow3) {
-		if($openrow3["LeaveType"]=='Casual Leave'){
-			$casual_p=$openrow3["TotalDays"];
-		}
-		if($openrow3["LeaveType"]=='Paid Leave'){
-			$paid_p=$openrow3["TotalDays"];
-		}
-		if($openrow3["LeaveType"]=='Sick Leave'){
-			$sick_p=$openrow3["TotalDays"];
-		}
-		if($openrow3["LeaveType"]=='Comp-Off'){
-			$comp_p=$openrow3["TotalDays"];
-		}
-	}
-}
-	
-// Permission
-$per_y=$per_m=$per_p=0;
 
-if(!empty($perm)){
-	foreach($perm as $openrow4) {
-		$per_m=$openrow4["month"];
-		$per_y=$openrow4["year"];
-		$per_p=$openrow4["pending"];
+	foreach($Total_OT as $row1) {
+		$tot_ot_hrs = $row1["total"];
 	}
-}
-	
-	
-// Approval Officer
-if(!empty($approv)){
-	foreach($approv as $openrow6) {
-		$App_Off=$openrow6["LeaveApprover_L1"];
-	}
-}
-else{
-	$App_Off="Managing Director";
-}
-	
-// Date of joining
-if(!empty($doj)){
-	foreach($doj as $openrow7) {
-		$DOJ=$openrow7["JoiningDate"];
-		$experience=$openrow7["Experience"];
-	}
-}
-else{
-	$DOJ="2013-08-01";
-	$experience=6;
-}
-	
 
-$casual_r=0;
-$paid_r=$paid_tot-$paid_y;
-$sick_r=$sick_tot-$sick_y;
-$per_r=12-$per_y;
-
-if($carry=='YES'){
-	$casual_r=$casual_tot-$casual_y-$casual_p;
-}
-if($carry=='NO'){
-	foreach($carry_forward as $row){
-		$casual_r=$row["casual_remain"];
+	foreach($Comp_Hours  as $row2) {
+		$CO_Hours = $row2["Comp_Off_hours"];
+		$CO_Count = $row2["CO_Count"];
 	}
-}
-	
+
+	if($CO_Count==0){
+		$CO_Hours=0;
+	}
+
+	$profit=$tot_ot_hrs-$CO_Hours;
+
+
+
 ?>
 
 
@@ -236,9 +258,9 @@ if($carry=='NO'){
 		</tr>
 		<tr>
 			<td align="right"><font class="font_align">Reason</font></td>
-			<td align="left" width="200px"><textarea name="reason"
-					placeholder='Avoid using special characters.. Maximum 200 characters allowed'
-					id="reason" rows="3" cols="40"></textarea></td>
+			<td align="left" width="200px">
+			<textarea name="reason"		placeholder='Avoid using special characters.. Maximum 200 characters allowed'
+					id="reason" onblur='remove_Specials("reason",this.value)' rows="3" cols="40"></textarea></td>
 		</tr>
 		<tr style="display: none" id="doc_row1">
 			<td align="right"><font class="font_align">Upload Document</font></td>
@@ -338,7 +360,7 @@ if($carry=='NO'){
 		</tr>
 		<tr>
 			<td align="right"><font class="font_align">Reason</font></td>
-			<td align="left" width=""><textarea name="p_reason" id="p_reason"
+			<td align="left" width=""><textarea name="p_reason" id="p_reason" onblur='remove_Specials("p_reason",this.value)'
 					placeholder='Avoid using special characters.. 150 characters allowed'
 					rows="3" cols="40" class="txtarea"></textarea></td>
 		</tr>
@@ -449,26 +471,7 @@ if($carry=='NO'){
 	style="position: absolute; top: 310px; left: 71%; width: 20%; border: 0px solid black">
 	<?php
 
-
-
-	foreach($Total_OT as $row1) {
-		$tot_ot_hrs = $row1["total"];
-	}
-
-	foreach($Comp_Hours  as $row2) {
-		$CO_Hours = $row2["Comp_Off_hours"];
-		$CO_Count = $row2["CO_Count"];
-	}
-
-	if($CO_Count==0){
-		$CO_Hours=0;
-	}
-
-	$profit=$tot_ot_hrs-$CO_Hours;
-
-
-
-	if($profit>=8 && $profit !=""){
+	if($profit>=$comp_off_reduc && $profit !="" && $profit !=null){
 		print("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='".base_url()."/images/comp_off.png' width='80px' height='80px'/><br><font size='2pt' weight='bolder' color='green'>Comp-Off Available <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(".$profit." Hours)</font>");
 
 	}
