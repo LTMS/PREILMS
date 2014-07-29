@@ -1189,6 +1189,17 @@ function get_INOUT(date){
 						
 					}
 					
+			function overall_jobSummary(){
+						$.post(site_url+"/timesheet/overall_jobSummary",function(data){
+							//alert();
+							$('#contentData').html("");
+							$('#contentData').append(data);
+						
+					});
+		}
+				
+
+					
 // July 25, 2014		
 					
 					function timesheet_jobReport_MIS(){
@@ -1255,7 +1266,20 @@ function get_INOUT(date){
 				
 
 				
-				
+				function Employee_jobSummary(){
+					var emp1=document.getElementById('Emp').value;
+							
+					if(emp1!=""){
+						$.post(site_url+"/timesheet/Employee_jobSummary",{emp:emp1},function(data){
+							//alert();
+							$('#contentData').html("");
+							$('#contentData').append(data);
+							
+						});
+					}
+				}
+			
+			
 				
 				
 				

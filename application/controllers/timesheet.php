@@ -120,7 +120,7 @@ class timesheet extends CI_Controller
 		$data["menu"]='e_reports';
 		$data["submenu"]='timesheet_empwise';
 		$data["members"]=$this->ts_model->get_all_members();
-		$this->template->write('titleText', "Jobwise Time Sheet Reports");
+		$this->template->write('titleText', "Activity Vs Job Reports");
 		$data["Jobs_Num"]=$this->ts_model->get_All_JobsNum();
 		$this->template->write_view('sideLinks', 'general/menu',$data);
 		$this->template->write_view('bodyContent', 'timesheet/timesheet_empwise',$data);
@@ -796,7 +796,10 @@ class timesheet extends CI_Controller
 			
 		}
 	
-		
+		function overall_jobSummary(){
+			$data['All_Jobs_Summary']=$this->ts_model->overall_jobSummary();
+			$this->load->view("timesheet/timesheet_jobwise_jobs_summary",$data);
+		}
 		
 		
 //		July 29     Employee Timesheet Report

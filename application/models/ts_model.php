@@ -1483,6 +1483,18 @@ Class ts_model extends CI_Model{
 			
 		}
 
+		function overall_jobSummary(){
+						return  $this->db->query("SELECT a.job_no,b.job_desc,COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(a.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(a.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(a.job_time)*60)))>29,1,0) as  total
+																		
+																				
+																				FROM time_sheet_jobs a INNER JOIN jobs b ON b.job_no=a.job_no
+																				GROUP BY a.job_no 	
+																				ORDER BY CAST(a.job_no as UNSIGNED) ")->result_array();	
+		
+			
+		}
+
 		
 	function get_JobDesc($job_no){
 				 $result=$this->db->query("SELECT DISTINCT job_desc as Description
@@ -1498,6 +1510,7 @@ Class ts_model extends CI_Model{
 				
 	}
 	
+
 	
 // July 25, 2014 MIS Weekly Report
 	
@@ -1534,6 +1547,7 @@ Class ts_model extends CI_Model{
 																	 ORDER BY c.Department,a.ts_name")->result_array();			
 		}
 		
+	
 		
 		
 // July 29  Employeewise Timesheet Report
