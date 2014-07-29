@@ -77,7 +77,14 @@
 																									  margin:10px 0px 0px 0px;' onkeyup='javascript:searchbyjobdesc()'>
 					<p  id='results'style='margin:10px 0px 0px 40px;color:#c35817;font-weight:bold;
 								  font-family:Verdana;font-size:15px;display:inline;'>  </p>																			  
-					
+					<img valign="bottom"
+						src="<?php echo base_url(); ?>/images/print2.png" onmouseover=""
+						onclick="javascript:print_AllJobs();"
+						style="width: 70px; height: 30px; color: green;margin-left:100px;" />
+				 <img
+						id="Alljobs_dwnld" valign="bottom"
+						src="<?php echo base_url(); ?>/images/excel2.png" onclick=""
+						style="width: 70px; height: 30px; color: green;margin-left:0px;" />
 			</div>
 	<div id='contentData' 
 			style='height:750px;
@@ -93,37 +100,79 @@
 						  style="border:1px solid ;
 										background:#E5E4E2;
 										">
-					<tr align="center" bgcolor='#848482' style='font-weight:bold;
+									
+					<tr align="center"  bgcolor='#848482' style='
+																										 font-weight:bold;
 																									 	 font-size:15px;
 																										 color:#ffffff;
 					'>
-						<td width='10%'>S No</td>
-						<td width='30%'>Employee Name</td>
-						<td width='10%'>Job Number</td>
+					
+					
+						<td width='15%'>Job Number</td>
+						<td width='30%'>Job Description</td>
 						<td width='10%'>Target(Hrs)</td>
-						<td width='35%'>Job Description</td>
+						<td width='10%'>Actual(Hrs)</td>
+						<td width='30%'>Completion in(%)</td>
+					
+						
 						<td width='5%'>Edit</td>
 					</tr>
+				
 			<?php  
-			
+				$added_time="";
+				$format_time="";
+				$formatted_time="";
 				$counter=1;
 				Foreach($job_details as $row)
 					{
+							$Job_No=$row["job_no"];
+							$CI =&get_instance();
+							$CI ->load->model('general_model');
+							$result=$CI->general_model->fetch_actual_hours($Job_No);
+									foreach($result as $openrow)	
+									{
+										$Actual_Hours=$openrow['total'];
+									}
 						$rowid="row".$counter;
 						print("<tr id='$rowid'>");
-						print("<td align='center' style='color:#307d7e;font-size:13px;font-weight:bold;'>".$counter."</td>");
-						print("<td id='name".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>".$row["name"]."</td>");
-						print("<td  id='job_no".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>".$row["job_no"]."</td>");
-						if ($row['target_hours'] != "")
-						{
-						print("<td align='center' id='target_hours".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>".$row["target_hours"]."</td>");
-						}
-						else 
-						{
-						print("<td  align='center' id='target_hours".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>0</td>");	
-						}
-						print("<td  id='job_desc".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>".$row["job_desc"]."</td>");
-						print("<td  id='added_time".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;display:none;'>".$row["addedtime"]."</td>");
+					
+						print("<td align='center'  id='name".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;display:none;'>".$row["name"]."</td>");
+						print("<td align='center'  id='hours_updated".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;display:none;'>".$row["hours_updated"]."</td>");
+						print("<td align='center'  id='job_no".$counter."' style='color:#307d7e;font-size:17px;font-weight:bold;font-family:monospace'>".$row["job_no"]."</td>");
+						print("<td  id='job_desc".$counter."' style='color:#307d7e;font-size:15px;font-weight:bold;font-family:calibri;'>".$row["job_desc"]."</td>");
+									if ($row['target_hours'] != "")
+									{
+									print("<td align='center' id='target_hours".$counter."' style='color:#307d7e;font-size:17px;font-weight:bold;font-family:monospace;'>".$row["target_hours"]."</td>");
+									}
+									else 
+									{
+									print("<td  align='center' id='target_hours".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;'>0</td>");	
+									}
+									if ($Actual_Hours != "")
+									{
+									print("<td align='center' id='' style='color:#307d7e;font-size:17px;font-weight:bold;font-family:monospace;font-weight:bold;'>".$Actual_Hours."</td>");
+									}
+									else 
+									{
+									print("<td  align='center' id='' style='color:#307d7e;font-size:13px;font-weight:bold;'>0</td>");	
+									}
+									if($row["target_hours"] == "" || $row["target_hours"] == 0 )
+									{
+										print("<td align='left'  id='' style='color:#C11B17;font-size:15px;font-weight:bold;font-family:calibri;'>Please Set Target Hrs</td>");	
+									}else if($Actual_Hours == 0 || $Actual_Hours == "")
+									{
+										print("<td align='left'  id='' style='color:#4B0082;font-size:15px;font-weight:bold;font-family:calibri;'>Project not started yet</td>");	
+									}else{
+											$Completion=($Actual_Hours/$row["target_hours"])*100;
+											print("<td align ='left'><progress max='100' style='' value='".round($Completion,2)."'></progress>    <span style='color:#842dce;font-size:15px;font-weight:bold;font-family:monospace;'>".round($Completion,2)." % </span></td>");
+											}
+						
+						
+						
+						$added_time=$row['addedtime'];
+						$format_time=strtotime($added_time);
+						$formatted_time=date("l jS \of F Y h:i:s A",$format_time);
+						print("<td  id='added_time".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;display:none;'>".$formatted_time."</td>");
 						print("<td align='center'><a href='javascript:change_job_details(".$counter.")'><img src='".base_url()."images/pencil.png' alt=' ' style=' width:20px;height:15px;'/></a></td>");
 						print("</tr>");
 						$counter++;
@@ -149,7 +198,7 @@
 											  border-bottom-right-radius:15px;
 											  box-shadow:10px 10px 10px 10px #ccc;
 											  height:500px;
-											  background:#c6deff;
+											  background:#DBEADC;
 											  '>
 							<div  style='border-bottom-style:groove;'>
 							<img src='<?php echo base_url();?>images/pin.png' 
@@ -159,70 +208,70 @@
 								  font-family:Lucida Console;font-size:20px;display:inline;border:0px solid;
 								  width:600px;'>Edit Job Details</p>
 							<img src='<?php echo base_url();?>images/pin.png' 
-									   style='height:40px;width:40px;margin:10px 0px 0px 355px;vertical-align:middle;
+									   style='height:40px;width:40px;margin:10px 0px 0px 38%;vertical-align:middle;
 									   				display:inline;' alt='' />
 							</div>
-							<table border='0'  width='80%' style='font-size:20px;font-weight:bold;
+							<table border='0'  width='80%' style='font-size:18px;font-weight:bold;
 												font-family:Lucida Console;color:#646d7e;
-												margin-top:90px;align:left;
+												margin-top:0px;
 												border:0px solid;'> 
 								<tr style='height:40px;'>
-									<td colspan='2' align='center'>
+									<td colspan='2' align='center' >
 										<p  id='error'style='margin:0px 0px 0px 0px;color:#F7031A;;
 										  font-family:Lucida Console;font-size:18px;display:inline;border:0px solid;
 										  '></p>
 									</td>
 								</tr>
 								<tr>
-									<td  align='center' style='height:30px;'>
-									Job Number 
+									<td  align=right style='height:30px;' width='50%'>
+									Job Number :
 									</td>
-									<td id='job_no_span' style='color:#1f45fc'>
-									</td>
-							</tr>
-							<tr>
-									<td  align='center' style='height:30px;'>
-									Job Description
-									</td>
-									<td id='job_desc_span' style='color:#1f45fc'>
+									<td id='job_no_span' style='color:#003333' width='50%'>
 									</td>
 							</tr>
 							<tr>
-									<td  align='center' style='height:30px;'>
+									<td  align='right' style='height:30px;'>
+									Job Description:
+									</td>
+									<td id='job_desc_span' style='color:#003333'>
+									</td>
+							</tr>
+							<tr>
+									<td  align='right' style='height:30px;'>
+								Added Time :
+									</td>
+									<td id='job_time_span' style='color:#003333'>
 								Added Time
 									</td>
-									<td id='job_time_span' style='color:#1f45fc'>
-								Added Time
-									</td>
 							</tr>
 							<tr>
-									<td  align='center' style='height:30px;'>
-								Set Target hours
+									<td  align='right' style='height:30px;'>
+								Set Target hours :
 									</td>
-									<td id='job_hours_span' style='color:#1f45fc'>
+									<td id='job_hours_span' style='color:#003333'>
 									<input id='target_hours' type='text' value='' placeholder='....in  Hrs'  style='height:20px;width:200px;
 																									  padding-left:8px;
 																									  background-color:#f0f8ff;
 																									  border-radius:5px;
 																									  box-shadow:inset 1px 1px 1px  #ccc;
 																									  font-size:15px;
-																									  color:#1f45fc;
+																									  color:#003333;
 																									  outline:none;
 																									  '/>
 								
 									</td>
 							</tr>
 							<tr>
-									<td align='center'  style='height:30px;'>
-								Employees in this Project
+									<td align='right'  style='height:30px;'>
+								Employees in this Project :
 									</td>
-									<td id='job_emp_span' style='color:#1f45fc'>
+									<td id='job_emp_span' style='color:#003333'>
 									</td>
 							</tr>
 							<tr style='height:30px;'>
 							</tr>
 							<tr >
-									<td align='center'  style='height:50px;'>
+									<td align='right'  style='height:50px;'>
 									
 									</td>
 									<td>
@@ -234,7 +283,17 @@
 										</a>
 									</td>
 							</tr>
-							</table>
+								<tr style='height:20px;'>
+							</tr>
+							<tr>
+									<td id='prev_target_td' style='display:none' ><p  id='prev_targets' style='margin:0px 0px 0px 0px;color:#F7031A;;
+										  font-family:Lucida Console;font-size:14px;display:inline;border:0px solid;
+										  '>The Previous target hours are...!</p></td>
+									<td>	<p  id='' style='margin:0px 0px 0px 0px;color:#F7031A;;
+										  font-family:Lucida Console;font-size:14px;display:inline;border:0px solid;
+										  '>You can update target hours  only by 3 times...!</p></td>
+							</tr>
+						</table>
 							
 						</div>
 					

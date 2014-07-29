@@ -303,6 +303,7 @@ $("#date1").datepicker({
 			
 		function change_job_details(counter)
 		{
+			
 		document.getElementById("all_jobs").style.display='none';
 		document.getElementById("all_jobs_head").style.display='none';
 		document.getElementById("search_box").style.display='none';
@@ -313,19 +314,32 @@ $("#date1").datepicker({
 		var Emp_Name=document.getElementById("name"+counter).innerHTML;
 		var Job_No=document.getElementById("job_no"+counter).innerHTML;
 		var Target_Hours=document.getElementById("target_hours"+counter).innerHTML;
+		var Hours_Updated=document.getElementById("hours_updated"+counter).innerHTML;
 		var Job_Desc=document.getElementById("job_desc"+counter).innerHTML;
 		var Added_Time=document.getElementById("added_time"+counter).innerHTML;
 		//alert(Emp_Name+Job_No+Job_Desc);
 		$.post(site_url+"/general/fetch_job_emp",{job_no:Job_No},function(data)
 		{
 			//alert(data);
-			var Employee=["","",""];
+			var Employee="";
 			var Emp=data.split("!");
 			for(i=1;i<Emp.length;i++)
 				{
-				alert(Emp[i]);
+						if(Employee == "")
+						{
+						Employee=Emp[i];
+						}
+						else
+						{
+						Employee=Employee+","+Emp[i];
+						}
 				}
-			
+				
+				document.getElementById("job_emp_span").innerHTML=Employee;
+				if(Emp.length > 3)
+					{
+					document.getElementById("job_emp_span").style.fontSize='17px';
+					}
 		}		
 		);
 		document.getElementById("job_no_span").innerHTML=Job_No;
@@ -333,8 +347,23 @@ $("#date1").datepicker({
 		if(Target_Hours !=0)
 			{
 			document.getElementById("target_hours").value=Target_Hours;
+			
+			}
+		if(Hours_Updated > 2)
+			{
 			document.getElementById("target_hours").disabled=true;
 			}
+		
+		if(Hours_Updated > 1)
+		{
+			$.post(site_url+"/general/fetch_prev_targets",{job_no:Job_No},function(data)
+			{
+				document.getElementById("prev_target_td").style.display="";
+				document.getElementById("prev_targets").innerHTML="The Previous target hour(s)"+data;
+			});
+	
+		}
+	
 		document.getElementById("job_time_span").innerHTML=Added_Time;
 		document.getElementById("job_desc_span").innerHTML=Job_Desc;
 		document.getElementById("job_emp_span").innerHTML=Emp_Name;
@@ -468,4 +497,34 @@ $("#date1").datepicker({
 		    	  }
 		      
 		}
+		$("#Alljobs_dwnld").live("click", function()
+				{
+				var downloadurl=site_url+"/general/Alljobs_dwnld/";
+				window.location=downloadurl;
+			});
+		function print_AllJobs(){
+
+			var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,";
+			disp_setting+="scrollbars=yes,width=700, height=500, left=10, top=25";
 		
+			var content_value = document.getElementById("contentData").innerHTML;
+			var docprint=window.open("","",disp_setting);
+			docprint.document.open();
+			docprint.document.write('<html><head>');
+			docprint.document.write('</head><body onLoad="self.print()"><center>');
+			
+			docprint.document.write("<table align='center' width='100%'><tr style='font-size:20px;color:black;font-weight:bolder'><td align='center'>PREIPOLAR ENGINEERING PRIVATE LIMITED</td></td></tr></table>");
+			docprint.document.write("<table align='center' width='100%'><tr style='font-size:16px;color:black;font-weight:bolder;background:white'><td align='center'>M-17, SIPCOT, Hi-Tech, SEZ, Sriperumbudur, Sunguvarchathiram, Kanchipuram 602105 - India</td></tr></table>");
+		
+				docprint.document.write("<p align='center' style='font-size:18px;color: black;font-weight:bolder;'><u> All Jobs  Details</u></p>");
+				
+
+		
+			docprint.document.write("");
+			docprint.document.write(content_value);
+			
+			docprint.document.write('</center></body></html>');
+			docprint.document.close();
+			docprint.focus();
+			
+	}
