@@ -111,7 +111,7 @@ Class General_model extends CI_Model
 	}
 	function fetch_prev_targets($job_no)
 	{
-		$result=$this->db->query("SELECT target_hours FROM lms.target_hours t where job_no ='$job_no' LIMIT 2;")->result_array();
+		$result=$this->db->query("SELECT distinct target_hours FROM lms.target_hours t where job_no ='$job_no'  ORDER BY updated_time desc LIMIT 3;")->result_array();
 		$target_hours="";
 		foreach($result as $row)
 		{
