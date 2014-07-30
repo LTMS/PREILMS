@@ -16,6 +16,9 @@
 		</tr>
 	</table>
 </div>
+
+
+
 <div id="head" 
 		style="background:#DDDDDD;
 					  height:50px;
@@ -63,8 +66,8 @@
 																									  outline:none;
 																									  font-weight:bold;
 																									  margin:10px 0px 0px 0px;'  onkeyup='javascript:searchbyjobno()'>
-						<p style='margin:10px 0px 0px 40px;color:#2b1b17;font-weight:bold;
-								  font-family:Verdana;font-size:15px;display:inline;'> Search By</p>
+						<p style='margin:10px 0px 0px 5px;color:#2b1b17;font-weight:bold;
+								  font-family:Verdana;font-size:15px;display:inline;'> or </p>
 				 <input type='text' id ='search_desc'  value='' placeholder='Job Description' style='height:20px;width:130px;
 																									  padding-left:8px;
 																									  background-color:#fefcff;
@@ -74,7 +77,7 @@
 																									  color:#2c3539;
 																									  outline:none;
 																									  font-weight:bold;
-																									  margin:10px 0px 0px 0px;' onkeyup='javascript:searchbyjobdesc()'>
+																									  margin:10px 0px 0px 5px;' onkeyup='javascript:searchbyjobdesc()'>
 					<p  id='results'style='margin:10px 0px 0px 40px;color:#c35817;font-weight:bold;
 								  font-family:Verdana;font-size:15px;display:inline;'>  </p>																			  
 					<img valign="bottom"
@@ -115,7 +118,7 @@
 						<td width='30%'>Completion in(%)</td>
 					
 						
-						<td width='5%'>Edit</td>
+						<td id ='Edit' width='5%'>Edit</td>
 					</tr>
 				
 			<?php  
@@ -173,7 +176,7 @@
 						$format_time=strtotime($added_time);
 						$formatted_time=date("l jS \of F Y h:i:s A",$format_time);
 						print("<td  id='added_time".$counter."' style='color:#307d7e;font-size:13px;font-weight:bold;display:none;'>".$formatted_time."</td>");
-						print("<td align='center'><a href='javascript:change_job_details(".$counter.")'><img src='".base_url()."images/pencil.png' alt=' ' style=' width:20px;height:15px;'/></a></td>");
+						print("<td  id='Edit_icon' align='center'><a href='javascript:change_job_details(".$counter.")'><img src='".base_url()."images/pencil.png' alt=' ' style=' width:20px;height:15px;'/></a></td>");
 						print("</tr>");
 						$counter++;
 					}
@@ -196,7 +199,7 @@
 											  border-top-right-radius:15px;
 											  border-bottom-left-radius:15px;
 											  border-bottom-right-radius:15px;
-											  box-shadow:10px 10px 10px 10px #ccc;
+											  box-shadow:10px 10px 400px  #888888;
 											  height:500px;
 											  background:#DBEADC;
 											  '>
