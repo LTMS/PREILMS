@@ -1189,6 +1189,17 @@ function get_INOUT(date){
 						
 					}
 					
+			function overall_jobSummary(){
+						$.post(site_url+"/timesheet/overall_jobSummary",function(data){
+							//alert();
+							$('#contentData').html("");
+							$('#contentData').append(data);
+						
+					});
+		}
+				
+
+					
 // July 25, 2014		
 					
 					function timesheet_jobReport_MIS(){
@@ -1221,6 +1232,7 @@ function get_INOUT(date){
 				
 				
 				function get_empJobsList(name1){
+					document.getElementById('JobNumber').options.length = 1;
 					if(name1!=""){
 								$.post(site_url+"/timesheet/get_empJobsList",{name:name1},function(data){
 									var list=data.split('::');
@@ -1230,7 +1242,7 @@ function get_INOUT(date){
 																if(document.getElementById("JobNumber")){
 																			document.getElementById("JobNumber").options.add(opt);
 																			opt.text =list[i];
-																		    opt.value = list[i+1];
+																		    opt.value = list[i];
 																}
 												}
 								});
@@ -1242,7 +1254,7 @@ function get_INOUT(date){
 				function timesheet_empReport(){
 					var name1=document.getElementById('Name').value;
 					var job_num1=document.getElementById('JobNumber').value;
-						if( from1!="" && to1 !=""){
+						if( name1!="" && job_num1 !=""){
 							$.post(site_url+"/timesheet/timesheet_empReport",{name:name1,job_num:job_num1},function(data){
 										//alert(data);
 										$('#contentData').html("");
@@ -1253,4 +1265,61 @@ function get_INOUT(date){
 				}
 				
 
+				
+				function Employee_jobSummary(){
+					var emp1=document.getElementById('Emp').value;
+							
+					if(emp1!=""){
+						$.post(site_url+"/timesheet/Employee_jobSummary",{emp:emp1},function(data){
+							//alert();
+							$('#contentData').html("");
+							$('#contentData').append(data);
+							
+						});
+					}
+				}
+			
+			
+				
+				
+				
+				
+// July 29    Time Activity
+				
+				
+				function get_time_activity(){
+					var from1=document.getElementById('date_from').value;
+					var to1=document.getElementById('date_to').value;
+					var emp1=document.getElementById('Emp').value;
+							
+					if(from1!="" && to1!="" && emp1!=""){
+						$.post(site_url+"/timesheet/get_time_activity",{from:from1,to:to1,emp:emp1},function(data){
+							//alert();
+							$('#contentData').html("");
+							$('#contentData').append(data);
+							
+						});
+					}
+				}
+			
+			
+				
+				function get_job_activity(){
+					var from1=document.getElementById('date_from').value;
+					var to1=document.getElementById('date_to').value;
+					var emp1=document.getElementById('Emp').value;
+							
+					if(from1!="" && to1!="" && emp1!=""){
+						$.post(site_url+"/timesheet/get_job_activity",{from:from1,to:to1,emp:emp1},function(data){
+							//alert();
+							$('#contentData').html("");
+							$('#contentData').append(data);
+							
+						});
+					}
+				}
+			
+			
+				
+	
 				
