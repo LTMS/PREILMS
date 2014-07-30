@@ -1404,7 +1404,7 @@ Class ts_model extends CI_Model{
 		
 
 		
-		
+								/* * * 		Admin Timesheet Reports			* * */
 		
 // July 23, 2014
 		
@@ -1690,10 +1690,137 @@ Class ts_model extends CI_Model{
 		
 		
 	
-	
+									/* * * 			Employee Timesheet Reports		*  * */
 		
 	
+			
+		function my_jobReport_JobActivity($job_num,$name){
+						return  $this->db->query("SELECT *,a.job_desc,b.desc,DATE_FORMAT(c.ts_date,'%d-%m-%Y') as date1
+												     						FROM time_sheet_jobs c 
+												     											INNER JOIN jobs a ON (a.job_no=c.job_no AND a.name=ts_name) 
+												     														INNER JOIN activity_code b ON b.code=activity
+												     						WHERE c.job_no='$job_num' AND ts_name='$name'  AND b.code_for IN ('Engineering','Workshop') AND b.Relative!='Packing'
+												     						ORDER BY ts_name,ts_date ")->result_array();			
+					
+		}
+		
+		
+		function my_jobReport_EmpwiseTotal($job_num,$name){
+					return  $this->db->query("SELECT a.job_no AS num, b.job_desc AS 'desc', a.ts_name AS name, COUNT( DISTINCT a.ts_date) AS days,
+																		 IF(c.code_for='Workshop','Technician',c.code_for) as Department,c.relative,c.code_for,
+										                                 CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total ,
+										                                  SEC_TO_TIME(AVG(TIME_TO_SEC(a.job_time))) AS 'avg' 
+										                              FROM time_sheet_jobs a
+										                              				 INNER JOIN jobs b ON (a.job_no=b.job_no AND b.name=a.ts_name) 
+										                              				 				INNER JOIN activity_code c ON c.code=a.activity
+																	 WHERE a.job_no='$job_num'  AND ts_name='$name' AND c.code_for IN ('Engineering','Workshop') AND c.Relative!='Packing'
+																	 GROUP BY a.ts_name
+																	 ORDER BY c.code_for,a.ts_name,total ")->result_array();			
+								
+		}
+		
+		
+		
+		function my_jobReport_ActivitywiseTotal($job_num,$name){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,a.code,a.desc, a.code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
+																				WHERE job_no='$job_num'  AND ts_name='$name' AND a.code_for IN ('Engineering','Workshop') AND a.Relative!='Packing'
+																				GROUP BY a.code 
+																				ORDER BY a. code_for,a.code ")->result_array();	
+		
+			
+		}
+
+		
+		
+		function my_jobReport_DeptwiseTotal($job_num,$name){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days, a.code_for,SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
+																				WHERE job_no='$job_num' AND ts_name='$name' AND a.code_for IN ('Engineering','Workshop') AND a.Relative!='Packing'
+																				GROUP BY a.code_for
+																				ORDER BY a.code_for ")->result_array();	
+		
+			
+		}
+
+		
+		function my_jobReport_RelativewiseTotal($job_num,$name){
+						return  $this->db->query("SELECT a.code_for,Relative, SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total,COUNT( DISTINCT ts_date) as days
+																				FROM time_sheet_jobs INNER JOIN activity_code a ON a.code=activity
+																				WHERE job_no='$job_num'  AND ts_name='$name' AND a.code_for IN ('Engineering','Workshop') AND a.Relative!='Packing'
+																				GROUP BY a.code_for,a.Relative
+																				ORDER BY a. code_for,a.Relative ")->result_array();	
+		
+			
+		}
+
+		
+		
+		function my_jobReport_TotalHrs($job_num,$name){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as  total
+																			FROM 
+																				(SELECT  DISTINCT ts_date , SEC_TO_TIME(SUM(TIME_TO_SEC(job_time))) as job_time
+																				FROM time_sheet_jobs
+																				WHERE job_no='$job_num'  AND ts_name='$name'
+																				GROUP BY ts_date )   a")->result_array();	
+		
+			
+		}
+
+		function my_overall_jobSummary($name){
+						return  $this->db->query("SELECT a.job_no,b.job_desc,COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(a.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(a.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(a.job_time)*60)))>29,1,0) as  total
+																		
+																				
+																				FROM time_sheet_jobs a INNER JOIN jobs b ON b.job_no=a.job_no
+																				WHERE  a.ts_name='$name'
+																				GROUP BY a.job_no 	
+																				ORDER BY CAST(a.job_no as UNSIGNED) ")->result_array();	
+		
+			
+		}
+
+
+
 	
+// MIS Weekly Report
+	
+		
+		function my_jobReport_RelativewiseTotal_MIS($from,$to,$name){
+						return  $this->db->query("SELECT CONCAT(c.job_no,' - ',b.job_desc) as job_no,a.code_for,a.relative,COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(c.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))>29,1,0) as  total
+																			FROM time_sheet_jobs c
+																						INNER JOIN activity_code a ON a.code=c.activity
+																							INNER JOIN jobs b ON b.job_no=c.job_no
+																			WHERE ts_date BETWEEN '$from' AND '$to' AND ts_name='$name'
+																			GROUP BY c.job_no,a.code_for,a.relative
+																			ORDER BY CAST(c.job_no as UNSIGNED),a.code_for")->result_array();	
+		
+		}
+
+		function my_jobReport_MIS_TotalHours($from,$to,$name){
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(c.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))>29,1,0) as  total
+																			FROM time_sheet_jobs c
+																			WHERE ts_date BETWEEN '$from' AND '$to' AND ts_name='$name' LIMIT 1	")->result_array();	
+		
+		}
+
+		
+			
+		function my_jobReport_EmpwiseTotal_MIS($from,$to,$name){
+					return  $this->db->query("SELECT a.ts_name , COUNT( DISTINCT a.ts_date) AS days,c.Department,
+																	      CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total 
+										                              FROM time_sheet_jobs a
+										                              				 				INNER JOIN team c ON c.EmployeeName=a.ts_name
+																	 WHERE  a.ts_date BETWEEN '$from' AND '$to' AND a.ts_name='$name'
+																	 GROUP BY a.ts_name
+																	 ORDER BY c.Department,a.ts_name")->result_array();			
+		}
+		
+	
+		
 	
 	
 }
