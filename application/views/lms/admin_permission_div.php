@@ -1,6 +1,8 @@
 
 <table>
 	<tr bgcolor="#518C9C" style="border-right: 1px solid white;">
+		<td align="center" colspan="10" style="border-right: 1px solid white;">Permission History</td></tr>
+	<tr bgcolor="#518C9C" style="border-right: 1px solid white;">
 		<td align="center" width="4%" style="border-right: 1px solid white;"><font
 			color="white">S.No</font></td>
 		<td align="center" width="10%" style="border-right: 1px solid white;"><font

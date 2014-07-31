@@ -193,7 +193,7 @@ class timesheet extends CI_Controller
 															/* * *			Employee Timesheet Reports 			* 	* */
 	
 	function my_time_job_activity(){
-		$data["menu"]='team_reports';
+		$data["menu"]='timesheet';
 		$data["submenu"]='my_time_job_activity';
 		$data["Jobs_Num"]=$this->ts_model->get_My_JobsNum();
 		$this->template->write('titleText', " My Time & Job  Activity");
@@ -206,7 +206,7 @@ class timesheet extends CI_Controller
 	
 	function my_timesheet_jobwise(){
 		$name=$this->session->userdata("fullname");
-		$data["menu"]='team_reports';
+		$data["menu"]='timesheet';
 		$data["submenu"]='my_timesheet_jobwise';
 		$data["Jobs_Num"]=$this->ts_model->get_My_JobsNum();
 		$data["Jobs_List"]=$this->ts_model->get_empJobsList($name);
@@ -219,7 +219,7 @@ class timesheet extends CI_Controller
 	
 	function my_timesheet_activity_vs_job(){
 		$name=$this->session->userdata("fullname");
-		$data["menu"]='team_reports';
+		$data["menu"]='timesheet';
 		$data["submenu"]='my_timesheet_activity_vs_job';
 		$this->template->write('titleText', "Activity Vs Job Reports");
 		$data["Jobs_List"]=$this->ts_model->get_empJobsList($name);
@@ -230,7 +230,7 @@ class timesheet extends CI_Controller
 	}
 	
 	function my_timesheet_jobwise_MIS(){
-		$data["menu"]='team_reports';
+		$data["menu"]='timesheet';
 		$data["submenu"]='my_timesheet_jobwise_MIS';
 		$data["Year"]=$this->ts_model->get_All_Years();
 		$data["Jobs_Num"]=$this->ts_model->get_My_JobsNum();

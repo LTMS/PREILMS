@@ -265,9 +265,6 @@
 		<?php if ($submenu=='my_summary'){?> class="current" <?php }?>>My	Leave Summary</a></li>
 		<li><a href="<?php echo site_url("lms/my_permission"); ?>"
 		<?php if ($submenu=='my_permission'){?> class="current" <?php }?>>My	Permission History</a></li>
-		<li><a href="<?php echo site_url("lms/history_teamleader"); ?>"
-		<?php if ($submenu=='history_teamleader'){?> class="current"
-		<?php }?>>Department Leave History</a></li>
 		<li><a href="<?php echo site_url("lms/index"); ?>"
 		<?php if ($submenu=='lms_intro'){?> class="current" <?php }?>>Leave 	Management Criteria</a></li>
 	</ul>
@@ -293,9 +290,6 @@
 		<?php if ($submenu=='my_otsummary'){?> class="current" <?php }?>>My	Over Time Summary</a></li>
 		<li><a href="<?php echo site_url("timesheet/my_ack_otsummary"); ?>"
 		<?php if ($submenu=='my_ack_otsummary'){?> class="current" <?php }?>>My	Acknowledged O-T History</a></li>
-		<li> --- --- My Team Reports --- ---</li>
-		<li><a href="<?php echo site_url("timesheet/timesheet_leader"); ?>"
-		<?php if ($submenu=='timesheet_leader'){?> class="current" <?php }?>>My	Team Time Sheet</a></li>
 		<!-- 	   			<li><a href="<?php echo site_url("timesheet/intro"); ?>" <?php if ($submenu=='tms_intro'){?>class="current"<?php }?> >Time Sheet Criteria</a></li>
 	 -->
 	</ul>

@@ -1,6 +1,7 @@
 <?php
 
 print('<div><table border="1" align="center" cellpading="0" cellspacing="0" width="100%">');
+print('<tr><td align="center" colspan="10"  style="font-size:14px;font-weight:bold;color:Red">'.$title.'</td></tr>');
 print('<tr style="bgcolor:grey">');
 print('<td align="center" style="font-size:14px;font-weight:bold;color:Red">EmployeeName</td>');
 print('<td align="center" style="font-size:14px;font-weight:bold;color:Red">Month</td>');

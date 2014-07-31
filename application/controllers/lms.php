@@ -337,6 +337,44 @@ class Lms extends CI_Controller
 		$this->template->render();
 	}
 
+															/* * *  Leader Leave History		* * */
+	
+		function history_team()	{
+		$data["menu"]='team_reports';
+		$data["submenu"]='history_team';
+		$data["years"]=$this->lms_model->get_years();
+		$data["leavelist"]=$this->lms_model->get_leavelist();
+		$data["members"]=$this->lms_model->get_team_members();
+		$this->template->write('titleText', "Employees Leave History");
+		$this->template->write_view('sideLinks', 'general/menu',$data);
+		$this->template->write_view('bodyContent', 'lms/team_history',$data);
+		$this->template->render();
+	}
+
+	function team_permission()	{
+		$data["menu"]='team_reports';
+		$data["submenu"]='team_permission';
+		$data["year"]=$this->lms_model->get_permission_years();
+		$data["members"]=$this->lms_model->get_team_members();
+		//$data["Permission"]=$this->lms_model->admin_permission(date('Y'));
+		$this->template->write('titleText', "Permission History");
+		$this->template->write_view('sideLinks', 'general/menu',$data);
+		$this->template->write_view('bodyContent', 'lms/team_permission',$data);
+		$this->template->render();
+	}
+
+		function team_leave_summary()	{
+		$data["menu"]='team_reports';
+		$data["submenu"]='team_leave_summary';
+		$data["members"]=$this->lms_model->get_team_members();
+		$data['years']=$this->lms_model->get_years();
+		$this->template->write('titleText', "Employees Leave Summary");
+		$this->template->write_view('sideLinks', 'general/menu',$data);
+		$this->template->write_view('bodyContent', 'lms/team_leave_summary',$data);
+		$this->template->render();
+	}
+	
+	
 	function change_leave_type()
 	{
 		$form_data = $this->input->post();
@@ -527,9 +565,11 @@ class Lms extends CI_Controller
 		$data["reminder"]=$this->lms_model->get_reminder_limit();
 		$data["result"]=$this->lms_model->get_leave_status($form_data["d1"],$form_data["d2"],$form_data["type"]);
 		if($type=='1'){
+			$data["title"]="Pending / Expired Leave Application";
 			$this->load->view('lms/leave_status_noaction',$data);
 		}
 		else{
+			$data["title"]=$type." History from ".$form_data["d1"]." - ".$form_data["d2"];
 			$this->load->view('lms/history_left',$data);
 			$this->load->view('lms/leave_status',$data);
 		}
@@ -540,11 +580,13 @@ class Lms extends CI_Controller
 		$month=$form_data["month"];
 
 		if($month=='All'){
+			$data["title"]="Leave History of ".$form_data["emp"]."for ".$form_data["year"];
 			$data["result"]=$this->lms_model->admin_leavehistory_general_all($form_data["year"],$form_data["month"],$form_data["emp"]);
 			$this->load->view('lms/admin_leavehistory_page_emp',$data);
 			$this->load->view('lms/admin_leavehistory_general_print',$data);
 		}
 		if($month!='All'){
+			$data["title"]="Leave History of ".$form_data["emp"]."for ".$form_data["year"]." - ".$form_data["month"];
 			$data["result"]=$this->lms_model->admin_leavehistory_general_month($form_data["year"],$form_data["month"],$form_data["emp"]);
 			$this->load->view('lms/admin_leavehistory_page_emp',$data);
 			$this->load->view('lms/admin_leavehistory_general_print',$data);
@@ -554,6 +596,7 @@ class Lms extends CI_Controller
 
 	function admin_leavehistory_general_filter(){
 		$form_data = $this->input->post();
+		$data["title"]=$form_data["leave"]." History of ".$form_data["emp"]." for ".$form_data["year"];
 		$data["result"]=$this->lms_model->admin_leavehistory_general_filter($form_data["year"],$form_data["emp"],$form_data["leave"]);
 		$this->load->view('lms/admin_leavehistory_page_emp',$data);
 		$this->load->view('lms/admin_leavehistory_general_print',$data);
@@ -564,11 +607,13 @@ class Lms extends CI_Controller
 		$form_data = $this->input->post();
 		$emp=$form_data["emp"];
 		if($emp=='All'){
+			$data["title"]="Leave History of ".$form_data["emp"]." for ".$form_data["year"];
 			$data["result"]=$this->lms_model->admin_leavehistory_approved_all($form_data["year"]);
 			$this->load->view('lms/admin_leavehistory_page_all',$data);
 			$this->load->view('lms/admin_leavehistory_approved_all_print',$data);
 		}
 		else{
+			$data["title"]="Leave History of ".$form_data["emp"]." for ".$form_data["year"];
 			$data["result"]=$this->lms_model->admin_leavehistory_approved_ind($form_data["year"],$form_data["emp"]);
 			$this->load->view('lms/admin_leavehistory_page_all',$data);
 			$this->load->view('lms/admin_leavehistory_approved_ind_print',$data);
@@ -577,7 +622,27 @@ class Lms extends CI_Controller
 	}
 		
 
+			
+	function team_leavehistory_approved(){
+		$form_data = $this->input->post();
+		$emp=$form_data["emp"];
+		if($emp=='All'){
+			$data["title"]="Leave History of ".$form_data["emp"]." for ".$form_data["year"];
+			$data["result"]=$this->lms_model->team_leavehistory_approved_all($form_data["year"]);
+			$this->load->view('lms/admin_leavehistory_page_all',$data);
+			$this->load->view('lms/admin_leavehistory_approved_all_print',$data);
+		}
+		else{
+			$data["title"]="Leave History of ".$form_data["emp"]." for ".$form_data["year"];
+			$data["result"]=$this->lms_model->team_leavehistory_approved_ind($form_data["year"],$form_data["emp"]);
+			$this->load->view('lms/admin_leavehistory_page_all',$data);
+			$this->load->view('lms/admin_leavehistory_approved_ind_print',$data);
+		}
 
+	}
+		
+
+	
 	function get_history_teamleader()
 	{
 		$form_data = $this->input->post();
@@ -969,6 +1034,7 @@ class Lms extends CI_Controller
 		$form_data = $this->input->post();
 		$type=$form_data["type"];
 		$txt=$form_data["emp"];
+		$data["title"]="Leave Summary of ".$emp;
 		$data["summary"]=$this->summary_model->get_summary($form_data["year"],$form_data["emp"],$form_data["team"],$form_data["dept"]);
 		$data["total"]=$this->summary_model->get_summary_total($form_data["year"],$form_data["emp"],$form_data["team"],$form_data["dept"]);
 		$data["perm"]=$this->summary_model->get_admin_permission($form_data["year"],$form_data["emp"]);
@@ -987,6 +1053,24 @@ class Lms extends CI_Controller
 
 	}
 
+	
+		function get_team_summary(){
+		$form_data = $this->input->post();
+		$emp=$form_data["emp"];
+		$leader=$this->session->userdata("fullname");
+		$data["title"]="Leave Summary of ".$emp." of Team - ".$leader;
+		$data["summary"]=$this->summary_model->get_team_summary($form_data["year"],$form_data["emp"]);
+		$data["total"]=$this->summary_model->get_team_summary_total($form_data["year"],$form_data["emp"]);
+		//$data["perm"]=$this->summary_model->get_team_permission($form_data["year"],$form_data["emp"]);
+		//$data["perm_tot"]=$this->summary_model->get_team_permission_total($form_data["year"],$form_data["emp"]);
+
+		$this->load->view('lms/leave_summary_dept',$data);
+		
+
+	}
+
+	
+	
 	function get_my_summary(){
 		$form_data = $this->input->post();
 		$data["summary"]=$this->summary_model->get_my_summary($form_data["year"]);
