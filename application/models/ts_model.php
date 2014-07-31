@@ -30,6 +30,25 @@ Class ts_model extends CI_Model{
 		
 	}
 	
+	function get_Team_JobsNum(){
+		$leader=$this->session->userdata("fullname");
+		$result= $this->db->query("SELECT  DISTINCT job_no as Num 
+															FROM time_sheet_jobs 
+															WHERE  ts_name='$leader' OR  ts_name IN (SELECT EmployeeName 
+																									FROM team WHERE LeaveApprover_L1='$leader' )
+															ORDER BY  CAST( job_no as UNSIGNED)")->result_array();	
+				if(!empty($result)){
+						foreach($result as $res){
+							$row_set[]=$res['Num'];
+						}
+				 }
+				else{
+						$row_set[]='';
+				}
+					return $row_set;
+		
+	}
+	
 	function get_My_JobsNum(){
 		$name=$this->session->userdata("fullname");
 		$result=$this->db->query("SELECT DISTINCT  DISTINCT CAST( job_no as UNSIGNED) as Num 
@@ -147,7 +166,9 @@ Class ts_model extends CI_Model{
 	{
 		$uname=$this->session->userdata('fullname');
 
-		return $this->db->query("SELECT EmployeeName AS 'Name' FROM team WHERE LeaveApprover_L1='$uname' ORDER BY EmployeeName ")->result_array();
+		return $this->db->query("SELECT EmployeeName AS 'Name' 
+															FROM team WHERE LeaveApprover_L1='$uname' 
+															ORDER BY EmployeeName ")->result_array();
 	}
 
 	function get_all_members(){
@@ -1631,7 +1652,34 @@ Class ts_model extends CI_Model{
 																						WHERE ts_date BETWEEN '$from' AND '$to') a  ")->result_array();
 		}
 		
+		function get_time_activity_team($from,$to){
+			$leader=$this->session->userdata("fullname");
+					return $this->db->query("SELECT DISTINCT ts_date,ts_name,ts_intime,ts_outtime,ts_late,ts_lunch,
+																						ts_duty,ts_ot,ts_tot_hrs,recorded_time
+																		FROM time_sheet
+																		WHERE ts_date BETWEEN '$from' AND '$to' AND ( ts_name='$leader'
+																						OR ts_name IN (SELECT EmployeeName 
+																									FROM team WHERE LeaveApprover_L1='$leader' ))
+																		ORDER BY ts_name,ts_date  ")->result_array();
+		}
+		
 	
+		function get_time_activity_team_total($from,$to){
+			$leader=$this->session->userdata("fullname");
+			return $this->db->query("SELECT COUNT(ts_date) as days,
+																				SUM(HOUR(ts_tot_hrs))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_tot_hrs)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(ts_tot_hrs)*60)))>29,1,0) as total,
+																				SUM(HOUR(ts_duty))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_duty)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(ts_duty)*60)))>29,1,0) as duty,
+																				SUM(HOUR(ts_ot))+HOUR(SEC_TO_TIME(SUM(MINUTE(ts_ot)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(ts_ot)*60)))>29,1,0) as ot
+																		FROM
+																					(SELECT DISTINCT ts_date,ts_name,ts_tot_hrs,ts_duty,ts_ot
+																						FROM time_sheet  
+																						WHERE ts_date BETWEEN '$from' AND '$to' AND (ts_name='$leader'
+																										OR ts_name IN (SELECT EmployeeName 
+																																							FROM team WHERE LeaveApprover_L1='$leader') ) ) a  ")->result_array();
+		}
+		
+	
+		
 		function get_time_activity($from,$to,$emp){
 					return $this->db->query("SELECT DISTINCT ts_date,ts_name,ts_intime,ts_outtime,ts_late,ts_lunch,
 																						ts_duty,ts_ot,ts_tot_hrs,recorded_time
@@ -1671,7 +1719,30 @@ Class ts_model extends CI_Model{
 																						WHERE ts_date BETWEEN '$from' AND '$to') a  ")->result_array();
 		}
 		
+		function get_job_activity_team($from,$to){
+						$leader=$this->session->userdata("fullname");
+						return $this->db->query("SELECT DISTINCT ts_date,ts_name,job_no,job_time,activity,job_np,task_desc
+																		FROM time_sheet_jobs
+																		WHERE ts_date BETWEEN '$from' AND '$to' AND (ts_name='$leader' 
+																						OR ts_name IN (SELECT EmployeeName 
+																															FROM team WHERE LeaveApprover_L1='$leader' ))
+																		ORDER BY ts_name,ts_date  ")->result_array();
+		}
+		
 	
+		function get_job_activity_team_total($from,$to){
+						$leader=$this->session->userdata("fullname");
+						return $this->db->query("SELECT COUNT(ts_date) as days,
+																				SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0) as total
+																		FROM
+																					(SELECT DISTINCT ts_date,ts_name,job_no,job_time,activity
+																						FROM time_sheet_jobs
+																						WHERE ts_date BETWEEN '$from' AND '$to'  AND (ts_name='$leader' 
+																									 OR ts_name IN (SELECT EmployeeName 
+																																		FROM team WHERE LeaveApprover_L1='$leader' ))) a  ")->result_array();
+		}
+		
+		
 		function get_job_activity($from,$to,$emp){
 					return $this->db->query("SELECT DISTINCT ts_date,ts_name,job_no,job_time,activity,job_np,task_desc
 																		FROM time_sheet_jobs
@@ -1687,6 +1758,71 @@ Class ts_model extends CI_Model{
 																						FROM time_sheet_jobs
 																						WHERE ts_date BETWEEN '$from' AND '$to' AND ts_name='$emp' ) a  ")->result_array();
 		}
+		
+
+								/* * * Team Leader Timesheet Reports		* * */
+		
+				function overall_team_jobSummary(){
+						$leader=$this->session->userdata("fullname");
+						return  $this->db->query("SELECT a.job_no,b.job_desc,COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(a.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(a.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(a.job_time)*60)))>29,1,0) as  total
+																		
+																				
+																				FROM time_sheet_jobs a INNER JOIN jobs b ON b.job_no=a.job_no
+																				WHERE  a.ts_name='$leader' OR a.ts_name IN (SELECT EmployeeName 
+																																							FROM team WHERE LeaveApprover_L1='$leader' ) 
+																				GROUP BY a.job_no 	
+																				ORDER BY CAST(a.job_no as UNSIGNED) ")->result_array();	
+		
+			
+		}
+
+		
+// MIS Weekly Report
+	
+		
+		function team_jobReport_RelativewiseTotal_MIS($from,$to){
+						$leader=$this->session->userdata("fullname");
+						return  $this->db->query("SELECT CONCAT(c.job_no,' - ',b.job_desc) as job_no,a.code_for,a.relative,COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(c.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))>29,1,0) as  total
+																			FROM time_sheet_jobs c
+																						INNER JOIN activity_code a ON a.code=c.activity
+																							INNER JOIN jobs b ON b.job_no=c.job_no
+																			WHERE ts_date BETWEEN '$from' AND '$to'  AND 
+																						 (c.ts_name='$leader' OR c.ts_name IN (SELECT EmployeeName 
+																																							FROM team WHERE LeaveApprover_L1='$leader') )
+																			GROUP BY c.job_no,a.code_for,a.relative
+																			ORDER BY CAST(c.job_no as UNSIGNED),a.code_for")->result_array();	
+		
+		}
+
+		function team_jobReport_MIS_TotalHours($from,$to){
+						$leader=$this->session->userdata("fullname");
+						return  $this->db->query("SELECT COUNT( DISTINCT ts_date) as days,
+																				SUM(HOUR(c.job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))+IF(MINUTE(SEC_TO_TIME(SUM(MINUTE(c.job_time)*60)))>29,1,0) as  total
+																			FROM time_sheet_jobs c
+																			WHERE ts_date BETWEEN '$from' AND '$to' AND 
+																						 (ts_name='$leader' OR ts_name IN (SELECT EmployeeName 
+																																							FROM team WHERE LeaveApprover_L1='$leader') ) LIMIT 1	")->result_array();	
+		
+		}
+
+		
+			
+		function team_jobReport_EmpwiseTotal_MIS($from,$to){
+						$leader=$this->session->userdata("fullname");
+						return  $this->db->query("SELECT a.ts_name , COUNT( DISTINCT a.ts_date) AS days,c.Department,
+																	      CAST(CONCAT(SUM(HOUR(job_time))+HOUR(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))+IF(Minute(SEC_TO_TIME(SUM(MINUTE(job_time)*60)))>29,1,0)) AS unsigned)  AS total 
+										                              FROM time_sheet_jobs a
+										                              				 				INNER JOIN team c ON c.EmployeeName=a.ts_name
+																	 WHERE  a.ts_date BETWEEN '$from' AND '$to' AND 
+																						 (a.ts_name='$leader' OR a.ts_name IN (SELECT EmployeeName 
+																																							FROM team WHERE LeaveApprover_L1='$leader') )
+																	 GROUP BY a.ts_name
+																	 ORDER BY c.Department,a.ts_name")->result_array();			
+		}
+		
+	
 		
 		
 	
