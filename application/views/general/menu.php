@@ -21,7 +21,7 @@
 		<li><a href="<?php echo site_url("lms/md_permission"); ?>"
 		<?php if ($submenu=='md_permission'){?> class="current" <?php }?>>Employees	Permission History</a></li>
 		<li><a href="<?php echo site_url("lms/index"); ?>"
-		<?php if ($submenu=='lms_intro'){?> class="current" <?php }?>>Leave 	Management Criteria</a></li>
+		<?php if ($submenu=='lms_intro'){?> class="current" <?php }?>>Leave Management Criteria</a></li>
 	</ul>
 </li>
 
@@ -31,8 +31,8 @@
 	<ul style="display: block;">
 		<li><a href="<?php echo site_url("lms/lop_admin"); ?>"
 		<?php if ($submenu=='lop_admin'){?> class="current" <?php }?>>Update	Loss of Pay [LOP]</a></li>
-		<li><a href="<?php echo site_url("timesheet/time_activity"); ?>"
-		<?php if ($submenu=='time_activity'){?> class="current" <?php }?>>Time & Job Activity Reports</a></li>
+		<li><a href="<?php echo site_url("timesheet/time_job_activity"); ?>"
+		<?php if ($submenu=='time_job_activity'){?> class="current" <?php }?>>Time & Job Activity Reports</a></li>
 <!-- 	
 		<li><a href="<?php echo site_url("timesheet/monthly_reports"); ?>"	
 		<?php if ($submenu=='monthly_reports'){?> class="current" <?php }?>>Monthly Time Sheet Reports</a></li>
@@ -41,8 +41,8 @@
  -->		
 		<li><a href="<?php echo site_url("timesheet/timesheet_jobwise"); ?>"	
 		<?php if ($submenu=='timesheet_jobwise'){?> class="current" <?php }?>>Timesheet - Job Report</a></li>
-		<li><a href="<?php echo site_url("timesheet/timesheet_empwise"); ?>"
-		<?php if ($submenu=='timesheet_empwise'){?> class="current" <?php }?>>Activity Vs Job Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/timesheet_activity_vs_job"); ?>"
+		<?php if ($submenu=='timesheet_activity_vs_job'){?> class="current" <?php }?>>Activity Vs Job Report</a></li>
 		<li><a href="<?php echo site_url("timesheet/timesheet_jobwise_MIS"); ?>"
 		<?php if ($submenu=='timesheet_jobwise_MIS'){?> class="current" <?php }?>>MIS - Time Sheet</a></li>
 		<li><a href="<?php echo site_url("timesheet/admin_ot"); ?>"
@@ -87,7 +87,7 @@
 	class="nav-top-item <?php if($menu=='my_account') echo "current"; ?> ">	My Account Details</a>
 	<ul style="display: block;">
 		<li><a href="<?php echo site_url("users/employee_details");?>"
-		<?php if ($submenu=='employee_details'){?> class="current" <?php }?>>My		rofile </a></li>
+		<?php if ($submenu=='employee_details'){?> class="current" <?php }?>>My		Profile </a></li>
 		<li><a href="<?php echo site_url("general/mydetails"); ?>"
 		<?php if ($submenu=='mydetails'){?> class="current" <?php }?>>My App	Account </a></li>
 	</ul>
@@ -115,15 +115,15 @@
 				Leave</a></li>
 		<!-- 		<li><a href="<?php echo site_url("lms/leave_others"); ?>" <?php if ($submenu=='apply_others'){?>class="current"<?php }?> >Apply Leave for Other</a></li>  -->
 		<li><a href="<?php echo site_url("lms/history"); ?>"
-		<?php if ($submenu=='history'){?> class="current" <?php }?>>My Leave		History</a></li>
+		<?php if ($submenu=='history'){?> class="current" <?php }?>>My Leave	History</a></li>
 		<li><a href="<?php echo site_url("lms/my_lop"); ?>"
-		<?php if ($submenu=='my_lop'){?> class="current" <?php }?>>My LOP		History</a></li>
+		<?php if ($submenu=='my_lop'){?> class="current" <?php }?>>My LOP	History</a></li>
 		<li><a href="<?php echo site_url("lms/my_leave_summary"); ?>"
-		<?php if ($submenu=='my_summary'){?> class="current" <?php }?>>My		Leave Summary</a></li>
+		<?php if ($submenu=='my_summary'){?> class="current" <?php }?>>My	Leave Summary</a></li>
 		<li><a href="<?php echo site_url("lms/my_permission"); ?>"
-		<?php if ($submenu=='my_permission'){?> class="current" <?php }?>>My		Permission History</a></li>
+		<?php if ($submenu=='my_permission'){?> class="current" <?php }?>>My	Permission History</a></li>
 		<li><a href="<?php echo site_url("lms/index"); ?>"
-		<?php if ($submenu=='lms_intro'){?> class="current" <?php }?>>Leave		Management Criteria</a></li>
+		<?php if ($submenu=='lms_intro'){?> class="current" <?php }?>>Leave	Management Criteria</a></li>
 	</ul>
 </li>
 
@@ -132,10 +132,16 @@
 		Time Sheet </a>
 	<ul style="display: block;">
 		<li><a href="<?php echo site_url("timesheet/index"); ?>"
-		<?php if ($submenu=='entry'){?> class="current" <?php }?>>Time Sheet		Entry</a></li>
+		<?php if ($submenu=='entry'){?> class="current" <?php }?>>Time Sheet	Entry</a></li>
 		<!-- 	<li><a href="<?php echo site_url("timesheet/edit_timesheet"); ?>" <?php if ($submenu=='edit_timesheet'){?>class="current"<?php }?> >Edit Time Sheet Data</a></li> -->
-		<li><a href="<?php echo site_url("timesheet/mysheet"); ?>"
-		<?php if ($submenu=='mysheet'){?> class="current" <?php }?>>My Time	Sheet Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_time_job_activity"); ?>"
+		<?php if ($submenu=='my_time_job_activity'){?> class="current" <?php }?>>Time & Job Activity Reports</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_timesheet_jobwise"); ?>"	
+		<?php if ($submenu=='my_timesheet_jobwise'){?> class="current" <?php }?>>Timesheet - Job Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_timesheet_activity_vs_job"); ?>"
+		<?php if ($submenu=='my_timesheet_activity_vs_job'){?> class="current" <?php }?>>Activity Vs Job Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_timesheet_jobwise_MIS"); ?>"
+		<?php if ($submenu=='my_timesheet_jobwise_MIS'){?> class="current" <?php }?>>MIS - Time Sheet</a></li>
 		<li><a href="<?php echo site_url("timesheet/my_ot"); ?>"
 		<?php if ($submenu=='my_ot'){?> class="current" <?php }?>>My OT	Details</a></li>
 		<li><a href="<?php echo site_url("timesheet/my_otsummary"); ?>"
@@ -161,18 +167,12 @@
 		<li><a href="<?php echo site_url("lms/leave_summary"); ?>"
 		<?php if ($submenu=='summary'){?> class="current" <?php }?>>Employees	Leave Summary</a></li>
 		<li>-----  ----   TIMESHEET   ---- -----</li>
-		<li><a href="<?php echo site_url("timesheet/time_activity"); ?>"
-		<?php if ($submenu=='time_activity'){?> class="current" <?php }?>>Time & Job Activity Reports</a></li>
-<!-- 	
-		<li><a href="<?php echo site_url("timesheet/monthly_reports"); ?>"	
-		<?php if ($submenu=='monthly_reports'){?> class="current" <?php }?>>Monthly Time Sheet Reports</a></li>
-		<li><a href="<?php echo site_url("timesheet/teamsheet_dept"); ?>"
-		<?php if ($submenu=='teamsheet_dept'){?> class="current" <?php }?>>Extensive	Time Sheet Report</a></li>
- -->		
+		<li><a href="<?php echo site_url("timesheet/time_job_activity"); ?>"
+		<?php if ($submenu=='time_job_activity'){?> class="current" <?php }?>>Time & Job Activity Reports</a></li>
 		<li><a href="<?php echo site_url("timesheet/timesheet_jobwise"); ?>"	
 		<?php if ($submenu=='timesheet_jobwise'){?> class="current" <?php }?>>Timesheet - Job Report</a></li>
-		<li><a href="<?php echo site_url("timesheet/timesheet_empwise"); ?>"
-		<?php if ($submenu=='timesheet_empwise'){?> class="current" <?php }?>>Activity Vs Job Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/timesheet_activity_vs_job"); ?>"
+		<?php if ($submenu=='timesheet_activity_vs_job'){?> class="current" <?php }?>>Activity Vs Job Report</a></li>
 		<li><a href="<?php echo site_url("timesheet/timesheet_jobwise_MIS"); ?>"
 		<?php if ($submenu=='timesheet_jobwise_MIS'){?> class="current" <?php }?>>MIS - Time Sheet</a></li>
 		<li><a href="<?php echo site_url("timesheet/admin_ot"); ?>"
@@ -265,9 +265,6 @@
 		<?php if ($submenu=='my_summary'){?> class="current" <?php }?>>My	Leave Summary</a></li>
 		<li><a href="<?php echo site_url("lms/my_permission"); ?>"
 		<?php if ($submenu=='my_permission'){?> class="current" <?php }?>>My	Permission History</a></li>
-		<li><a href="<?php echo site_url("lms/history_teamleader"); ?>"
-		<?php if ($submenu=='history_teamleader'){?> class="current"
-		<?php }?>>Department Leave History</a></li>
 		<li><a href="<?php echo site_url("lms/index"); ?>"
 		<?php if ($submenu=='lms_intro'){?> class="current" <?php }?>>Leave 	Management Criteria</a></li>
 	</ul>
@@ -279,20 +276,47 @@
 	<ul style="display: block;">
 		<li><a href="<?php echo site_url("timesheet/index"); ?>"
 		<?php if ($submenu=='entry'){?> class="current" <?php }?>>Time Sheet	Entry</a></li>
-		<li><a href="<?php echo site_url("timesheet/mysheet"); ?>"
-		<?php if ($submenu=='mysheet'){?> class="current" <?php }?>>My Time	Sheet Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_time_job_activity"); ?>"
+		<?php if ($submenu=='my_time_job_activity'){?> class="current" <?php }?>>Time & Job Activity Reports</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_timesheet_jobwise"); ?>"	
+		<?php if ($submenu=='my_timesheet_jobwise'){?> class="current" <?php }?>>Timesheet - Job Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_timesheet_activity_vs_job"); ?>"
+		<?php if ($submenu=='my_timesheet_activity_vs_job'){?> class="current" <?php }?>>Activity Vs Job Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_timesheet_jobwise_MIS"); ?>"
+		<?php if ($submenu=='my_timesheet_jobwise_MIS'){?> class="current" <?php }?>>MIS - Time Sheet</a></li>
 		<li><a href="<?php echo site_url("timesheet/my_ot"); ?>"
 		<?php if ($submenu=='my_ot'){?> class="current" <?php }?>>My Over	Time Details</a></li>
 		<li><a href="<?php echo site_url("timesheet/my_otsummary"); ?>"
 		<?php if ($submenu=='my_otsummary'){?> class="current" <?php }?>>My	Over Time Summary</a></li>
 		<li><a href="<?php echo site_url("timesheet/my_ack_otsummary"); ?>"
 		<?php if ($submenu=='my_ack_otsummary'){?> class="current" <?php }?>>My	Acknowledged O-T History</a></li>
-		<li><a href="<?php echo site_url("timesheet/teamsheet_leader"); ?>"
-		<?php if ($submenu=='teamsheet_leader'){?> class="current" <?php }?>>My	Team Time Sheet</a></li>
 		<!-- 	   			<li><a href="<?php echo site_url("timesheet/intro"); ?>" <?php if ($submenu=='tms_intro'){?>class="current"<?php }?> >Time Sheet Criteria</a></li>
 	 -->
 	</ul>
 </li>
+
+
+<li><a href="javascript:void(0);"class="nav-top-item <?php if(($this->session->userdata('admin_logged_in'))&&($menu=='team_reports')) echo "current"; ?>">My Team Reports</a>
+	<ul style="display: block;">
+		<li>------  -----   LEAVE   -----  ------</li>
+		<li><a href="<?php echo site_url("lms/history_team"); ?>"
+		<?php if ($submenu=='history_team'){?> class="current" <?php }?>>Employees	Leave History</a></li>
+		<li><a href="<?php echo site_url("lms/team_permission"); ?>"
+		<?php if ($submenu=='team_permission'){?> class="current" <?php }?>>Employees	Permission History</a></li>
+		<li><a href="<?php echo site_url("lms/team_leave_summary"); ?>"
+		<?php if ($submenu=='team_leave_summary'){?> class="current" <?php }?>>Employees Leave Summary</a></li>
+		<li>-----  ----   TIMESHEET   ---- -----</li>
+		<li><a href="<?php echo site_url("timesheet/team_time_job_activity"); ?>"
+		<?php if ($submenu=='team_time_job_activity'){?> class="current" <?php }?>>Time & Job Activity Reports</a></li>
+		<li><a href="<?php echo site_url("timesheet/team_timesheet_jobwise"); ?>"	
+		<?php if ($submenu=='team_timesheet_jobwise'){?> class="current" <?php }?>>Timesheet - Job Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/team_timesheet_activity_vs_job"); ?>"
+		<?php if ($submenu=='team_timesheet_activity_vs_job'){?> class="current" <?php }?>>Activity Vs Job Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/team_timesheet_jobwise_MIS"); ?>"
+		<?php if ($submenu=='team_timesheet_jobwise_MIS'){?> class="current" <?php }?>>MIS - Time Sheet</a></li>
+	</ul>
+</li>
+
 
 <li><a href="javascript:void(0);"
 	class="nav-top-item <?php if(($this->session->userdata('admin_logged_in'))&&($menu=='misc')) echo "current"; ?>">Miscellaneous</a>
@@ -351,8 +375,14 @@
 	<ul style="display: block;">
 		<li><a href="<?php echo site_url("timesheet/index"); ?>"
 		<?php if ($submenu=='entry'){?> class="current" <?php }?>>Time Sheet	Entry</a></li>
-		<li><a href="<?php echo site_url("timesheet/mysheet"); ?>"
-		<?php if ($submenu=='mysheet'){?> class="current" <?php }?>>My Time	Sheet Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_time_job_activity"); ?>"
+		<?php if ($submenu=='my_time_job_activity'){?> class="current" <?php }?>>Time & Job Activity Reports</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_timesheet_jobwise"); ?>"	
+		<?php if ($submenu=='my_timesheet_jobwise'){?> class="current" <?php }?>>Timesheet - Job Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_timesheet_activity_vs_job"); ?>"
+		<?php if ($submenu=='my_timesheet_activity_vs_job'){?> class="current" <?php }?>>Activity Vs Job Report</a></li>
+		<li><a href="<?php echo site_url("timesheet/my_timesheet_jobwise_MIS"); ?>"
+		<?php if ($submenu=='my_timesheet_jobwise_MIS'){?> class="current" <?php }?>>MIS - Time Sheet</a></li>
 		<li><a href="<?php echo site_url("timesheet/my_ot"); ?>"
 		<?php if ($submenu=='my_ot'){?> class="current" <?php }?>>My Over	Time Details</a></li>
 		<li><a href="<?php echo site_url("timesheet/my_otsummary"); ?>"
