@@ -677,10 +677,10 @@ class timesheet extends CI_Controller
 			$this->load->view('timesheet/AllEmp_otsummary_page',$data);
 		}else
 		{
-			$data["ot"]=$this->otsummary_model->get_admin_normal_ot($result["year"],$result["month"],$result["emp"]);
-			$data["timeoffice"]=$this->otsummary_model->get_days($result["year"],$result["month"],$result["emp"]);
-			$data["Comp_Off"]=$this->otsummary_model->get_CompOff_Hours($result["year"],$result["month"],$result["emp"]);
-			$data["permission"]=$this->otsummary_model->get_Permission_Hours($result["year"],$result["month"],$result["emp"]);
+			$data["ot"]=$this->otsummary_model->get_admin_normal_ot($result["d1"],$result["d2"],$result["emp"]);
+			$data["timeoffice"]=$this->otsummary_model->get_days($result["d1"],$result["d2"],$result["emp"]);
+			$data["Comp_Off"]=$this->otsummary_model->get_CompOff_Hours($result["d1"],$result["d2"],$result["emp"]);
+			$data["permission"]=$this->otsummary_model->get_Permission_Hours($result["d1"],$result["d2"],$result["emp"]);
 			$this->load->view('timesheet/admin_otsummary_page',$data);
 		}
 
