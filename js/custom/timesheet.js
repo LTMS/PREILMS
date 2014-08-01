@@ -1382,7 +1382,7 @@ function get_INOUT(date){
 				}
 				
 		function overall_my_jobSummary(){
-					document.getElementById('getjob').value="";
+					//document.getElementById('getjob').value="";
 					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 					$.post(site_url+"/timesheet/overall_my_jobSummary",function(data){
 						//alert();
