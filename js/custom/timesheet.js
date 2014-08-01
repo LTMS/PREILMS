@@ -1370,6 +1370,7 @@ function get_INOUT(date){
 												/* * *	 Employee Timesheet Reports		* * */
 
 			function my_timesheet_jobReport(job_num1){
+				document.getElementById("report_type").value="Single";
 					if(job_num1!="" || job_num1==null){
 						$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 							$.post(site_url+"/timesheet/my_timesheet_jobReport",{job_num:job_num1},function(data){
@@ -1382,7 +1383,8 @@ function get_INOUT(date){
 				}
 				
 		function overall_my_jobSummary(){
-					document.getElementById('getjob').value="";
+					//document.getElementById('getjob').value="";
+					document.getElementById("report_type").value="All";
 					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 					$.post(site_url+"/timesheet/overall_my_jobSummary",function(data){
 						//alert();
@@ -1438,15 +1440,18 @@ function get_INOUT(date){
 		
 			
 			function get_my_time_activity(){
+				document.getElementById("report_type").value="time";
 				var from1=document.getElementById('date_from').value;
 				var to1=document.getElementById('date_to').value;
 						
 				if(from1!="" && to1!=""){
 					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
-					$.post(site_url+"/timesheet/get_my_time_activity",{from:from1,to:to1},function(data){
-						//alert();
-						$('#contentData').html("");
-						$('#contentData').append(data);
+				
+					$.post(site_url+"/timesheet/get_my_time_activity",{from:from1,to:to1},
+				function(data){
+					
+						$('#not').html("");
+						$('#not').append(data);
 						
 					});
 				}
@@ -1455,6 +1460,7 @@ function get_INOUT(date){
 		
 			
 			function get_my_job_activity(){
+				document.getElementById("report_type").value="job";
 				var from1=document.getElementById('date_from').value;
 				var to1=document.getElementById('date_to').value;
 						
@@ -1543,4 +1549,50 @@ function get_INOUT(date){
 			}
 			
 			
+			$("#my_time_job_activity").live("click", function(){
+
+				var report_type=document.getElementById("report_type").value;
+				var from1=document.getElementById('date_from').value;
+				var to1=document.getElementById('date_to').value;
+				if(report_type== "time")
+					{
+							if(from1!="" && to1!="")
+							{
+							var params=from1+"::"+to1;
+							var downloadurl=site_url+"/timesheet/my_time_activity/"+params;
+							window.location=downloadurl;
+							}
+					}else
+						if(report_type== "job")
+							{
+									
+								if(from1!="" && to1!="")
+								{
+								var params=from1+"::"+to1;
+								var downloadurl=site_url+"/timesheet/my_job_activity/"+params;
+								window.location=downloadurl;
+								}
+							}
 			
+			});
+			$("#My_job_details_dwnld").live("click", function(){
+			
+				var report_type=document.getElementById("report_type").value;
+				var job_num1=document.getElementById("job_no").value;
+			
+				if(report_type== "Single")
+					{
+						if(job_num1!="" || job_num1==null)
+								{
+								var params=job_num1+"::"+report_type;
+								var downloadurl=site_url+"/timesheet/my_job_details_dwnld_single/"+params;
+								window.location=downloadurl;
+								}
+						}else
+							if(report_type== "All")
+								{
+								var downloadurl=site_url+"/timesheet/overall_my_jobSummary_dwnld/";
+								window.location=downloadurl;
+								}
+			
+			});

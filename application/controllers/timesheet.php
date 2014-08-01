@@ -10,6 +10,10 @@ class timesheet extends CI_Controller
 		$this->load->model('otsummary_model');
 		$this->load->helper('url');
 		$this->load->library('AllEmp_ot_dwnld');
+		$this->load->library('My_time_activity_dwnld');
+		$this->load->library('My_job_activity_dwnld');
+		$this->load->library('My_job_details_dwnld_single');
+		$this->load->library('Overall_my_jobSummary_dwnld');
 		$this->load->library('AllEmp_unupdated_dwnld');
 		$this->load->library('AllMon_Emp_unupdated_dwnld');
 		$this->load->library('singleMon_Emp_unupdated_dwnld');
@@ -1075,11 +1079,12 @@ class timesheet extends CI_Controller
 				$form=$this->input->post();
 				$from=date('Y-m-d',strtotime($form["from"]));
 				$to=date('Y-m-d',strtotime($form["to"]));
+				//echo $form["from"];
 				$emp=$this->session->userdata("fullname");
 				$data["title"]="Time Activity Report of ".$emp." from ".$form["from"]." to ".$form["to"];
 						$data["Time_Activity"]=$this->ts_model->get_time_activity($from,$to,$emp);
 						$data["Time_Activity_Total"]=$this->ts_model->get_time_activity_total($from,$to,$emp);
-						$this->load->view("timesheet/time_activity_content",$data);
+					 $this->load->view("timesheet/time_activity_content",$data);
 			}
 		
 			
@@ -1093,12 +1098,65 @@ class timesheet extends CI_Controller
 				$data["Job_Activity_Total"]=$this->ts_model->get_job_activity_total($from,$to,$emp);
 				$this->load->view("timesheet/job_activity_content",$data);
 			}
+		function my_time_activity($params)
+		{
+				$form_data=explode("::", $params);
+				$from=date('Y-m-d',strtotime($form_data[0]));
+				$to=date('Y-m-d',strtotime($form_data[1]));
+				$emp=$this->session->userdata("fullname");
+				$title="Time Activity Report of ".$emp." from ".$form_data[0]." to ".$form_data[1];				
+				$Time_Activity=$this->ts_model->get_time_activity($from,$to,$emp);
+				$Time_Activity_Total=$this->ts_model->get_time_activity_total($from,$to,$emp);
+				//$this->load->view("timesheet/time_activity_content",$data);
+					$exporter= new My_time_activity_dwnld();
+					$exporter->Export($Time_Activity,$Time_Activity_Total,$title);
 		
+		}
+		function my_job_activity($params)
+		{
+				$form_data=explode("::", $params);
+				$from=date('Y-m-d',strtotime($form_data[0]));
+				$to=date('Y-m-d',strtotime($form_data[1]));
+				$emp=$this->session->userdata("fullname");
+				$title="Job Activity Report of ".$emp." from ".$form_data[0]." to ".$form_data[1];
+				$Job_Activity=$this->ts_model->get_job_activity($from,$to,$emp);
+				$Job_Activity_Total=$this->ts_model->get_job_activity_total($from,$to,$emp);
+				//$this->load->view("timesheet/time_activity_content",$data);
+				$exporter= new My_job_activity_dwnld();
+				$exporter->Export($Job_Activity,$Job_Activity_Total,$title);
+		
+		}	
 			
+		
+
+		function my_job_details_dwnld_single($params)
+		{
+				$form_data=explode("::", $params);
+				$job_num=$form_data[0];
+				$name=$this->session->userdata("fullname");
+				$Job_Activty=$this->ts_model->my_jobReport_JobActivity($job_num,$name);
+				$Empwise_Total=$this->ts_model->my_jobReport_EmpwiseTotal($job_num,$name);
+				$Activitywise_Total=$this->ts_model->my_jobReport_ActivitywiseTotal($job_num,$name);
+				$Deptwise_Total=$this->ts_model->my_jobReport_DeptwiseTotal($job_num,$name);
+				$Relativewise_Total=$this->ts_model->my_jobReport_RelativewiseTotal($job_num,$name);
+				$Total_Hrs=$this->ts_model->my_jobReport_TotalHrs($job_num,$name);
+				$Job_Number=$job_num;
+				$Job_Desc=$this->ts_model->get_JobDesc($job_num);
 			
+				$exporter= new My_job_details_dwnld_single();
+				$exporter->Export($Job_Activty,$Empwise_Total,$Activitywise_Total,$Deptwise_Total,$Relativewise_Total,$Total_Hrs,$Job_Number,$Job_Desc);
 		
+		}
+
+		function overall_my_jobSummary_dwnld()
+		{
+				$name=$this->session->userdata("fullname");
+				$title="All Jobs Summary of ".$name;
+				$All_Jobs_Summary=$this->ts_model->my_overall_jobSummary($name);
+				$exporter= new Overall_my_jobSummary_dwnld();
+				$exporter->Export($All_Jobs_Summary,$title);
 		
-	
+		}	
 	}
 
 ?>
