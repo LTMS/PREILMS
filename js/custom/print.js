@@ -1,4 +1,4 @@
-function printLeaveHistory1(){
+function printLeaveHistory(){
 //	alert("Welcome to Print Page..!");
 	
 			var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,";
@@ -71,7 +71,7 @@ function printJobReport(){
 
 
 
-function printLeaveHistory(){
+function printLeaveHistory1(){
 
 			var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,";
 			disp_setting+="scrollbars=yes,width=700, height=500, left=10, top=25";

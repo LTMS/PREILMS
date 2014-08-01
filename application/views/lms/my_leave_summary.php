@@ -36,9 +36,8 @@
 					<?php
 				}
 				?>
-			</select>&nbsp;&nbsp;&nbsp;&nbsp; <img align="right"
-				src="<?php echo base_url(); ?>/images/print2.png"
-				onclick="javascript:printSummary();"
+			</select>&nbsp;&nbsp;&nbsp;&nbsp; 
+			<img 	src="<?php echo base_url(); ?>/images/print2.png"		onclick="printJobReport();"
 				style="width: 50px; height: 30px; color: green" />
 			</td>
 		</tr>
@@ -48,6 +47,7 @@
 	<?php
 	if(!empty($summary)){
 		print('<div><table border="1" align="center" cellpading="0" cellspacing="0" width="100%">');
+		print('<tr><td align="center" colspan="10"  style="font-size:14px;font-weight:bold;color:Red">'.$title.'</td></tr>');
 		print('<tr style="bgcolor:grey">');
 		print('<td align="center" style="font-size:14px;font-weight:bold;color:Red">Month</td>');
 		print('<td align="center" style="font-size:14px;font-weight:bold;color:red">Casual Leave</td>');
@@ -136,14 +136,7 @@
 	?>
 	</div>
 </div>
-<input
-	type="hidden" id="report_option"
-	value="Leave Summary of <?php echo $this->session->userdata('fullname');?> for <?php echo date('Y');?>" />
-<input
-	type="hidden" id="report_option1"
-	value="Leave Summary of <?php echo $this->session->userdata('fullname');?>" />
-<script
-	type="text/javascript" src="<?php echo base_url(); ?>js/custom/lms.js"></script>
-<script
-	type="text/javascript"
-	src="<?php echo base_url(); ?>js/custom/print.js"></script>
+<input	type="hidden" id="report_option"	value="Leave Summary of <?php echo $this->session->userdata('fullname');?> for <?php echo date('Y');?>" />
+<input	type="hidden" id="report_option1"	value="Leave Summary of <?php echo $this->session->userdata('fullname');?>" />
+<script	type="text/javascript" src="<?php echo base_url(); ?>js/custom/lms.js"></script>
+<script	type="text/javascript"	src="<?php echo base_url(); ?>js/custom/print.js"></script>
