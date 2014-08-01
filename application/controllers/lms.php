@@ -310,6 +310,7 @@ class Lms extends CI_Controller
 	{
 		$data["menu"]='LMS';
 		$data["submenu"]='history_admin';
+		$data["years"]=$this->lms_model->get_years();
 		$data["deptlist"]=$this->lms_model->get_dept();
 		$data["teamlist"]=$this->lms_model->get_team();
 		$data["members"]=$this->lms_model->get_leave_members();
@@ -566,14 +567,20 @@ class Lms extends CI_Controller
 	{
 		$form_data = $this->input->post();
 		$type = $form_data["type"];
+		if($type=='AllTypes'){	$title_type='Leave';	}
+		else if($type=='4'){$title_type='Approved (MD) Leave';}
+		else if($type=='2'){$title_type='Approved (TL) Leave';}
+		else if($type=='3'){$title_type='Rejected Leave';}
+		else{$title_type=$type;}
+		$name=$this->session->userdata("fullname");
 		$data["reminder"]=$this->lms_model->get_reminder_limit();
-		$data["result"]=$this->lms_model->get_leave_status($form_data["d1"],$form_data["d2"],$form_data["type"]);
+		$data["result"]=$this->lms_model->get_leave_status($form_data["d1"],$form_data["d2"],$type);
 		if($type=='1'){
 			$data["title"]="Pending / Expired Leave Application";
 			$this->load->view('lms/leave_status_noaction',$data);
 		}
 		else{
-			$data["title"]=$type." History from ".$form_data["d1"]." - ".$form_data["d2"];
+			$data["title"]=$title_type." History of ".$name." from ".$form_data["d1"]." - ".$form_data["d2"];
 			$this->load->view('lms/history_left',$data);
 			$this->load->view('lms/leave_status',$data);
 		}
@@ -1040,7 +1047,7 @@ class Lms extends CI_Controller
 		$form_data = $this->input->post();
 		$type=$form_data["type"];
 		$txt=$form_data["emp"];
-		$data["title"]="Leave Summary of ".$emp;
+		$data["title"]="Leave Summary of ".$txt;
 		$data["summary"]=$this->summary_model->get_summary($form_data["year"],$form_data["emp"],$form_data["team"],$form_data["dept"]);
 		$data["total"]=$this->summary_model->get_summary_total($form_data["year"],$form_data["emp"],$form_data["team"],$form_data["dept"]);
 		$data["perm"]=$this->summary_model->get_admin_permission($form_data["year"],$form_data["emp"]);
@@ -1405,24 +1412,29 @@ class Lms extends CI_Controller
 
 	function get_lop_emp(){
 		$form_data = $this->input->post();
+		$data["title"]="LOP - History of All for ".$form_data["year"];
 		$data["LOP_List"]=$this->lms_model->get_lop_emp($form_data["year"]);
 		$this->load->view('lms/lop_employee_div',$data);
 	}
 		
 	function get_admin_permission(){
 		$form_data = $this->input->post();
+		$data["title"]="Permission History of ".$form_data["user"]." for ".$form_data["year"];
 		$data["Permission"]=$this->lms_model->get_admin_permission($form_data["user"],$form_data["year"]);
 		$this->load->view('lms/admin_permission_div',$data);
 	}
 
 	function get_all_permission(){
 		$form_data = $this->input->post();
+		$data["title"]="Permission History of All for ".$form_data["year"];
 		$data["Permission"]=$this->lms_model->admin_permission($form_data["year"]);
 		$this->load->view('lms/admin_permission_div',$data);
 	}
 
 	function get_my_permission(){
 		$form_data = $this->input->post();
+		$user=$this->session->data('fullname');
+		$data["title"]="Permission History of ".$user." for ".$form_data["year"];
 		$data["Permission"]=$this->lms_model->get_my_permission($form_data["year"]);
 		$this->load->view('lms/my_permission_div',$data);
 	}

@@ -1,6 +1,6 @@
 		<?php
 	if(!empty($Permission)){
-		print('<div style="background: #DBEADC;"><table style="background: #DBEADC;" border="1" align="center" cellpading="0" cellspacing="0" width="100%">');
+		print('<div style="background: #DBEADC;"><table  border="1" align="center" cellpading="0" cellspacing="0" width="100%">');
 		print('<tr><td align="center" colspan="10"  style="font-size:14px;font-weight:bold;color:Red">'.$title.'</td></tr>');
 		print('<tr style="bgcolor:grey">');
 		print('<td align="center" width="3%" style="font-size:14px;font-weight:bold;color:Red">S.No</td>');
@@ -55,7 +55,7 @@
 
 	}
 		else{
-		print("<div style='margin:0px 0px 0px 420px'>");
+		print("<div style='margin:0px 0px 0px 20px'>");
 		print("<font style='font-size:2em;color:#254117; font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; >Nothing to Display...!</font>");
 		print("</div>");	}
 

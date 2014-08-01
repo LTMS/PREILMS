@@ -4,7 +4,7 @@
 		print("<table  width='100%' border='1' align='left' cellpadding='1' cellspacing='1'  class='alt_row' style='border-collapse:collapse;'>");
 			print('<tr><td align="center" colspan="10"  style="font-size:14px;font-weight:bold;color:Red">'.$title.'</td></tr>');
 		
-		print("<tr bgcolor='#518C9C'  style='font-weight:bold;background-color:#EAF1FB;color:black;border-right:1px solid black; '>");
+		print("<tr bgcolor='white'  style='font-weight:bold;color:black;border-right:1px solid black; '>");
 		print("<td  align='center'  width='2%'>S.No</td>");
 		print("<td  align='center' width='10%'>Date</td>");
 		print("<td  align='center' width='8%'>Leave Type</td>");

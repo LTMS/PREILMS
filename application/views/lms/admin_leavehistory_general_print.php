@@ -1,16 +1,17 @@
 		<div id='normal_report' style='display: none'>
+		<br>
 		<?php
 		
 		print("<table  width='100%' border='1' align='left' cellpadding='1' cellspacing='1'  class='alt_row' style='border-collapse:collapse;'>");
-		print('<tr><td align="center" colspan="10"  style="font-size:14px;font-weight:bold;color:Red">'.$title.'</td></tr>');
-		print("<tr bgcolor='#518C9C' id='hdr_row' style='font-weight:bold;background-color:#EAF1FB;color:black;border-right:1px solid black; '>");
-		print("<td  align='center'  width='2%'>S.No</td>");
-		print("<td  align='center' width='12%'>Date</td>");
-		print("<td  align='center' width='10%'>Leave Type</td>");
-		print("<td  align='center' width='5%'> No.of Days</td>");
-		print("<td  align='center' width='14%'>Leave Status</td>");
-		print("<td  align='center' width='22%'>Processed By</td>");
-		print("<td  align='center'>Reason</td>");
+		print('<tr height="50"><td align="center" colspan="10"  style="font-size:14px;font-weight:bold;color:Red">'.$title.'</td></tr>');
+		print("<tr bgcolor='white' id='hdr_row' style='font-weight:bold;color:black;border-right:1px solid black; '>");
+		print("<td  align='center'  style='color:black;' width='2%'>S.No</td>");
+		print("<td  align='center' style='color:black;'width='12%'>Date</td>");
+		print("<td  align='center' style='color:black;'width='10%'>Leave Type</td>");
+		print("<td  align='center' style='color:black;'width='5%'> No.of Days</td>");
+		print("<td  align='center' style='color:black;'width='14%'>Leave Status</td>");
+		print("<td  align='center' style='color:black;'width='22%'>Processed By</td>");
+		print("<td  align='center' style='color:black;'>Reason</td>");
 		print("</tr>");
 		$row=0;
 		foreach($result as $openrow) {

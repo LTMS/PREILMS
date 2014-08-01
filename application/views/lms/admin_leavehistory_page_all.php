@@ -6,7 +6,7 @@
 			print("<tr valign='top'><td width='60%' >");
 		
 		print("<table   valign='top' border='1' align='left' cellpadding='1' cellspacing='1'  class='alt_row' style='border-collapse:collapse;overflow-y:scroll;'>");
-		print("<tr bgcolor='#518C9C' id='hdr_row' style='font-size:14px;font-weight:bold;background-color:#518C9C;color:white;border-right:1px solid black; '>");
+		print("<tr bgcolor='white' id='hdr_row' style='font-size:14px;font-weight:bold;color:black;border-right:1px solid black; '>");
 		print("<td width='2%' align='center'>S.No</td>");
 		print("<td width='10%' align='center'>Employee</td>");
 		print("<td width='10%' align='center'>From Date</td>");
