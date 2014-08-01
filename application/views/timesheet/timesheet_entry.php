@@ -116,8 +116,8 @@
 
 			</select>
 			</td>
-			<td align="center" class="font_align"><select name="atv_1" id="atv_1"
-				style="font-weight: bolder; height: 30px;">
+			<td align="center" class="font_align">
+			<select name="atv_1" id="atv_1"		style="font-weight: bolder; height: 30px;" >
 					<option selected value="Nil">SELECT</option>
 					<?php
 					foreach($activity as $engg ){
@@ -159,8 +159,8 @@
 
 			</select>
 			</td>
-			<td align="center" class="font_align"><select name="atv_2" id="atv_2"
-				style="font-weight: bolder; height: 30px;">
+			<td align="center" class="font_align">
+			<select name="atv_2" id="atv_2"	style="font-weight: bolder; height: 30px;" >
 					<option selected value="Nil">SELECT</option>
 					<?php
 					foreach($activity as $engg2 ){
@@ -202,8 +202,8 @@
 
 			</select>
 			</td>
-			<td align="center" class="font_align"><select name="atv_3" id="atv_3"
-				style="font-weight: bolder; height: 30px;">
+			<td align="center" class="font_align">
+			<select name="atv_3" id="atv_3"		style="font-weight: bolder; height: 30px;" >
 					<option selected value="Nil">SELECT</option>
 					<?php
 					foreach($activity as $engg3 ){
@@ -246,8 +246,8 @@
 
 			</select>
 			</td>
-			<td align="center" class="font_align"><select name="atv_4" id="atv_4"
-				style="font-weight: bolder; height: 30px;">
+			<td align="center" class="font_align">
+			<select name="atv_4" id="atv_4"	style="font-weight: bolder; height: 30px;">
 					<option selected value="Nil">SELECT</option>
 					<?php
 					foreach($activity as $engg4 ){
@@ -289,8 +289,8 @@
 
 			</select>
 			</td>
-			<td align="center" class="font_align"><select name="atv_5" id="atv_5"
-				style="font-weight: bolder; height: 30px;">
+			<td align="center" class="font_align">
+			<select name="atv_5" id="atv_5"		style="font-weight: bolder; height: 30px;" >
 					<option selected value="Nil">SELECT</option>
 					<?php
 					foreach($activity as $engg5 ){
@@ -332,8 +332,8 @@
 
 			</select>
 			</td>
-			<td align="center" class="font_align"><select name="atv_6" id="atv_6"
-				style="font-weight: bolder; height: 30px;">
+			<td align="center" class="font_align">
+			<select name="atv_6" id="atv_6"	style="font-weight: bolder; height: 30px;">
 					<option selected value="Nil">SELECT</option>
 					<?php
 					foreach($activity as $engg6 ){
@@ -348,8 +348,8 @@
 				  id="desc6" name="desc6"></textarea></td>
 		</tr>
 		<tr>
-			<td align="center" class="font_align"><select name="job_7" id="job_7"
-				style="font-weight: bolder; height: 25px; width: 100px;">
+			<td align="center" class="font_align">
+			<select name="job_7" id="job_7"	style="font-weight: bolder; height: 25px; width: 100px;">
 					<option selected value="Nil">SELECT</option>
 					<?php
 					foreach($job as $work7 ){
@@ -375,8 +375,8 @@
 
 			</select>
 			</td>
-			<td align="center" class="font_align"><select name="atv_7" id="atv_7"
-				style="font-weight: bolder; height: 30px;">
+			<td align="center" class="font_align">
+			<select name="atv_7" id="atv_7"		style="font-weight: bolder; height: 30px;" >
 					<option selected value="Nil">SELECT</option>
 					<?php
 					foreach($activity as $engg7 ){
@@ -396,10 +396,9 @@
 				style="color: green; width: 250px; font-size: 15px; font-weight: bolder;"></td>
 		</tr>
 		<tr id="buttonrow">
-			<td colspan="7" align="center"><input style="height: 30px"
-				type='image'
-				src="<?php echo base_url(); ?>/images/updatetimesheet.png"
-				id="button" onclick="javascript:timesheet_data();"></td>
+			<td colspan="7" align="center">
+			<input style="height: 30px"	type='image'	src="<?php echo base_url(); ?>/images/updatetimesheet.png"
+				id="button" onclick="check_ActivityDesc()"></td>
 		</tr>
 
 	</table>
@@ -407,11 +406,7 @@
 
 
 
-<input id="in_date"
-	type="hidden" value="" />
-<input id="out_date"
-	type="hidden" value="" />
+<input id="in_date"	type="hidden" value="" />
+<input id="out_date"	type="hidden" value="" />
 
-<script
-	type="text/javascript"
-	src="<?php echo base_url(); ?>js/custom/timesheet.js"></script>
+<script	type="text/javascript"	src="<?php echo base_url(); ?>js/custom/timesheet.js"></script>

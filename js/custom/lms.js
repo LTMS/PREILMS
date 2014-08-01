@@ -520,8 +520,11 @@ $("#date_to").datepicker({
 		var date2=document.getElementById('date_to').value;
 		if(id=='1' && date1!='' && date2!=''){
 			var l_type=document.getElementById('leave_type').value;			
-			$.post(site_url+"/lms/get_leave_status",{d1:date1,d2:date2,type:l_type},function(data){$("#contentData").html("");
-			$("#contentData").append(data);});
+			$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+			$.post(site_url+"/lms/get_leave_status",{d1:date1,d2:date2,type:l_type},function(data){
+							$("#contentData").html("");
+								$("#contentData").append(data);
+				});
 
 		}
 		if(id=='2'){
@@ -529,8 +532,11 @@ $("#date_to").datepicker({
 			document.getElementById('date_to').value='';
 
 			var l_type='1';		
-			$.post(site_url+"/lms/get_leave_status",{d1:date1,d2:date2,type:l_type},function(data){$("#contentData").html("");
-			$("#contentData").append(data);});
+			$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+			$.post(site_url+"/lms/get_leave_status",{d1:date1,d2:date2,type:l_type},function(data){
+							$("#contentData").html("");
+								$("#contentData").append(data);
+			});
 		}
 		
 	}
@@ -619,11 +625,12 @@ $("#date_to").datepicker({
 			document.getElementById('approved1').style.display="";
 		}
 
+			$('#leavesDiv').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 
 				$.post(site_url+"/lms/getLeave4Date/",{date1:d1,date2:d2,id1:id},function(data){
-				$("#leavesDiv").html("");
-				$("#leavesDiv").append(data);
-		     	//document.getElementById('leavesDiv').style.display="";
+						$("#leavesDiv").html("");
+						$("#leavesDiv").append(data);
+				     	//document.getElementById('leavesDiv').style.display="";
 		
 				});
 				//alert(user);
@@ -697,6 +704,7 @@ $("#date_to").datepicker({
 
 									
 									if(year1!="" && emp1!="" && leave1=="All"){
+										$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 												$.post(site_url+"/lms/admin_leavehistory_general_all",{year:year1,month:month1,emp:emp1},function(data){
 															//alert(data);
 															$("#contentData").html("");
@@ -704,6 +712,7 @@ $("#date_to").datepicker({
 													});
 										}
 									if(year1!="" && emp1!="" && leave1!="All"){
+										$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 												$.post(site_url+"/lms/admin_leavehistory_general_filter",{year:year1,month:month1,emp:emp1,leave:leave1},function(data){
 															//alert(data);
 															$("#contentData").html("");
@@ -727,6 +736,7 @@ $("#date_to").datepicker({
 							var emp_appr=document.getElementById('emp_appr').value; 
 							//alert(year1);		
 								if(year1!=""){
+									$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 											$.post(site_url+"/lms/admin_leavehistory_approved",{year:year1,emp:emp_appr},function(data){
 													//alert(data);
 															$("#contentData").html("");
@@ -736,7 +746,48 @@ $("#date_to").datepicker({
 									
 				}
 			
-		
+
+			function team_leavehistory_approved()	{	
+				document.getElementById('AllEmp_leave_history_dwnld').style.display="";
+				document.getElementById('year').value="";
+				document.getElementById('emp').value="";
+				document.getElementById('leave').value="All";
+				document.getElementById('month').value="All";
+				var year1=document.getElementById('year1').value;
+				if(year1=="")
+					{
+					document.getElementById('AllEmp_leave_history_dwnld').style.display="none";
+					}
+				var emp_appr=document.getElementById('emp_appr').value; 
+				//alert(year1);		
+					if(year1!=""){
+						$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+								$.post(site_url+"/lms/team_leavehistory_approved",{year:year1,emp:emp_appr},function(data){
+										//alert(data);
+												$("#contentData").html("");
+												$("#contentData").append(data);
+									});
+						}
+						
+	}
+
+			function get_team_summary(txt1,op){	
+					var year1=document.getElementById('year').value;
+					var emp1=document.getElementById('emp').value; 
+				
+					if(year1!=''){	
+						$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+								$.post(site_url+"/lms/get_team_summary",{year:year1,emp:emp1},function(data){
+											//alert(data);
+												$("#contentData").html("");
+												$("#contentData").append(data);
+								});
+					}
+				
+			}
+			
+
+
 			function get_history_teamleader(str,op)	{
 			
 				var tl=document.getElementById('get_team').value+" Team"; 
@@ -758,6 +809,7 @@ $("#date_to").datepicker({
 			var date1=document.getElementById('date_from').value;
 			var date2=document.getElementById('date_to').value;
 			document.getElementById('error').innerHTML="";
+			$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 					
 					$.post(site_url+"/lms/get_history_teamleader",{d1:date1,d2:date2,string:str},function(data){
 							$("#contentData").html("");
@@ -935,6 +987,7 @@ $("#date_to").datepicker({
 
 				
 			if(year1!=''){	
+				$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 				$.post(site_url+"/lms/get_summary",{year:year1,emp:emp1,team:team1,dept:dept1,type:op},function(data){
 							//alert(data);
 								$("#contentData").html("");
@@ -950,6 +1003,7 @@ $("#date_to").datepicker({
 				document.getElementById('report_option').value=op1+" for  "+year1;
 				
 				if(year1!=''){	
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 					$.post(site_url+"/lms/get_my_summary",{year:year1},function(data){
 								//alert(data);
 									$("#contentData").html("");
@@ -967,6 +1021,7 @@ $("#date_to").datepicker({
 				var emp1=document.getElementById('emp').value;
 					
 				if(year!='' && mon!='' && emp!=''){
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 					$.post(site_url+"/lms/get_approved_leaves",{year:yr,month:mon,emp:emp1},function(data){
 						//alert(data);
 							$("#contentData").html("");
@@ -1155,6 +1210,7 @@ $("#date_to").datepicker({
 				var year1=document.getElementById('year').value;
 			
 				if(user1!="" && year1!=""){					
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 					$.post(site_url+"/lms/get_lop_admin/",{user:user1,year:year1},function(data){
 						//alert(data);
 						$("#contentData").html("");
@@ -1193,6 +1249,7 @@ $("#date_to").datepicker({
 				var year1=document.getElementById('year').value;
 			
 				if(year1!=""){					
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 					$.post(site_url+"/lms/get_lop_emp/",{year:year1},function(data){
 						//alert(data);
 						$("#contentData").html("");
@@ -1207,6 +1264,7 @@ $("#date_to").datepicker({
 				var year1=document.getElementById('year').value;
 			
 				if(year1!=""){					
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 					$.post(site_url+"/lms/get_my_permission/",{year:year1},function(data){
 						//alert(data);
 						$("#contentData").html("");
@@ -1222,6 +1280,7 @@ $("#date_to").datepicker({
 				var user1=document.getElementById('emp').value;
 				
 				if(year1!="" && user1!="All"){					
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 					$.post(site_url+"/lms/get_admin_permission/",{year:year1,user:user1},function(data){
 						//alert(data);
 						$("#contentData").html("");
@@ -1229,6 +1288,7 @@ $("#date_to").datepicker({
 					});
 				}
 				else{
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 					$.post(site_url+"/lms/get_all_permission/",{year:year1},function(data){
 						//alert(data);
 						$("#contentData").html("");

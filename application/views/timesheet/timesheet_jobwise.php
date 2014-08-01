@@ -43,7 +43,9 @@
 	</table>
 	<hr width="100%">
 
-	<div id="contentData" style="height: 640px; overflow: scroll;"></div>
+	<div id="contentData" style="height: 640px; overflow: scroll;">
+	
+	</div>
 
 </div>
 <input type='hidden'	id='report_option' value='' />

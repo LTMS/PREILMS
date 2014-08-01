@@ -28,12 +28,14 @@ Class lms_model extends CI_Model{
 	function get_leave_members(){
 		return $this->db->query("SELECT DISTINCT name AS 'Name' FROM  admin_users WHERE user_role NOT IN ('MD') ORDER BY name")->result_array();
 	}
-
+	
 	function get_team_members()
 	{
 		$uname=$this->session->userdata('fullname');
 
-		return $this->db->query("SELECT EmployeeName AS 'Name'  FROM team  WHERE LeaveApprover_L1='$uname' ORDER BY EmployeeName ")->result_array();
+		return $this->db->query("SELECT EmployeeName AS 'Name' 
+															FROM team WHERE LeaveApprover_L1='$uname' 
+															ORDER BY EmployeeName ")->result_array();
 	}
 
 	function checkLeaveAvailability($leave_type)
@@ -246,7 +248,31 @@ Class lms_model extends CI_Model{
 	}
 
 
+																/* * * 		Team Leader  Leave History 		* * */
+	
+	function team_leavehistory_approved_all($year){
+				$leader=$this->session->userdata("fullname");
+				
+				return $this->db->query("SELECT a.*, b.*, c.* FROM leavehistory a JOIN leave_status b ON  a.LeaveStatus = b.Status JOIN team c ON c.EmployeeName = a.User
+																	WHERE 	YEAR(FromDate)='$year' AND a.LeaveStatus IN (2,4) 
+																							AND a.User IN  (SELECT EmployeeName 
+																															FROM team WHERE LeaveApprover_L1='$leader')
+																	 ORDER BY a.User,a.FromDate   ")->result_array();
+	}
 
+
+	function team_leavehistory_approved_ind($year,$emp){
+			
+						return $this->db->query("SELECT a.*, b.*, c.* FROM leavehistory a JOIN leave_status b ON  a.LeaveStatus = b.Status JOIN team c ON c.EmployeeName = a.User
+															WHERE 	YEAR(FromDate)='$year' AND  a.LeaveStatus IN (2,4)
+																						 AND a.User ='$emp'
+															 ORDER BY a.User,a.FromDate   ")->result_array();
+	}
+
+
+	
+	
+	
 
 	function get_leavehistory_general($year,$month,$emp,$leave)
 	{

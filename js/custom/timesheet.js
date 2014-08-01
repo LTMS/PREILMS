@@ -21,7 +21,7 @@
 			changeYear:true,
 			onClose:function(selectedDate){
 						$("#date_to").datepicker("option","minDate",selectedDate);
-						},	
+			},	
 			defaultDate: new Date()	
 		}) ; 
 
@@ -160,9 +160,10 @@ function get_INOUT(date){
 					var i,j;
 					for(i=1;i<=7;i++){
 							var id='job_'+i+'M';
-							
+							var job_id="job_"+i;
 							var	val=document.getElementById(id).value;
-							if(val!="" && val!=null){
+							var job=document.getElementById(job_id).value;
+							if(job!="Nil" && val!="" && val!=null){
 								min=parseInt(min)+parseInt(val);					
 							}
 						}
@@ -175,8 +176,10 @@ function get_INOUT(date){
 	
 					for(j=1;j<=7;j++){
 						var id1='job_'+j+'H';
+						var job_id="job_"+j;
 						var val1=document.getElementById(id1).value;
-						if(val1!="" && val1!=null){
+						var job=document.getElementById(job_id).value;						
+						if(job!="Nil" && val1!="" && val1!=null){
 							hr=parseInt(hr)+parseInt(val1);					
 						}
 					}
@@ -1174,12 +1177,27 @@ function get_INOUT(date){
 					});
 	
 					
+				
+					
+					/* * * 						General 					* * */
+
+				function remove_Specials(id,string){
+						var string=document.getElementById(id).value;
+						var new_string=string.replace(/([~!@#$%^&*()_+=`{}\[\]\|\\:;'<>,\/? ])+/g, '  ').replace(/^(-)+|(-)+$/g,'');
+						document.getElementById(id).value=new_string;
+				}
+				
+
+
+				
+																/* * * 		Admin Timesheet Reports		* * */
 					
 // July 23, 2014
 					
 					function timesheet_jobReport(){
 						var job_num1=document.getElementById('getjob').value;
 						if(job_num1!="" || job_num1==null){
+								$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 								$.post(site_url+"/timesheet/timesheet_jobReport",{job_num:job_num1},function(data){
 											//alert(data);
 											$('#contentData').html("");
@@ -1190,6 +1208,8 @@ function get_INOUT(date){
 					}
 					
 			function overall_jobSummary(){
+						document.getElementById('getjob').value="";
+						$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 						$.post(site_url+"/timesheet/overall_jobSummary",function(data){
 							//alert();
 							$('#contentData').html("");
@@ -1206,6 +1226,7 @@ function get_INOUT(date){
 						var from1=document.getElementById('date_from').value;
 						var to1=document.getElementById('date_to').value;
 							if( from1!="" && to1 !=""){
+								$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 								$.post(site_url+"/timesheet/timesheet_jobReport_MIS",{from:from1,to:to1},function(data){
 											//alert(data);
 											$('#contentData').html("");
@@ -1216,17 +1237,7 @@ function get_INOUT(date){
 					}
 					
 					
-//July 28					
-					
-					/* * * 						General 					* * */
-
-				function remove_Specials(id,string){
-						var string=document.getElementById(id).value;
-						var new_string=string.replace(/([~!@#$%^&*()_+=`{}\[\]\|\\:;'<>,\/? ])+/g, '  ').replace(/^(-)+|(-)+$/g,'');
-						document.getElementById(id).value=new_string;
-				}
-
-	
+											
 				
 // July 29 Employee wise Timesheet Report
 				
@@ -1255,6 +1266,7 @@ function get_INOUT(date){
 					var name1=document.getElementById('Name').value;
 					var job_num1=document.getElementById('JobNumber').value;
 						if( name1!="" && job_num1 !=""){
+							$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 							$.post(site_url+"/timesheet/timesheet_empReport",{name:name1,job_num:job_num1},function(data){
 										//alert(data);
 										$('#contentData').html("");
@@ -1264,12 +1276,12 @@ function get_INOUT(date){
 					
 				}
 				
-
-				
+			
 				function Employee_jobSummary(){
 					var emp1=document.getElementById('Emp').value;
 							
 					if(emp1!=""){
+						$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 						$.post(site_url+"/timesheet/Employee_jobSummary",{emp:emp1},function(data){
 							//alert();
 							$('#contentData').html("");
@@ -1279,10 +1291,6 @@ function get_INOUT(date){
 					}
 				}
 			
-			
-				
-				
-				
 				
 // July 29    Time Activity
 				
@@ -1293,6 +1301,7 @@ function get_INOUT(date){
 					var emp1=document.getElementById('Emp').value;
 							
 					if(from1!="" && to1!="" && emp1!=""){
+						$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 						$.post(site_url+"/timesheet/get_time_activity",{from:from1,to:to1,emp:emp1},function(data){
 							//alert();
 							$('#contentData').html("");
@@ -1310,6 +1319,7 @@ function get_INOUT(date){
 					var emp1=document.getElementById('Emp').value;
 							
 					if(from1!="" && to1!="" && emp1!=""){
+						$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 						$.post(site_url+"/timesheet/get_job_activity",{from:from1,to:to1,emp:emp1},function(data){
 							//alert();
 							$('#contentData').html("");
@@ -1318,8 +1328,219 @@ function get_INOUT(date){
 						});
 					}
 				}
-			
+
+
+							/* * * 			Team Leader Timesheet Reports 		* * */
+				
+				
+				
+				function overall_team_jobSummary(){
+					document.getElementById('getjob').value="";
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+					$.post(site_url+"/timesheet/overall_team_jobSummary",function(data){
+						//alert();
+						$('#contentData').html("");
+						$('#contentData').append(data);
+					
+				});
+	}
 			
 				
-	
+				function team_timesheet_jobReport_MIS(){
+					var from1=document.getElementById('date_from').value;
+					var to1=document.getElementById('date_to').value;
+						if( from1!="" && to1 !=""){
+							$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+							$.post(site_url+"/timesheet/team_timesheet_jobReport_MIS",{from:from1,to:to1},function(data){
+										//alert(data);
+										$('#contentData').html("");
+										$('#contentData').append(data);
+							});
+					}
+					
+				}
 				
+				
+				
+				
+				
+				
+				
+				
+												/* * *	 Employee Timesheet Reports		* * */
+
+			function my_timesheet_jobReport(job_num1){
+					if(job_num1!="" || job_num1==null){
+						$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+							$.post(site_url+"/timesheet/my_timesheet_jobReport",{job_num:job_num1},function(data){
+										//alert(data);
+										$('#contentData').html("");
+										$('#contentData').append(data);
+							});
+					}
+					
+				}
+				
+		function overall_my_jobSummary(){
+					document.getElementById('getjob').value="";
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+					$.post(site_url+"/timesheet/overall_my_jobSummary",function(data){
+						//alert();
+						$('#contentData').html("");
+						$('#contentData').append(data);
+					
+				});
+	}
+			
+
+				
+				function my_timesheet_jobReport_MIS(){
+					var from1=document.getElementById('date_from').value;
+					var to1=document.getElementById('date_to').value;
+						if( from1!="" && to1 !=""){
+							$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+							$.post(site_url+"/timesheet/my_timesheet_jobReport_MIS",{from:from1,to:to1},function(data){
+										//alert(data);
+										$('#contentData').html("");
+										$('#contentData').append(data);
+							});
+					}
+					
+				}
+				
+				
+										
+		
+			
+			function my_timesheet_empReport(){
+				var job_num1=document.getElementById('JobNumber').value;
+					if(job_num1 !=""){
+						$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+						$.post(site_url+"/timesheet/my_timesheet_empReport",{job_num:job_num1},function(data){
+									//alert(data);
+									$('#contentData').html("");
+									$('#contentData').append(data);
+						});
+				}
+				
+			}
+			
+		
+			function my_jobSummary(){
+				$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+					$.post(site_url+"/timesheet/my_jobSummary",function(data){
+						//alert();
+						$('#contentData').html("");
+						$('#contentData').append(data);
+						
+					});
+			}
+		
+			
+			function get_my_time_activity(){
+				var from1=document.getElementById('date_from').value;
+				var to1=document.getElementById('date_to').value;
+						
+				if(from1!="" && to1!=""){
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+					$.post(site_url+"/timesheet/get_my_time_activity",{from:from1,to:to1},function(data){
+						//alert();
+						$('#contentData').html("");
+						$('#contentData').append(data);
+						
+					});
+				}
+			}
+		
+		
+			
+			function get_my_job_activity(){
+				var from1=document.getElementById('date_from').value;
+				var to1=document.getElementById('date_to').value;
+						
+				if(from1!="" && to1!="" ){
+					$('#contentData').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+					$.post(site_url+"/timesheet/get_my_job_activity",{from:from1,to:to1},function(data){
+						//alert();
+						$('#contentData').html("");
+						$('#contentData').append(data);
+						
+					});
+				}
+			}
+		
+
+				
+// July 30																	Regarding Timesheet Entry
+
+			function check_ActivityDesc(){
+				if(document.getElementById('date').value!=""){
+						for(i=1;i<=7;i++){
+									job_id="job_"+i;
+									atv_id="atv_"+i;
+									desc_id="desc"+i;
+									var job=document.getElementById(job_id).value;
+									if(job!="Nil"){
+											var atv=document.getElementById(atv_id).value;
+											var desc=document.getElementById(desc_id).value;
+											if(atv=="Nil"){
+													alert("Please select  Activity for  Job-"+i);
+													return false;
+											}
+											else if(desc.replace(/\s/g,'').length==0){
+													alert("Please fill the description column of Job-"+i);
+													return false;
+											}
+											else{
+												if(i==7){
+													timesheet_data();
+												}
+											}
+									}
+									else{
+											if(i==7){
+												timesheet_data();
+											}
+								}
+						}
+				}
+				else{
+					document.getElementById('error').innerHTML="Please Select Date and Fill the Form..!";
+				}
+				
+		}
+			
+			
+			
+			function check_OtherWork(){
+				if(document.getElementById('date').value!=""){
+								for(i=1;i<=7;i++){
+										atv_id="atv_"+i;
+										desc_id="desc"+i;
+										var val=document.getElementById(atv_id).value;
+										var desc=document.getElementById(desc_id).value;
+										if(val!="Nil" && val=='OTH'){
+													if(desc.replace(/\s/g,'').length>0){
+															if(i==7){
+																timesheet_data();
+															}
+													}
+													else{
+														alert("Please fill the description column of Job-"+i);
+														return false;
+													}
+										}
+										else{
+												if(i==7){
+													timesheet_data();
+												}
+										}
+								}
+				}
+				else{
+					document.getElementById('error').innerHTML="Please Select Date and Fill the Form..!";
+				}
+			}
+			
+			
+			
