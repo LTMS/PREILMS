@@ -1,5 +1,5 @@
 		<?php
-		print("<div style='background-color:white'>");
+		print("<div>");
 		
 		print("<table  width='100%' border='1' align='left' cellpadding='1' cellspacing='1'  style='border-collapse:collapse;'>");
 		//  print("<tr style='color:red;font-size:12px;font-weight:bolder; '><td colspan='13' align='center'>The Result shows 'Total Working Hours' spent by Employees for a given Job between the selected Date</td></tr>");

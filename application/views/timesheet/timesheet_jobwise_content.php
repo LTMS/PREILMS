@@ -1,4 +1,23 @@
 		<?php
+				function sum_the_time($time1, $time2) {
+					  $times = array($time1, $time2);
+					  $seconds = 0;
+							  foreach ($times as $time)	  {
+							    list($hour,$minute,$second) = explode(':', $time);
+							    $seconds += $hour*3600;
+							    $seconds += $minute*60;
+							    $seconds += $second;
+							  }
+					  $hours = floor($seconds/3600);
+					  $seconds -= $hours*3600;
+					  $minutes  = floor($seconds/60);
+					  $seconds -= $minutes*60;
+					  // return "{$hours}:{$minutes}:{$seconds}";
+					  return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds); // Thanks t
+				}
+		
+		
+		
 				if(!empty($Empwise_Total)){
 							foreach($Total_Hrs as $row) {
 								$total_days = $row["days"];
@@ -6,7 +25,7 @@
 							}
 				}
 		
-		print("<div style='background-color:white'>");
+		print("<div>");
 				
 	if($Job_Activty){
 		
@@ -30,16 +49,22 @@
 				
 				$counter1=0;
 				$title_name="";
+				$title_total="00:00:00";	
 				foreach($Job_Activty as $openrow) {
 					$counter1++;
 					$date=$openrow["date1"];
 					$d2=$date.',  '.date('D', strtotime($date));
 					$name=$openrow["ts_name"];
-					if($title_name!=$name){
+					$job_time=$openrow["job_time"];
+							if($title_name!=$name){
+									if($counter1!=1){
+											print("<tr style='color:black;font-size:14px;font-weight:bolder; '><td colspan='10' align='right'>Total Hours: $title_total</td></tr>");
+										}
 									print("<tr style='color:black;font-size:14px;font-weight:bolder; '><td colspan='10'>$name</td></tr>");
-					}
+								$title_total="00:00:00";	
+							}
 				
-					print("<tr   class='small'>");
+						print("<tr   class='small'>");
 						print("<td  width='3%' align='center'> ".$counter1."</td>");
 						print("<td  width='14%' align='left'>".$name."</td>");
 						print("<td  width='9%' align='center'>$date</td>");
@@ -49,8 +74,13 @@
 						print("<td  width='10%' align='left'>".$openrow["activity"]."</td>");
 						print("<td  align='left'>".$openrow["task_desc"]."</td>");
 					print("</tr>");
-					$title_name=$name;
+					
+								$title_name=$name;
+								$title_total=sum_the_time($title_total, $job_time);  
+								$title_name=$name;
 				}
+				print("<tr style='color:black;font-size:14px;font-weight:bolder; '><td colspan='10' align='right'>Total Hours: $title_total</td></tr>");
+				
 		print("</table><br>");
 	}
 		print("<hr>");

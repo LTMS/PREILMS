@@ -27,7 +27,9 @@
 	 	<td align="center">
 	 	 <input	type='text' value='' id='getjob' placeholder="Job Number"style="height: 22px; width: 90px; color: RED; font-weight: bolder; font-size: 15px;" />&nbsp; 
 		&nbsp;&nbsp; 
-		<input type='button' value='Job Report'	onclick="javascript:timesheet_jobReport();" style="height: 25px;width: 100px; color: #006600; font-weight: bold; font-size: 15px;" />
+		<input type='button' value='Job Report'	onclick="javascript:timesheet_jobReport();" style="height: 25px;width: 90px; color: #006600; font-weight: bold; font-size: 15px;" />
+				&nbsp;&nbsp;
+		<input type='button' value='Get All Jobs Summary'	onclick="overall_jobSummary();" style="height: 25px;width: 170px; color: #006600; font-weight: bold; font-size: 15px;background:#EEDDCC;" />
 				&nbsp;&nbsp;
 		 <img align="bottom"	src="<?php echo base_url(); ?>/images/print2.png" 	onclick="javascript:printJobReport();"
 				style="width: 50px; height: 30px; color: green" />
