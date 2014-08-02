@@ -24,16 +24,14 @@
 	<table width="100%" border="0" align="left" cellpadding="2"
 		style="height: 40px;">
 		<tr class="tab_header_bg">
-			<td colspan="13" align="center" width="10%">Leave Date From : <input
-				type="text" id="date_from" class="datefld_txt" style="width: 80px;"
-				onchange="javascript:get_leave_status('1');" />&nbsp;&nbsp; To: <input
-				type="text" id="date_to" class="datefld_txt" style="width: 80px;"
-				onchange="javascript:get_leave_status('1');" />&nbsp;&nbsp;
-				<button onclick="javascript:get_leave_status('2');"
-					style='color: green; font-weight: bold'>Pending Leaves</button>&nbsp;&nbsp;
-				Filter By: <select name='leave_type' id='leave_type'
-				style="color: green; font-weight: bold"
-				onchange="javascript:get_leave_status('1');">
+			<td colspan="13" align="center" width="10%">
+				Leave Date From : 
+				<input	type="text" id="date_from" class="datefld_txt" style="height:23px;width: 90px;border:1px solid grey;"	onchange="javascript:get_leave_status('1');" />&nbsp;&nbsp;
+				 To: 
+				<input	type="text" id="date_to" class="datefld_txt" style="height:23px;width: 90px;border:1px solid grey;"	onchange="javascript:get_leave_status('1');" />&nbsp;&nbsp;
+				<button onclick="javascript:get_leave_status('2');"	style='font-size:13px;height:23px;width: 110px;color: green; font-weight: bold'>Pending Leaves</button>&nbsp;&nbsp;
+				Filter By:
+				 <select name='leave_type' id='leave_type'	style="height:23px;font-size:13px;color: green; font-weight: bold;"	onchange="javascript:get_leave_status('1');">
 					<option value='AllTypes'>All Type</option>
 					<option value='Casual Leave'>.....Casual Leave</option>
 					<option value='Paid Leave'>.....Paid Leave</option>
@@ -42,12 +40,10 @@
 					<option value='4'>Approved By MD</option>
 					<option value='2'>Approved By TL</option>
 					<option value='3'>Rejected Leaves</option>
-			</select>&nbsp;&nbsp;&nbsp;&nbsp; <img align="bottom"
-				src="<?php echo base_url(); ?>/images/print2.png"
-				onclick="javascript:printLeaveHistory();"
-				style="width: 70px; height: 40px; color: green" /> &nbsp;&nbsp; <img
-				valign="bottom" src="<?php echo base_url(); ?>/images/excel1.ico"
-				onclick="javascript:export_leave_history('1');"
+			</select>&nbsp;&nbsp;&nbsp;&nbsp; 
+			<img align="bottom"	 src="<?php echo base_url(); ?>/images/print2.png"	onclick="javascript:printLeaveHistory();"
+				style="width: 70px; height: 40px; color: green" /> &nbsp;&nbsp; 
+				<img	valign="bottom" src="<?php echo base_url(); ?>/images/excel1.ico"	onclick="javascript:export_leave_history('1');"
 				style="width: 70px; height: 40px; color: green" />
 			</td>
 		</tr>
@@ -61,13 +57,8 @@
 	<div id="contentData" style="height: 640px; overflow: scroll;"></div>
 
 </div>
-<input
-	type="hidden" id="report_option"
-	value="Leave History of <?php echo $this->session->userdata('fullname');?>" />
 
-<script
-	type="text/javascript" src="<?php echo base_url(); ?>js/custom/lms.js"></script>
-<script
-	type="text/javascript"
-	src="<?php echo base_url(); ?>js/custom/print.js"></script>
+<input	type="hidden" id="report_option"	value="Leave History of <?php echo $this->session->userdata('fullname');?>" />
+<script	type="text/javascript" src="<?php echo base_url(); ?>js/custom/lms.js"></script>
+<script	type="text/javascript"	src="<?php echo base_url(); ?>js/custom/print.js"></script>
 

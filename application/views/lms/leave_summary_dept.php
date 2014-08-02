@@ -20,7 +20,7 @@ foreach($summary as $row){
 	$sl=$row["SL"];
 	$co=$row["CO"];
 	print('<tr>');
-	print("<td align='center' style='font-size:12px;font-weight:bold;color:black'>$name</td>");
+	print("<td align='left' style='font-size:12px;font-weight:bold;color:black'>$name</td>");
 	print("<td align='center' style='font-size:12px;font-weight:bold;color:black'>$month</td>");
 	print("<td align='center' style='font-size:12px;font-weight:bold;color:black'>$cl</td>");
 	print("<td align='center' style='font-size:12px;font-weight:bold;color:black'>$pl</td>");

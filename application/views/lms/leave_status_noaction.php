@@ -2,7 +2,7 @@
 		<?php
 		print("<table  width='100%'border='1' align='left' cellpadding='1' cellspacing='1'  class='alt_row' style='border-collapse:collapse;'>");
 		print('<tr><td align="center" colspan="10"  style="font-size:14px;font-weight:bold;color:Red">'.$title.'</td></tr>');
-		print("<tr bgcolor='#518C9C' id='hdr_row' style='font-weight:bold;background-color:#518C9C;color:white;border-right:1px solid black; '>");
+		print("<tr id='hdr_row' style='font-weight:bold;color:black;border-right:1px solid black; '>");
 		print("<td  align='center'>ID</td>");
 		print("<td  align='center'>From Date</td>");
 		print("<td  align='center'>Type</td>");

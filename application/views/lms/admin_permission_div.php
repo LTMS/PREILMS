@@ -1,73 +1,66 @@
-
-<table>
-	<tr bgcolor="#518C9C" style="border-right: 1px solid white;">
-		<td align="center" colspan="10" style="border-right: 1px solid white;">Permission History</td></tr>
-	<tr bgcolor="#518C9C" style="border-right: 1px solid white;">
-		<td align="center" width="4%" style="border-right: 1px solid white;"><font
-			color="white">S.No</font></td>
-		<td align="center" width="10%" style="border-right: 1px solid white;"><font
-			color="white">Employee Name</font></td>
-		<td align="center" width="10%" style="border-right: 1px solid white;"><font
-			color="white">Permission On</font></td>
-		<td align="center" width="8%" style="border-right: 1px solid white;"><font
-			color="white">Hours</font></td>
-		<td align="center" width="8%" style="border-right: 1px solid white;"><font
-			color="white">From Time</font></td>
-		<td align="center" width="12%" style="border-right: 1px solid white;"><font
-			color="white">Status</font></td>
-		<td align="center" width="10%" style="border-right: 1px solid white;"><font
-			color="white">Applied On</font></td>
-		<td align="center" style="border-right: 1px solid white;"><font
-			color="white">Reason</font></td>
-	</tr>
-	<tr>
-	<?php
-	$counter=0;
+			<?php
 	if(!empty($Permission)){
+		print('<div style="background: #DBEADC;"><table  border="1" align="center" cellpading="0" cellspacing="0" width="100%">');
+		print('<tr><td align="center" colspan="10"  style="font-size:14px;font-weight:bold;color:Red">'.$title.'</td></tr>');
+		print('<tr style="bgcolor:grey">');
+		print('<td align="center" width="3%" style="font-size:14px;font-weight:bold;color:Red">S.No</td>');
+		print('<td align="center" width="10%" style="font-size:14px;font-weight:bold;color:Red">Employee Name</td>');
+		print('<td align="center" width="8%" style="font-size:14px;font-weight:bold;color:red">Permission	On</td>');
+		print('<td align="center" width="7%" style="font-size:14px;font-weight:bold;color:red">Hours</td>');
+		print('<td align="center" width="8%" style="font-size:14px;font-weight:bold;color:red">From Time</td>');
+		print('<td align="center" width="8%" style="font-size:14px;font-weight:bold;color:red">Status</td>');
+		print('<td align="center" width="8%" style="font-size:14px;font-weight:bold;color:red">Applied On</td>');
+		print('<td align="center" width="30%" style="font-size:14px;font-weight:bold;color:red">Reason</td>');
+		print('</tr>');
+
+				$counter=0;
+				foreach($Permission as $row) {
+					$counter++;
+					$rowid="row".$counter;
+					$lop_id=$row->permission_id;
+					$user=$row->user;
+					$total_hrs=$row->totalhrs;
+					$timefrom=$row->timefrom;
+					$d1=$row->p_date;
+					$d2=date("d M Y",strtotime($d1));
+					$d3=$row->appliedtime;
+					$d4=date("d M Y",strtotime($d3));
+					$d5=date("Y-m-d");
+					$d6=date("Y-m-d",strtotime($d3));
+					if($d5>$d6){
+						$status='No Result';
+					}
+					else{
+						$status=$row->status;
+					}
+						print('<tr  style="border:1px solid black;background: #DBEADC;">');
+							print("<td align='center' style='font-size:12px;color:black;'>$counter</td>");
+							print("<td align='left' style='font-size:12px;color:black;'>$user</td>");
+							print("<td align='center' style='font-size:12px;color:black;'>$d2</td>");
+							print("<td align='center' style='font-size:12px;color:black;'>$total_hrs</td>");
+							print("<td align='center' style='font-size:12px;color:black;'>$timefrom</td>");
+							if($row->status=='Applied'){
+								print("<td align='center' style='font-size:12px;color:black;color:blue'>$status</td>");
+							}
+							else if($row->status=='Approved'){
+								print("<td align='center' style='font-size:12px;color:black;color:green;'>$status</td>");
+								}
+							else{
+								print("<td align='center' style='font-size:12px;color:black;color:red;'>$status</td>");
+								}
+							print("<td align='center' style='font-size:12px;color:black;'>$d4</td>");
+							print("<td align='left' style='font-size:12px;color:black;'>".$row->reason."</td>");
+							print("</tr>");
 			
-		foreach($Permission as $row) {
-			$counter++;
-			$rowid="row".$counter;
-			$lop_id=$row->permission_id;
-			$d1=$row->p_date;
-			$d2=date("d M Y",strtotime($d1));
-			$d3=$row->appliedtime;
-			$d4=date("d M Y",strtotime($d3));
-			$d5=date("Y-m-d");
-			$d6=date("Y-m-d",strtotime($d3));
-			if($d5>$d6){
-				$status='No Result';
-			}
-			else{
-				$status=$row->status;
-			}
-			print("<tr  class='td_rows' style='border-right:1px solid white;'>");
-			print("<td align='center'><input type='text' style='' class='plain_txt' readonly='readonly' value='".$counter."' /></td>");
-			print("<td align='center' ><input type='text' height='' style='margin-left:0px;' class='plain_txt'   value=\"".$row->user."\" /></td>");
-			print("<td align='center' ><input type='text' height='' style='margin-left:0px;' class='plain_txt'   value='$d2' /></td>");
-			print("<td align='center'><input type='text' style='' class='plain_txt' readonly='readonly'  value=\"".$row->totalhrs."\" /></td>");
-			print("<td align='center'><input type='text' style='' class='plain_txt' readonly='readonly'  value='".$row->timefrom."' /></td>");
-			if($row->status=='Applied'){
-				print("<td align='center'><input type='text' style='color:blue;' class='plain_txt' readonly='readonly'  value='".$status."' /></td>");
-			}
-			else if($row->status=='Approved'){
-				print("<td align='center'><input type='text' style='color:green;' class='plain_txt' readonly='readonly'  value='".$row->status."' /></td>");
-			}
-			else{
-				print("<td align='center'><input type='text' style='color:red;' class='plain_txt' readonly='readonly'  value='".$row->status."' /></td>");
-			}
-			print("<td align='center'><input type='text' style='' class='plain_txt' readonly='readonly'  value='".$d4."' /></td>");
-			print("<td align='center'><input type='text' style='' class='plain_txt' readonly='readonly'  value='".$row->reason."' /></td>");
-
-			print("</tr>");
 		}
-	}
 
-	else{
-		print("<tr><td align='center' colspan='10' style='color:white;font-size:13pt;font-weight:bolder'> Nothing to Display</td></tr>");
+		print("</table></div>");
 
 	}
+		else{
+		print("<div  style='margin:110px 0px 0px 20px'>");
+		print("<font style='font-size:2em;color:#254117; font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; >Nothing to Display...!</font>");
+		print("</div>");	}
 
-	?>
-
-</table>
+			?>
+	

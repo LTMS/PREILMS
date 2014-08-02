@@ -114,8 +114,8 @@
 		<?php if ($submenu=='apply'){?> class="current" <?php }?>>Apply for
 				Leave</a></li>
 		<!-- 		<li><a href="<?php echo site_url("lms/leave_others"); ?>" <?php if ($submenu=='apply_others'){?>class="current"<?php }?> >Apply Leave for Other</a></li>  -->
-		<li><a href="<?php echo site_url("lms/history"); ?>"
-		<?php if ($submenu=='history'){?> class="current" <?php }?>>My Leave	History</a></li>
+		<li><a href="<?php echo site_url("lms/my_leave_history"); ?>"
+		<?php if ($submenu=='my_leave_history'){?> class="current" <?php }?>>My Leave	History</a></li>
 		<li><a href="<?php echo site_url("lms/my_lop"); ?>"
 		<?php if ($submenu=='my_lop'){?> class="current" <?php }?>>My LOP	History</a></li>
 		<li><a href="<?php echo site_url("lms/my_leave_summary"); ?>"
@@ -257,8 +257,8 @@
 		<li><a href="<?php echo site_url("lms/pending_applications"); ?>"
 		<?php if ($submenu=='pending_applications'){?> class="current"
 		<?php }?>>Pending Leave Applications</a></li>
-		<li><a href="<?php echo site_url("lms/history"); ?>"
-		<?php if ($submenu=='history'){?> class="current" <?php }?>>My Leave History</a></li>
+		<li><a href="<?php echo site_url("lms/my_leave_history"); ?>"
+		<?php if ($submenu=='my_leave_history'){?> class="current" <?php }?>>My Leave History</a></li>
 		<li><a href="<?php echo site_url("lms/my_lop"); ?>"
 		<?php if ($submenu=='my_lop'){?> class="current" <?php }?>>My LOP	History</a></li>
 		<li><a href="<?php echo site_url("lms/my_leave_summary"); ?>"
@@ -357,8 +357,8 @@
 	<ul style="display: block;">
 		<li><a href="<?php echo site_url("lms/apply"); ?>"
 		<?php if ($submenu=='apply'){?> class="current" <?php }?>>Apply For	Leave</a></li>
-		<li><a href="<?php echo site_url("lms/history"); ?>"
-		<?php if ($submenu=='history'){?> class="current" <?php }?>>My Leave	History</a></li>
+		<li><a href="<?php echo site_url("lms/my_leave_history"); ?>"
+		<?php if ($submenu=='my_leave_history'){?> class="current" <?php }?>>My Leave	History</a></li>
 		<li><a href="<?php echo site_url("lms/my_lop"); ?>"
 		<?php if ($submenu=='my_lop'){?> class="current" <?php }?>>My LOP	History</a></li>
 		<li><a href="<?php echo site_url("lms/my_leave_summary"); ?>"
