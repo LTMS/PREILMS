@@ -625,7 +625,7 @@ $("#date_to").datepicker({
 			document.getElementById('approved1').style.display="";
 		}
 
-			$('#leavesDiv').html("<br><br><br>	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
+	//		$('#leavesDiv').html("	<center><img id='loader'  src='../../images/loader.gif' width='150' height='150' /></center>");
 
 				$.post(site_url+"/lms/getLeave4Date/",{date1:d1,date2:d2,id1:id},function(data){
 						$("#leavesDiv").html("");

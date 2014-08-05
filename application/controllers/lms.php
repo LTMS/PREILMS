@@ -580,13 +580,13 @@ class Lms extends CI_Controller
 		$month=$form_data["month"];
 
 		if($month=='All'){
-			$data["title"]="Leave History of ".$form_data["emp"]."for ".$form_data["year"];
+			$data["title"]="Leave History of ".$form_data["emp"]." for ".$form_data["year"];
 			$data["result"]=$this->lms_model->admin_leavehistory_general_all($form_data["year"],$form_data["month"],$form_data["emp"]);
 			$this->load->view('lms/admin_leavehistory_page_emp',$data);
 			$this->load->view('lms/admin_leavehistory_general_print',$data);
 		}
 		if($month!='All'){
-			$data["title"]="Leave History of ".$form_data["emp"]."for ".$form_data["year"]." - ".$form_data["month"];
+			$data["title"]="Leave History of ".$form_data["emp"]." for ".$form_data["month"]." - ".$form_data["year"];
 			$data["result"]=$this->lms_model->admin_leavehistory_general_month($form_data["year"],$form_data["month"],$form_data["emp"]);
 			$this->load->view('lms/admin_leavehistory_page_emp',$data);
 			$this->load->view('lms/admin_leavehistory_general_print',$data);
@@ -626,14 +626,15 @@ class Lms extends CI_Controller
 	function team_leavehistory_approved(){
 		$form_data = $this->input->post();
 		$emp=$form_data["emp"];
+		$leader=$this->session->userdaata("fullname");
 		if($emp=='All'){
-			$data["title"]="Leave History of ".$form_data["emp"]." for ".$form_data["year"];
+			$data["title"]="Leave History of Team".$leader." for ".$form_data["year"];
 			$data["result"]=$this->lms_model->team_leavehistory_approved_all($form_data["year"]);
 			$this->load->view('lms/admin_leavehistory_page_all',$data);
 			$this->load->view('lms/admin_leavehistory_approved_all_print',$data);
 		}
 		else{
-			$data["title"]="Leave History of ".$form_data["emp"]." for ".$form_data["year"];
+			$data["title"]="Leave History of ".$form_data["emp"]." of ".$leader." for ".$form_data["year"];
 			$data["result"]=$this->lms_model->team_leavehistory_approved_ind($form_data["year"],$form_data["emp"]);
 			$this->load->view('lms/admin_leavehistory_page_all',$data);
 			$this->load->view('lms/admin_leavehistory_approved_ind_print',$data);
@@ -646,8 +647,9 @@ class Lms extends CI_Controller
 	function get_history_teamleader()
 	{
 		$form_data = $this->input->post();
-		$data["status"]=$this->lms_model->get_history_teamleader($form_data["d1"],$form_data["d2"],$form_data["string"]);
-		$this->load->view('lms/history_teamleader_page',$data);
+			$data["title"]="Leave History of ".$form_data["emp"]." for ".$form_data["year"];
+			$data["status"]=$this->lms_model->get_history_teamleader($form_data["d1"],$form_data["d2"],$form_data["string"]);
+			$this->load->view('lms/history_teamleader_page',$data);
 	}
 
 
